@@ -1,0 +1,12 @@
+INSERT INTO tb_category (name) VALUES ('Pizzas');
+INSERT INTO tb_category (name) VALUES ('Bebidas');
+INSERT INTO tb_category (name) VALUES ('Saladas');
+INSERT INTO tb_category (name) VALUES ('Massas');
+INSERT INTO tb_category (name) VALUES ('Sobremesas');
+INSERT INTO tb_category (name) VALUES ('Lanches');
+INSERT INTO tb_category (name) VALUES ('Cafés');
+INSERT INTO tb_category (name) VALUES ('Carnes');
+INSERT INTO tb_category (name) VALUES ('Sopas');
+INSERT INTO tb_category (name) VALUES ('Frutos do Mar');
+INSERT INTO tb_category (name) VALUES ('Vegetariano');
+INSERT INTO tb_category (name) VALUES ('Vegano');
