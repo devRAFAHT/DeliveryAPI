@@ -2,6 +2,7 @@ package com.rafaelandrade.backend.dto;
 
 import com.rafaelandrade.backend.entities.Category;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +12,8 @@ public class CategoryDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    @NotBlank(message = "Campo obrigatório")
+    @Size(min = 5, max = 60)
     private String name;
 
     public CategoryDTO(){

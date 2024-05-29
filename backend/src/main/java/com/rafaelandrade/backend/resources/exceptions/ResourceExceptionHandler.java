@@ -40,4 +40,22 @@ public class ResourceExceptionHandler {
         error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request){
+        HttpStatus status = UNPROCESSABLE_ENTITY;
+        ValidationError error = new ValidationError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Validation exception");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+
+        for(FieldError f: e.getBindingResult().getFieldErrors()){
+            error.addError(f.getField(), f.getDefaultMessage());
+        }
+
+        return ResponseEntity.status(status).body(error);
+    }
+
 }
