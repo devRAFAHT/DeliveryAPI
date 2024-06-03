@@ -3,9 +3,13 @@ package com.rafaelandrade.backend.dto;
 import com.rafaelandrade.backend.common.PortionSize;
 import com.rafaelandrade.backend.entities.Category;
 import com.rafaelandrade.backend.entities.Dish;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Duration;
 
 public class DishDTO implements Serializable {
@@ -13,18 +17,26 @@ public class DishDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    @NotBlank(message = "Campo obrigatório")
+    @Size(max = 60, message = "O nome dever ter no máximo 60 caracteres")
     private String name;
+    @Size(max = 512, message = "A descrição deve ter no máximo 512 caracteres")
     private String description;
+    @NotBlank(message = "Campo obrigatório")
     private String imgUrl;
-    private Double price;
+    @NotBlank(message = "Campo obrigatório")
+    @Positive(message = "O preço deve ser positivo")
+    private BigDecimal price;
     private PortionSize portionSize;
+    @NotBlank(message = "Campo obrigatório")
     private Duration preparationTime;
+    @NotBlank(message = "Campo obrigatório")
     private Category category;
 
     public DishDTO(){
     }
 
-    public DishDTO(Long id, String name, String description, String imgUrl, Double price, PortionSize portionSize, Duration preparationTime, Category category) {
+    public DishDTO(Long id, String name, String description, String imgUrl, BigDecimal price, PortionSize portionSize, Duration preparationTime, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -78,11 +90,11 @@ public class DishDTO implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

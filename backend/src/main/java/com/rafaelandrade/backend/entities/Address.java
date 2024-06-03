@@ -16,13 +16,21 @@ public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String country;
+    @Column(nullable = false)
     private String postalCode;
+    @Column(nullable = false)
     private String state;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String neighborhood;
+    @Column(nullable = false)
     private String street;
+    @Column(nullable = false)
     private Integer residenceType;
+    @Column(nullable = false)
     private Integer residenceNumber;
     private String floor;
     private String apartmentNumber;

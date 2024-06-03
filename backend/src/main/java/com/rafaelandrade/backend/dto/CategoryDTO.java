@@ -13,7 +13,7 @@ public class CategoryDTO implements Serializable {
 
     private Long id;
     @NotBlank(message = "Campo obrigatório")
-    @Size(min = 5, max = 60)
+    @Size(max = 60)
     private String name;
 
     public CategoryDTO(){

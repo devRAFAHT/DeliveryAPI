@@ -1,10 +1,12 @@
 package com.rafaelandrade.backend.entities;
 
 import com.rafaelandrade.backend.common.PortionSize;
+import com.rafaelandrade.backend.common.ResidenceType;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -17,28 +19,33 @@ public class Dish implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(nullable = false)
     private String imgUrl;
-    private Double price;
-    @Enumerated(EnumType.ORDINAL)
-    private PortionSize portionSize;
+    @Column(nullable = false, precision = 5, scale = 2)
+    private BigDecimal price;
+    private Integer portionSize;
+    @Column(nullable = false)
     private Duration preparationTime;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @Column(nullable = false)
     Category category;
 
     public Dish() {
     }
 
-    public Dish(Long id, String name, String description, String imgUrl, Double price, PortionSize portionSize, Duration preparationTime, Category category) {
+    public Dish(Long id, String name, String description, String imgUrl, BigDecimal price, PortionSize portionSize, Duration preparationTime, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imgUrl = imgUrl;
         this.price = price;
-        this.portionSize = portionSize;
+        setPortionSize(portionSize);
         this.preparationTime = preparationTime;
         this.category = category;
     }
@@ -75,20 +82,22 @@ public class Dish implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
     public PortionSize getPortionSize() {
-        return portionSize;
+        return PortionSize.valueOf(portionSize);
     }
 
     public void setPortionSize(PortionSize portionSize) {
-        this.portionSize = portionSize;
+        if(portionSize != null) {
+            this.portionSize = portionSize.getCode();
+        }
     }
 
     public Duration getPreparationTime() {

@@ -47,7 +47,7 @@ public class DishResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<DishDTO> update(@PathVariable Long id, @RequestBody DishDTO dishDTO) throws ResourceNotFoundException {
+    public ResponseEntity<DishDTO> update(@Valid @PathVariable Long id, @RequestBody DishDTO dishDTO) throws ResourceNotFoundException {
         dishDTO = dishService.update(id, dishDTO);
         return ResponseEntity.ok().body(dishDTO);
     }
