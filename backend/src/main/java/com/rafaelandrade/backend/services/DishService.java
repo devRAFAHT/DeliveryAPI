@@ -1,9 +1,9 @@
 package com.rafaelandrade.backend.services;
 
 import com.rafaelandrade.backend.dto.DishDTO;
-import com.rafaelandrade.backend.entities.Category;
+import com.rafaelandrade.backend.entities.DishCategory;
 import com.rafaelandrade.backend.entities.Dish;
-import com.rafaelandrade.backend.repositories.CategoryRepository;
+import com.rafaelandrade.backend.repositories.DishCategoryRepository;
 import com.rafaelandrade.backend.repositories.DishRepository;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
@@ -13,10 +13,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 @Service
@@ -26,7 +24,7 @@ public class DishService {
     private DishRepository dishRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private DishCategoryRepository dishCategoryRepository;
 
     @Transactional(readOnly = true)
     public Page<DishDTO> findAll(Pageable pageable) {
@@ -50,8 +48,8 @@ public class DishService {
 
     @Transactional
     public DishDTO insert(DishDTO dishDTO) throws ResourceNotFoundException {
-        Optional<Category> categoryObj = categoryRepository.findById(dishDTO.getCategory().getId());
-        Category categoryEntity = categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Optional<DishCategory> categoryObj = dishCategoryRepository.findById(dishDTO.getCategory().getId());
+        DishCategory dishCategoryEntity = categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         Dish dishEntity = new Dish();
         copyDtoToEntity(dishDTO, dishEntity);
         dishEntity = dishRepository.save(dishEntity);

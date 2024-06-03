@@ -1,7 +1,7 @@
 package com.rafaelandrade.backend.dto;
 
 import com.rafaelandrade.backend.common.PortionSize;
-import com.rafaelandrade.backend.entities.Category;
+import com.rafaelandrade.backend.entities.DishCategory;
 import com.rafaelandrade.backend.entities.Dish;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -31,12 +31,12 @@ public class DishDTO implements Serializable {
     @NotBlank(message = "Campo obrigatório")
     private Duration preparationTime;
     @NotBlank(message = "Campo obrigatório")
-    private Category category;
+    private DishCategory dishCategory;
 
     public DishDTO(){
     }
 
-    public DishDTO(Long id, String name, String description, String imgUrl, BigDecimal price, PortionSize portionSize, Duration preparationTime, Category category) {
+    public DishDTO(Long id, String name, String description, String imgUrl, BigDecimal price, PortionSize portionSize, Duration preparationTime, DishCategory dishCategory) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -44,7 +44,7 @@ public class DishDTO implements Serializable {
         this.price = price;
         this.portionSize = portionSize;
         this.preparationTime = preparationTime;
-        this.category = category;
+        this.dishCategory = dishCategory;
     }
 
     public DishDTO(Dish dishEntity) {
@@ -55,7 +55,7 @@ public class DishDTO implements Serializable {
         this.price = dishEntity.getPrice();
         this.portionSize = dishEntity.getPortionSize();
         this.preparationTime = dishEntity.getPreparationTime();
-        this.category = dishEntity.getCategory();
+        this.dishCategory = dishEntity.getCategory();
     }
 
     public Long getId() {
@@ -114,11 +114,11 @@ public class DishDTO implements Serializable {
         this.preparationTime = preparationTime;
     }
 
-    public Category getCategory() {
-        return category;
+    public DishCategory getCategory() {
+        return dishCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(DishCategory dishCategory) {
+        this.dishCategory = dishCategory;
     }
 }

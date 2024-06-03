@@ -1,7 +1,6 @@
 package com.rafaelandrade.backend.entities;
 
 import com.rafaelandrade.backend.common.PortionSize;
-import com.rafaelandrade.backend.common.ResidenceType;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -32,14 +31,13 @@ public class Dish implements Serializable {
     private Duration preparationTime;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    @Column(nullable = false)
-    Category category;
+    @JoinColumn(name = "dish_category_id")
+    private DishCategory category;
 
     public Dish() {
     }
 
-    public Dish(Long id, String name, String description, String imgUrl, BigDecimal price, PortionSize portionSize, Duration preparationTime, Category category) {
+    public Dish(Long id, String name, String description, String imgUrl, BigDecimal price, PortionSize portionSize, Duration preparationTime, DishCategory category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -95,7 +93,7 @@ public class Dish implements Serializable {
     }
 
     public void setPortionSize(PortionSize portionSize) {
-        if(portionSize != null) {
+        if (portionSize != null) {
             this.portionSize = portionSize.getCode();
         }
     }
@@ -108,11 +106,11 @@ public class Dish implements Serializable {
         this.preparationTime = preparationTime;
     }
 
-    public Category getCategory() {
+    public DishCategory getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(DishCategory category) {
         this.category = category;
     }
 
@@ -126,6 +124,6 @@ public class Dish implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id);
     }
 }

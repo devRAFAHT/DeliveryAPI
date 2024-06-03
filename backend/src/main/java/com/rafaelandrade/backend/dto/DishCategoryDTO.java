@@ -1,13 +1,13 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.entities.Category;
+import com.rafaelandrade.backend.entities.DishCategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-public class CategoryDTO implements Serializable {
+public class DishCategoryDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -16,17 +16,17 @@ public class CategoryDTO implements Serializable {
     @Size(max = 60)
     private String name;
 
-    public CategoryDTO(){
+    public DishCategoryDTO(){
     }
 
-    public CategoryDTO(Long id, String name) {
+    public DishCategoryDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public CategoryDTO(Category categoryEntity) {
-        this.id = categoryEntity.getId();
-        this.name = categoryEntity.getName();
+    public DishCategoryDTO(DishCategory dishCategoryEntity) {
+        this.id = dishCategoryEntity.getId();
+        this.name = dishCategoryEntity.getName();
     }
 
     public Long getId() {
