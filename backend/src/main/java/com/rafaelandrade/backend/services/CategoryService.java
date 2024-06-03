@@ -60,7 +60,7 @@ public class CategoryService {
         }
     }
 
-    @Transactional
+
     public void delete(Long id) throws ResourceNotFoundException, DatabaseException {
 
         if(!categoryRepository.existsById(id)){

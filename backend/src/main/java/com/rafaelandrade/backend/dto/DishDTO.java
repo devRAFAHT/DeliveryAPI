@@ -1,38 +1,30 @@
-package com.rafaelandrade.backend.entities;
+package com.rafaelandrade.backend.dto;
 
 import com.rafaelandrade.backend.common.PortionSize;
-import jakarta.persistence.*;
+import com.rafaelandrade.backend.entities.Category;
+import com.rafaelandrade.backend.entities.Dish;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Duration;
-import java.util.Objects;
 
-@Entity
-@Table(name = "tb_dish")
-public class Dish implements Serializable {
+public class DishDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
     private String imgUrl;
     private Double price;
-    @Enumerated(EnumType.ORDINAL)
     private PortionSize portionSize;
     private Duration preparationTime;
+    private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    Category category;
-
-    public Dish() {
+    public DishDTO(){
     }
 
-    public Dish(Long id, String name, String description, String imgUrl, Double price, PortionSize portionSize, Duration preparationTime, Category category) {
+    public DishDTO(Long id, String name, String description, String imgUrl, Double price, PortionSize portionSize, Duration preparationTime, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -41,6 +33,17 @@ public class Dish implements Serializable {
         this.portionSize = portionSize;
         this.preparationTime = preparationTime;
         this.category = category;
+    }
+
+    public DishDTO(Dish dishEntity) {
+        this.id = dishEntity.getId();
+        this.name = dishEntity.getName();
+        this.description = dishEntity.getDescription();
+        this.imgUrl = dishEntity.getImgUrl();
+        this.price = dishEntity.getPrice();
+        this.portionSize = dishEntity.getPortionSize();
+        this.preparationTime = dishEntity.getPreparationTime();
+        this.category = dishEntity.getCategory();
     }
 
     public Long getId() {
@@ -105,18 +108,5 @@ public class Dish implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Dish dish = (Dish) o;
-        return Objects.equals(id, dish.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }

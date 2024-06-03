@@ -1,11 +1,15 @@
 package com.rafaelandrade.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
@@ -18,6 +22,10 @@ public class Category implements Serializable {
     private Long id;
     @Column(unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    Set<Dish> dishes = new HashSet<>();
 
     public Category(){
     }
@@ -41,6 +49,10 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Dish> getDishes() {
+        return dishes;
     }
 
     @Override
