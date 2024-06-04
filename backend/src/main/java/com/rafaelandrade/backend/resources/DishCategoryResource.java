@@ -15,7 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/categories")
+@RequestMapping(value = "/dish-categories")
 public class DishCategoryResource {
 
     @Autowired

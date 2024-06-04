@@ -21,7 +21,6 @@ public class Drink implements Serializable {
     private Long name;
     @Column(columnDefinition = "TEXT")
     private String description;
-    @Column(nullable = false)
     private String imgUrl;
     @Column(nullable = false)
     private BigDecimal price;

@@ -22,7 +22,6 @@ public class Dish implements Serializable {
     private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
-    @Column(nullable = false)
     private String imgUrl;
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal price;

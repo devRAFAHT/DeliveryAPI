@@ -1,4 +1,4 @@
--- CATEGORIES
+-- DISH CATEGORIES
 INSERT INTO tb_dish_category (name) VALUES ('Pizzas');
 INSERT INTO tb_dish_category (name) VALUES ('Bebidas');
 INSERT INTO tb_dish_category (name) VALUES ('Saladas');
@@ -11,6 +11,20 @@ INSERT INTO tb_dish_category (name) VALUES ('Sopas');
 INSERT INTO tb_dish_category (name) VALUES ('Frutos do Mar');
 INSERT INTO tb_dish_category (name) VALUES ('Vegetariano');
 INSERT INTO tb_dish_category (name) VALUES ('Vegano');
+
+-- DRINK CATEGORIES
+INSERT INTO tb_drink_category (name) VALUES ('Refrigerantes');
+INSERT INTO tb_drink_category (name) VALUES ('Sucos');
+INSERT INTO tb_drink_category (name) VALUES ('Drinks');
+INSERT INTO tb_drink_category (name) VALUES ('Coquetéis');
+INSERT INTO tb_drink_category (name) VALUES ('Cervejas');
+INSERT INTO tb_drink_category (name) VALUES ('Vinhos');
+INSERT INTO tb_drink_category (name) VALUES ('Licores');
+INSERT INTO tb_drink_category (name) VALUES ('Cafés');
+INSERT INTO tb_drink_category (name) VALUES ('Chás');
+INSERT INTO tb_drink_category (name) VALUES ('Águas');
+INSERT INTO tb_drink_category (name) VALUES ('Smoothies');
+INSERT INTO tb_drink_category (name) VALUES ('Milkshakes');
 
 -- DISHES
 INSERT INTO tb_dish (name, description, img_url, price, portion_size, preparation_time, dish_category_id) VALUES ('Macarrão Carbonara', 'Uma deliciosa massa carbonara com bacon e queijo parmesão.', 'https://example.com/macarrao_carbonara.jpg', 25.9, 2, 1800000000000, 1);
