@@ -7,6 +7,7 @@ import com.rafaelandrade.backend.repositories.DishCategoryRepository;
 import com.rafaelandrade.backend.repositories.DishRepository;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
+import com.rafaelandrade.backend.util.CalculateDiscount;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -48,10 +51,11 @@ public class DishService {
 
     @Transactional
     public DishDTO insert(DishDTO dishDTO) throws ResourceNotFoundException {
-        Optional<DishCategory> categoryObj = dishCategoryRepository.findById(dishDTO.getCategory().getId());
+        Optional<DishCategory> categoryObj = dishCategoryRepository.findById(dishDTO.getDishCategory().getId());
         DishCategory dishCategoryEntity = categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         Dish dishEntity = new Dish();
         copyDtoToEntity(dishDTO, dishEntity);
+        calculateDiscount(dishEntity);
         dishEntity = dishRepository.save(dishEntity);
         return new DishDTO(dishEntity);
     }
@@ -61,6 +65,7 @@ public class DishService {
         try {
             Dish dishEntity = dishRepository.getReferenceById(id);
             copyDtoToEntity(dishDTO, dishEntity);
+            calculateDiscount(dishEntity);
             dishEntity = dishRepository.save(dishEntity);
             return new DishDTO(dishEntity);
         }catch (EntityNotFoundException e){
@@ -82,14 +87,30 @@ public class DishService {
         }
     }
 
-    private void copyDtoToEntity(DishDTO dishDTO, Dish dishEntity){
+    private void copyDtoToEntity(DishDTO dishDTO, Dish dishEntity) {
         dishEntity.setName(dishDTO.getName());
         dishEntity.setDescription(dishDTO.getDescription());
         dishEntity.setImgUrl(dishDTO.getImgUrl());
-        dishEntity.setPrice(dishDTO.getPrice());
         dishEntity.setPortionSize(dishDTO.getPortionSize());
         dishEntity.setPreparationTime(dishDTO.getPreparationTime());
-        dishEntity.setCategory(dishDTO.getCategory());
+        dishEntity.setCategory(dishDTO.getDishCategory());
+        dishEntity.setFoodRestriction(dishDTO.getFoodRestriction());
+        dishEntity.setSaleStatus(dishDTO.getSaleStatus());
+        dishEntity.setOriginalPrice(dishDTO.getOriginalPrice());
+        dishEntity.setCurrentPrice(dishDTO.getCurrentPrice());
+        dishEntity.setDiscountInPercentage(dishDTO.getDiscountInPercentage());
     }
 
+    private void calculateDiscount(Dish dish) {
+        if (dish.getDiscountInPercentage() == null && dish.getCurrentPrice() == null) {
+            dish.setCurrentPrice(dish.getOriginalPrice());
+            dish.setDiscountInPercentage(BigDecimal.valueOf(0.00));
+        }else if(dish.getDiscountInPercentage() == null){
+            dish.setDiscountInPercentage(CalculateDiscount.calculateDiscountInPercentage(dish.getOriginalPrice(), dish.getCurrentPrice()));
+            System.out.println(dish.getDiscountInPercentage());
+        }else{
+            dish.setCurrentPrice(CalculateDiscount.calculateDiscountInMoney(dish.getOriginalPrice(), dish.getDiscountInPercentage()));
+            System.out.println(dish.getCurrentPrice());
+        }
+    }
 }

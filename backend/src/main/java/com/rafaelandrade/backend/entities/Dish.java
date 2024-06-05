@@ -1,6 +1,8 @@
 package com.rafaelandrade.backend.entities;
 
+import com.rafaelandrade.backend.common.FoodRestriction;
 import com.rafaelandrade.backend.common.PortionSize;
+import com.rafaelandrade.backend.common.SaleStatus;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -24,10 +26,18 @@ public class Dish implements Serializable {
     private String description;
     private String imgUrl;
     @Column(nullable = false, precision = 5, scale = 2)
-    private BigDecimal price;
-    private Integer portionSize;
+    private BigDecimal originalPrice;
+    @Column(nullable = false, precision = 5, scale = 2)
+    private BigDecimal currentPrice;
+    @Column(nullable = false, precision = 5, scale = 2)
+    private BigDecimal discountInPercentage;
     @Column(nullable = false)
+    private Integer portionSize;
     private Duration preparationTime;
+    @Column(nullable = false)
+    private Integer foodRestriction;
+    @Column(nullable = false)
+    private Integer saleStatus;
 
     @ManyToOne
     @JoinColumn(name = "dish_category_id")
@@ -36,15 +46,19 @@ public class Dish implements Serializable {
     public Dish() {
     }
 
-    public Dish(Long id, String name, String description, String imgUrl, BigDecimal price, PortionSize portionSize, Duration preparationTime, DishCategory category) {
+    public Dish(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, PortionSize portionSize, Duration preparationTime, FoodRestriction foodRestriction, SaleStatus saleStatus, DishCategory category, BigDecimal discountInPercentage) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imgUrl = imgUrl;
-        this.price = price;
+        this.originalPrice = originalPrice;
+        this.currentPrice = currentPrice;
         setPortionSize(portionSize);
         this.preparationTime = preparationTime;
+        setFoodRestriction(foodRestriction);
+        setSaleStatus(saleStatus);
         this.category = category;
+        this.discountInPercentage = discountInPercentage;
     }
 
     public Long getId() {
@@ -79,12 +93,28 @@ public class Dish implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public BigDecimal getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public BigDecimal getDiscountInPercentage() {
+        return discountInPercentage;
+    }
+
+    public void setDiscountInPercentage(BigDecimal discountInPercentage) {
+        this.discountInPercentage = discountInPercentage;
     }
 
     public PortionSize getPortionSize() {
@@ -103,6 +133,26 @@ public class Dish implements Serializable {
 
     public void setPreparationTime(Duration preparationTime) {
         this.preparationTime = preparationTime;
+    }
+
+    public FoodRestriction getFoodRestriction() {
+        return FoodRestriction.valueOf(foodRestriction);
+    }
+
+    public void setFoodRestriction(FoodRestriction foodRestriction) {
+        if (foodRestriction != null) {
+            this.foodRestriction = foodRestriction.getCode();
+        }
+    }
+
+    public SaleStatus getSaleStatus() {
+        return SaleStatus.valueOf(saleStatus);
+    }
+
+    public void setSaleStatus(SaleStatus saleStatus) {
+        if (saleStatus != null) {
+            this.saleStatus = saleStatus.getCode();
+        }
     }
 
     public DishCategory getCategory() {
