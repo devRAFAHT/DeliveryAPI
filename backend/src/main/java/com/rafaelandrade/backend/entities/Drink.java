@@ -1,5 +1,6 @@
 package com.rafaelandrade.backend.entities;
 
+import com.rafaelandrade.backend.common.SaleStatus;
 import com.rafaelandrade.backend.common.UnitMeasurement;
 import jakarta.persistence.*;
 
@@ -18,16 +19,22 @@ public class Drink implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private Long name;
+    private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
     private String imgUrl;
     @Column(nullable = false)
-    private BigDecimal price;
+    private BigDecimal originalPrice;
+    @Column(nullable = false)
+    private BigDecimal currentPrice;
+    @Column(nullable = false)
+    private BigDecimal discountInPercentage;
     @Column(nullable = false)
     private Integer size;
     @Column(nullable = false)
     private Integer unitMeasurement;
+    @Column(nullable = false)
+    private Integer saleStatus;
 
     @ManyToOne
     @JoinColumn(name = "drink_category_id")
@@ -36,14 +43,17 @@ public class Drink implements Serializable {
     public Drink(){
     }
 
-    public Drink(Long id, Long name, String description, String imgUrl, BigDecimal price, Integer size, UnitMeasurement unitMeasurement, DrinkCategory category) {
+    public Drink(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage,Integer size, UnitMeasurement unitMeasurement, SaleStatus saleStatus, DrinkCategory category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.imgUrl = imgUrl;
-        this.price = price;
+        this.originalPrice = originalPrice;
+        this.currentPrice = currentPrice;
+        this.discountInPercentage = discountInPercentage;
         this.size = size;
         setUnitMeasurement(unitMeasurement);
+        setSaleStatus(saleStatus);
         this.category = category;
     }
 
@@ -55,20 +65,36 @@ public class Drink implements Serializable {
         this.id = id;
     }
 
-    public Long getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Long name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public BigDecimal getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public BigDecimal getDiscountInPercentage() {
+        return discountInPercentage;
+    }
+
+    public void setDiscountInPercentage(BigDecimal discountInPercentage) {
+        this.discountInPercentage = discountInPercentage;
     }
 
     public Integer getSize() {
@@ -86,6 +112,16 @@ public class Drink implements Serializable {
     public void setUnitMeasurement(UnitMeasurement unitMeasurement) {
         if (unitMeasurement != null) {
             this.unitMeasurement = unitMeasurement.getCode();
+        }
+    }
+
+    public SaleStatus getSaleStatus() {
+        return SaleStatus.valueOf(saleStatus);
+    }
+
+    public void setSaleStatus(SaleStatus saleStatus) {
+        if (saleStatus != null) {
+            this.saleStatus = saleStatus.getCode();
         }
     }
 

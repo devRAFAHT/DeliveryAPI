@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface DishCategoryRepository extends JpaRepository<DishCategory, Long> {
-
     Optional<DishCategory> findByName(String name);
     DishCategory getCategoryByName(String name);
 
