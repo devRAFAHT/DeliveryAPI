@@ -26,6 +26,20 @@ INSERT INTO tb_drink_category (name) VALUES ('Águas');
 INSERT INTO tb_drink_category (name) VALUES ('Smoothies');
 INSERT INTO tb_drink_category (name) VALUES ('Milkshakes');
 
+-- ADDITIONAL CATEGORIES
+INSERT INTO tb_additional_category (name) VALUES ('Frutas');
+INSERT INTO tb_additional_category (name) VALUES ('Coberturas');
+INSERT INTO tb_additional_category (name) VALUES ('Grãos');
+INSERT INTO tb_additional_category (name) VALUES ('Caldas');
+INSERT INTO tb_additional_category (name) VALUES ('Oleaginosas');
+INSERT INTO tb_additional_category (name) VALUES ('Granolas');
+INSERT INTO tb_additional_category (name) VALUES ('Chocolates');
+INSERT INTO tb_additional_category (name) VALUES ('Doces');
+INSERT INTO tb_additional_category (name) VALUES ('Sementes');
+INSERT INTO tb_additional_category (name) VALUES ('Cereais');
+INSERT INTO tb_additional_category (name) VALUES ('Iogurtes');
+INSERT INTO tb_additional_category (name) VALUES ('Mel');
+
 -- DISHES
 INSERT INTO tb_dish (name, description, img_url, original_price, current_price, discount_in_percentage, portion_size, preparation_time, food_restriction, sale_status, dish_category_id) VALUES ('Macarrão Carbonara', 'Uma deliciosa massa carbonara com bacon e queijo parmesão.', 'https://example.com/macarrao_carbonara.jpg', 25.90, 25.90, 0.00, 1, 1800000000000, 0, 0, 1);
 INSERT INTO tb_dish (name, description, img_url, original_price, current_price, discount_in_percentage, portion_size, preparation_time, food_restriction, sale_status, dish_category_id) VALUES ('Frango Parmesão', 'Frango empanado com molho de tomate e queijo parmesão.', 'https://example.com/frango_parmesao.jpg', 29.90, 29.90, 0.00, 0, 1800000000000, 0, 0, 2);

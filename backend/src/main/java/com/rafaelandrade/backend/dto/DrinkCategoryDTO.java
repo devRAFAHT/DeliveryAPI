@@ -10,6 +10,9 @@ import java.io.Serializable;
 
 public class DrinkCategoryDTO extends CategoryDTO{
 
+    public DrinkCategoryDTO(){
+    }
+
     public DrinkCategoryDTO(DrinkCategory drinkCategoryEntity) {
         this.setId(drinkCategoryEntity.getId());
         this.setName(drinkCategoryEntity.getName());
