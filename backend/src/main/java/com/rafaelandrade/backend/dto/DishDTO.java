@@ -3,6 +3,7 @@ package com.rafaelandrade.backend.dto;
 import com.rafaelandrade.backend.common.FoodRestriction;
 import com.rafaelandrade.backend.common.PortionSize;
 import com.rafaelandrade.backend.common.SaleStatus;
+import com.rafaelandrade.backend.entities.Additional;
 import com.rafaelandrade.backend.entities.DishCategory;
 import com.rafaelandrade.backend.entities.Dish;
 import jakarta.validation.constraints.NotBlank;
@@ -14,6 +15,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class DishDTO implements Serializable {
     @Serial
@@ -37,6 +41,8 @@ public class DishDTO implements Serializable {
     private FoodRestriction foodRestriction;
     private SaleStatus saleStatus;
     private DishCategory dishCategory;
+
+    List<AdditionalDTO> additional = new ArrayList<AdditionalDTO>();
 
     public DishDTO() {
     }
@@ -69,6 +75,11 @@ public class DishDTO implements Serializable {
         this.foodRestriction = dishEntity.getFoodRestriction();
         this.saleStatus = dishEntity.getSaleStatus();
         this.dishCategory = dishEntity.getCategory();
+    }
+
+    public DishDTO(Dish entity, Set<Additional> additional){
+        this(entity);
+        additional.forEach(adt -> this.additional.add(new AdditionalDTO(adt)));
     }
 
     public Long getId() {
@@ -165,5 +176,9 @@ public class DishDTO implements Serializable {
 
     public void setDishCategory(DishCategory dishCategory) {
         this.dishCategory = dishCategory;
+    }
+
+    public List<AdditionalDTO> getAdditional() {
+        return additional;
     }
 }

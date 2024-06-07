@@ -1,8 +1,11 @@
 package com.rafaelandrade.backend.services;
 
+import com.rafaelandrade.backend.dto.AdditionalDTO;
 import com.rafaelandrade.backend.dto.DishDTO;
+import com.rafaelandrade.backend.entities.Additional;
 import com.rafaelandrade.backend.entities.DishCategory;
 import com.rafaelandrade.backend.entities.Dish;
+import com.rafaelandrade.backend.repositories.AdditionalRepository;
 import com.rafaelandrade.backend.repositories.DishCategoryRepository;
 import com.rafaelandrade.backend.repositories.DishRepository;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
@@ -29,24 +32,27 @@ public class DishService {
     @Autowired
     private DishCategoryRepository dishCategoryRepository;
 
+    @Autowired private AdditionalRepository additionalRepository;
+
     @Transactional(readOnly = true)
     public Page<DishDTO> findAll(Pageable pageable) {
         Page<Dish> dishes = dishRepository.findAll(pageable);
-        return dishes.map(dish -> new DishDTO(dish));
+
+        return dishes.map(dish -> new DishDTO(dish, dish.getAdditional()));
     }
 
     @Transactional(readOnly = true)
     public DishDTO findByName(String name) throws ResourceNotFoundException {
         Optional<Dish> dishObj = dishRepository.findByName(name);
         Dish dishEntity = dishObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new DishDTO(dishEntity);
+        return new DishDTO(dishEntity, dishEntity.getAdditional());
     }
 
     @Transactional(readOnly = true)
     public DishDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Dish> dishObj = dishRepository.findById(id);
         Dish dishEntity = dishObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new DishDTO(dishEntity);
+        return new DishDTO(dishEntity, dishEntity.getAdditional());
     }
 
     @Transactional
@@ -57,7 +63,7 @@ public class DishService {
         copyDtoToEntity(dishDTO, dishEntity);
         calculateDiscount(dishEntity);
         dishEntity = dishRepository.save(dishEntity);
-        return new DishDTO(dishEntity);
+        return new DishDTO(dishEntity, dishEntity.getAdditional());
     }
 
     @Transactional
@@ -67,7 +73,7 @@ public class DishService {
             copyDtoToEntity(dishDTO, dishEntity);
             calculateDiscount(dishEntity);
             dishEntity = dishRepository.save(dishEntity);
-            return new DishDTO(dishEntity);
+            return new DishDTO(dishEntity, dishEntity.getAdditional());
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id not found: " + id);
         }
@@ -99,6 +105,12 @@ public class DishService {
         dishEntity.setOriginalPrice(dishDTO.getOriginalPrice());
         dishEntity.setCurrentPrice(dishDTO.getCurrentPrice());
         dishEntity.setDiscountInPercentage(dishDTO.getDiscountInPercentage());
+
+        dishEntity.getAdditional().clear();
+        for(AdditionalDTO additionalDTO : dishDTO.getAdditional()){
+            Additional additional = additionalRepository.getOne(additionalDTO.getId());
+            dishEntity.getAdditional().add(additional);
+        }
     }
 
     private void calculateDiscount(Dish dish) {
@@ -107,10 +119,8 @@ public class DishService {
             dish.setDiscountInPercentage(BigDecimal.valueOf(0.00));
         }else if(dish.getDiscountInPercentage() == null){
             dish.setDiscountInPercentage(CalculateDiscount.calculateDiscountInPercentage(dish.getOriginalPrice(), dish.getCurrentPrice()));
-            System.out.println(dish.getDiscountInPercentage());
         }else{
             dish.setCurrentPrice(CalculateDiscount.calculateDiscountInMoney(dish.getOriginalPrice(), dish.getDiscountInPercentage()));
-            System.out.println(dish.getCurrentPrice());
         }
     }
 }

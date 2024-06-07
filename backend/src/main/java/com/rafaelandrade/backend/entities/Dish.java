@@ -9,7 +9,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_dish")
@@ -42,6 +44,10 @@ public class Dish implements Serializable {
     @ManyToOne
     @JoinColumn(name = "dish_category_id")
     private DishCategory category;
+
+    @ManyToMany
+    @JoinTable(name = "tb_dish_additional", joinColumns = @JoinColumn(name = "dish_id"), inverseJoinColumns = @JoinColumn(name = "additional_id"))
+    private Set<Additional> additional = new HashSet<>();
 
     public Dish() {
     }
@@ -161,6 +167,10 @@ public class Dish implements Serializable {
 
     public void setCategory(DishCategory category) {
         this.category = category;
+    }
+
+    public Set<Additional> getAdditional() {
+        return additional;
     }
 
     @Override

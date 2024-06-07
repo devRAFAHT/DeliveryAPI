@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_additional")
@@ -26,6 +28,9 @@ public class Additional {
     @ManyToOne
     @JoinColumn(name = "additional_category_id")
     private AdditionalCategory category;
+
+    @ManyToMany(mappedBy = "additional")
+    private Set<Dish> dishes = new HashSet<>();
 
     public Additional(){
     }
@@ -94,6 +99,10 @@ public class Additional {
 
     public void setCategory(AdditionalCategory category) {
         this.category = category;
+    }
+
+    public Set<Dish> getDishes() {
+        return dishes;
     }
 
     @Override

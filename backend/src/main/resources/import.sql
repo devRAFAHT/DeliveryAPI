@@ -77,3 +77,15 @@ INSERT INTO tb_additional (name, img_url, price, description, sale_status, addit
 INSERT INTO tb_additional (name, img_url, price, description, sale_status, additional_category_id) VALUES ('Coco Ralado', 'https://example.com/coco_ralado.jpg', 2.50, 'Coco ralado fresco', 0, 1);
 INSERT INTO tb_additional (name, img_url, price, description, sale_status, additional_category_id) VALUES ('Calda de Chocolate', 'https://example.com/calda_chocolate.jpg', 2.00, 'Calda de chocolate', 1, 4);
 INSERT INTO tb_additional (name, img_url, price, description, sale_status, additional_category_id) VALUES ('Castanha de Caju', 'https://example.com/castanha_caju.jpg', 3.00, 'Castanha de caju', 0, 2);
+
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (1, 1);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (1, 4);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (2, 4);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (3, 7);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (4, 9);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (5, 3);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (6, 2);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (7, 6);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (8, 8);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (9, 5);
+INSERT INTO tb_dish_additional (dish_id, additional_id) VALUES (10, 10);

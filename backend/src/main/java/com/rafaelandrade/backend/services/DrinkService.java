@@ -104,10 +104,8 @@ public class DrinkService {
             drink.setDiscountInPercentage(BigDecimal.valueOf(0.00));
         } else if (drink.getDiscountInPercentage() == null) {
             drink.setDiscountInPercentage(CalculateDiscount.calculateDiscountInPercentage(drink.getOriginalPrice(), drink.getCurrentPrice()));
-            System.out.println(drink.getDiscountInPercentage());
         } else {
             drink.setCurrentPrice(CalculateDiscount.calculateDiscountInMoney(drink.getOriginalPrice(), drink.getDiscountInPercentage()));
-            System.out.println(drink.getCurrentPrice());
         }
     }
 }
