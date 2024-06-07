@@ -8,42 +8,11 @@ import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class DrinkCategoryDTO implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
-    @NotBlank(message = "Campo obrigatório")
-    @Size(max = 60)
-    private String name;
-
-    public DrinkCategoryDTO(){
-    }
-
-    public DrinkCategoryDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+public class DrinkCategoryDTO extends CategoryDTO{
 
     public DrinkCategoryDTO(DrinkCategory drinkCategoryEntity) {
-        this.id = drinkCategoryEntity.getId();
-        this.name = drinkCategoryEntity.getName();
+        this.setId(drinkCategoryEntity.getId());
+        this.setName(drinkCategoryEntity.getName());
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
