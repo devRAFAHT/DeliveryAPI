@@ -1,6 +1,7 @@
 package com.rafaelandrade.backend.dto;
 
 import com.rafaelandrade.backend.common.SaleStatus;
+import com.rafaelandrade.backend.entities.Additional;
 import com.rafaelandrade.backend.entities.AdditionalCategory;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -33,6 +34,16 @@ public class AdditionalDTO {
         this.description = description;
         this.saleStatus = saleStatus;
         this.category = category;
+    }
+
+    public AdditionalDTO(Additional additionalEntity) {
+        this.id = additionalEntity.getId();
+        this.name = additionalEntity.getName();
+        this.imgUrl = additionalEntity.getImgUrl();
+        this.price = additionalEntity.getPrice();
+        this.description = additionalEntity.getDescription();
+        this.saleStatus = additionalEntity.getSaleStatus();
+        this.category = additionalEntity.getCategory();
     }
 
     public Long getId() {
