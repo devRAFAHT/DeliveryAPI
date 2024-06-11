@@ -40,14 +40,14 @@ public class DishDTO implements Serializable {
     private Duration preparationTime;
     private FoodRestriction foodRestriction;
     private SaleStatus saleStatus;
-    private DishCategory dishCategory;
+    private DishCategoryDTO dishCategory;
 
     List<AdditionalDTO> additional = new ArrayList<AdditionalDTO>();
 
     public DishDTO() {
     }
 
-    public DishDTO(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, PortionSize portionSize, Duration preparationTime, FoodRestriction foodRestriction, SaleStatus saleStatus, DishCategory dishCategory) {
+    public DishDTO(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, PortionSize portionSize, Duration preparationTime, FoodRestriction foodRestriction, SaleStatus saleStatus, DishCategoryDTO dishCategory) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -74,7 +74,7 @@ public class DishDTO implements Serializable {
         this.preparationTime = dishEntity.getPreparationTime();
         this.foodRestriction = dishEntity.getFoodRestriction();
         this.saleStatus = dishEntity.getSaleStatus();
-        this.dishCategory = dishEntity.getCategory();
+        this.dishCategory = new DishCategoryDTO(dishEntity.getCategory());
     }
 
     public DishDTO(Dish entity, Set<Additional> additional){
@@ -170,11 +170,11 @@ public class DishDTO implements Serializable {
         this.saleStatus = saleStatus;
     }
 
-    public DishCategory getDishCategory() {
+    public DishCategoryDTO getDishCategory() {
         return dishCategory;
     }
 
-    public void setDishCategory(DishCategory dishCategory) {
+    public void setDishCategory(DishCategoryDTO dishCategory) {
         this.dishCategory = dishCategory;
     }
 

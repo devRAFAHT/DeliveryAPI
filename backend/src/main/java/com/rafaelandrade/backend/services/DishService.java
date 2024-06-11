@@ -99,7 +99,7 @@ public class DishService {
         dishEntity.setImgUrl(dishDTO.getImgUrl());
         dishEntity.setPortionSize(dishDTO.getPortionSize());
         dishEntity.setPreparationTime(dishDTO.getPreparationTime());
-        dishEntity.setCategory(dishDTO.getDishCategory());
+        dishEntity.setCategory(new DishCategory(dishDTO.getDishCategory()));
         dishEntity.setFoodRestriction(dishDTO.getFoodRestriction());
         dishEntity.setSaleStatus(dishDTO.getSaleStatus());
         dishEntity.setOriginalPrice(dishDTO.getOriginalPrice());

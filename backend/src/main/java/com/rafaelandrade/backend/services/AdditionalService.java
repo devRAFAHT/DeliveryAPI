@@ -88,7 +88,7 @@ public class AdditionalService {
         additionalEntity.setName(additionalDTO.getName());
         additionalEntity.setDescription(additionalDTO.getDescription());
         additionalEntity.setImgUrl(additionalDTO.getImgUrl());
-        additionalEntity.setCategory(additionalDTO.getCategory());
+        additionalEntity.setCategory(new AdditionalCategory(additionalDTO.getCategory()));
         additionalEntity.setPrice(additionalDTO.getPrice());
         additionalEntity.setSaleStatus(additionalDTO.getSaleStatus());
     }

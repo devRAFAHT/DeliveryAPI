@@ -28,9 +28,9 @@ public class DrinkDTO {
     private Integer size;
     private UnitMeasurement unitMeasurement;
     private SaleStatus saleStatus;
-    private DrinkCategory category;
+    private DrinkCategoryDTO category;
 
-    public DrinkDTO(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, Integer size, UnitMeasurement unitMeasurement, SaleStatus saleStatus, DrinkCategory category) {
+    public DrinkDTO(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, Integer size, UnitMeasurement unitMeasurement, SaleStatus saleStatus, DrinkCategoryDTO category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -55,7 +55,7 @@ public class DrinkDTO {
         this.size = drinkEntity.getSize();
         this.unitMeasurement = drinkEntity.getUnitMeasurement();
         this.saleStatus = drinkEntity.getSaleStatus();
-        this.category = drinkEntity.getCategory();
+        this.category = new DrinkCategoryDTO(drinkEntity.getCategory());
     }
 
     public Long getId() {
@@ -138,11 +138,11 @@ public class DrinkDTO {
         this.saleStatus = saleStatus;
     }
 
-    public DrinkCategory getCategory() {
+    public DrinkCategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(DrinkCategory category) {
+    public void setCategory(DrinkCategoryDTO category) {
         this.category = category;
     }
 }

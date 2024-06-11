@@ -20,12 +20,12 @@ public class AdditionalDTO {
     private BigDecimal price;
     private String description;
     private SaleStatus saleStatus;
-    private AdditionalCategory category;
+    private AdditionalCategoryDTO category;
 
     public AdditionalDTO(){
     }
 
-    public AdditionalDTO(Long id, String name, String imgUrl, BigDecimal price, String description, SaleStatus saleStatus, AdditionalCategory category) {
+    public AdditionalDTO(Long id, String name, String imgUrl, BigDecimal price, String description, SaleStatus saleStatus, AdditionalCategoryDTO category) {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
@@ -42,7 +42,7 @@ public class AdditionalDTO {
         this.price = additionalEntity.getPrice();
         this.description = additionalEntity.getDescription();
         this.saleStatus = additionalEntity.getSaleStatus();
-        this.category = additionalEntity.getCategory();
+        this.category = new AdditionalCategoryDTO(additionalEntity.getCategory());
     }
 
     public Long getId() {
@@ -93,11 +93,11 @@ public class AdditionalDTO {
         this.saleStatus = saleStatus;
     }
 
-    public AdditionalCategory getCategory() {
+    public AdditionalCategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(AdditionalCategory category) {
+    public void setCategory(AdditionalCategoryDTO category) {
         this.category = category;
     }
 }

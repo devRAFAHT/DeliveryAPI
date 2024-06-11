@@ -1,6 +1,8 @@
 package com.rafaelandrade.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rafaelandrade.backend.dto.AdditionalCategoryDTO;
+import com.rafaelandrade.backend.dto.DishCategoryDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -19,4 +21,12 @@ public class AdditionalCategory extends Category{
     public Set<Additional> getAdditional() {
         return additional;
     }
+
+    public  AdditionalCategory(){
+    }
+
+    public AdditionalCategory(AdditionalCategoryDTO additionalCategoryDTO) {
+        this.setId(additionalCategoryDTO.getId());
+    }
+
 }

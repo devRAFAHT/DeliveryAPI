@@ -95,7 +95,7 @@ public class DrinkService {
         drink.setSize(drinkDTO.getSize());
         drink.setUnitMeasurement(drinkDTO.getUnitMeasurement());
         drink.setSaleStatus(drinkDTO.getSaleStatus());
-        drink.setCategory(drinkDTO.getCategory());
+        drink.setCategory(new DrinkCategory(drinkDTO.getCategory()));
     }
 
     private void calculateDiscount(Drink drink) {
