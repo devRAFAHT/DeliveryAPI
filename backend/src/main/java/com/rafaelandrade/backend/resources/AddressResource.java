@@ -2,7 +2,9 @@ package com.rafaelandrade.backend.resources;
 
 import com.rafaelandrade.backend.dto.AddressDTO;
 import com.rafaelandrade.backend.services.AddressService;
+import com.rafaelandrade.backend.services.exceptions.CountryNotSupportedException;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
+import com.rafaelandrade.backend.services.exceptions.PostalCodeNotFoundException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +36,14 @@ public class AddressResource {
     }
 
     @PostMapping
-    public ResponseEntity<AddressDTO> insert(@Valid @RequestBody AddressDTO addressDTO) throws ResourceNotFoundException {
+    public ResponseEntity<AddressDTO> insert(@Valid @RequestBody AddressDTO addressDTO) throws PostalCodeNotFoundException, CountryNotSupportedException {
         addressDTO = addressService.insert(addressDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(addressDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(addressDTO);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AddressDTO> update(@Valid @PathVariable Long id, @RequestBody AddressDTO addressDTO) throws ResourceNotFoundException {
+    public ResponseEntity<AddressDTO> update(@Valid @PathVariable Long id, @RequestBody AddressDTO addressDTO) throws ResourceNotFoundException, PostalCodeNotFoundException, CountryNotSupportedException {
         addressDTO = addressService.update(id, addressDTO);
         return ResponseEntity.ok().body(addressDTO);
     }

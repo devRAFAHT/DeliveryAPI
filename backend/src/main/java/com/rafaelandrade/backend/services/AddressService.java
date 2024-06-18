@@ -4,8 +4,11 @@ import com.rafaelandrade.backend.common.ResidenceType;
 import com.rafaelandrade.backend.dto.AddressDTO;
 import com.rafaelandrade.backend.entities.Address;
 import com.rafaelandrade.backend.repositories.AddressRepository;
+import com.rafaelandrade.backend.services.exceptions.CountryNotSupportedException;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
+import com.rafaelandrade.backend.services.exceptions.PostalCodeNotFoundException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
+import com.rafaelandrade.backend.services.validation.PostalCodeValidatorManager;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,6 +25,9 @@ public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private PostalCodeValidatorManager postalCodeValidatorManager;
+
     @Transactional(readOnly = true)
     public Page<AddressDTO> findAll(Pageable pageable) {
         Page<Address> listAddress = addressRepository.findAll(pageable);
@@ -36,16 +42,18 @@ public class AddressService {
     }
 
     @Transactional
-    public AddressDTO insert(AddressDTO addressDTO) throws ResourceNotFoundException {
-        Address addressEntity = new Address();
-        copyDtoToEntity(addressDTO, addressEntity);
-        addressEntity = addressRepository.save(addressEntity);
-        return new AddressDTO(addressEntity);
+    public AddressDTO insert(AddressDTO addressDTO) throws PostalCodeNotFoundException, CountryNotSupportedException {
+            Address addressEntity = new Address();
+            postalCodeValidatorManager.executePostalCodeValidator(addressDTO.getCountry(), addressDTO.getPostalCode());
+            copyDtoToEntity(addressDTO, addressEntity);
+            addressEntity = addressRepository.save(addressEntity);
+            return new AddressDTO(addressEntity);
     }
 
     @Transactional
-    public AddressDTO update(Long id, AddressDTO addressDTO) throws ResourceNotFoundException {
+    public AddressDTO update(Long id, AddressDTO addressDTO) throws ResourceNotFoundException, PostalCodeNotFoundException, CountryNotSupportedException {
         try {
+            postalCodeValidatorManager.executePostalCodeValidator(addressDTO.getCountry(), addressDTO.getPostalCode());
             Address addressEntity = addressRepository.getReferenceById(id);
             copyDtoToEntity(addressDTO, addressEntity);
             addressEntity = addressRepository.save(addressEntity);

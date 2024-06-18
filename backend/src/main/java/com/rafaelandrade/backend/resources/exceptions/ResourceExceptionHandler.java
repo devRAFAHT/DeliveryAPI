@@ -1,6 +1,8 @@
 package com.rafaelandrade.backend.resources.exceptions;
 
+import com.rafaelandrade.backend.services.exceptions.CountryNotSupportedException;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
+import com.rafaelandrade.backend.services.exceptions.PostalCodeNotFoundException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -55,6 +57,30 @@ public class ResourceExceptionHandler {
             error.addError(f.getField(), f.getDefaultMessage());
         }
 
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(PostalCodeNotFoundException.class)
+    public ResponseEntity<StandardError> postalCodeNotFound(PostalCodeNotFoundException e, HttpServletRequest request){
+        HttpStatus status = NOT_FOUND;
+        StandardError error = new StandardError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Postal code not found");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(CountryNotSupportedException.class)
+    public ResponseEntity<StandardError> countryNotSupported(CountryNotSupportedException e, HttpServletRequest request){
+        HttpStatus status = BAD_REQUEST;
+        StandardError error = new StandardError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Country not supported");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
 
