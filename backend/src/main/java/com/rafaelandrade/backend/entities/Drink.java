@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_drink")
@@ -39,6 +41,10 @@ public class Drink implements Serializable {
     @ManyToOne
     @JoinColumn(name = "drink_category_id")
     private DrinkCategory category;
+
+    @ManyToOne()
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
     public Drink(){
     }
@@ -153,12 +159,31 @@ public class Drink implements Serializable {
         this.unitMeasurement = unitMeasurement;
     }
 
+    public void setSaleStatus(Integer saleStatus) {
+        this.saleStatus = saleStatus;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Drink drink = (Drink) o;
         return Objects.equals(id, drink.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Drink{" +
+                "name='" + name + '\'' +
+                '}';
     }
 
     @Override

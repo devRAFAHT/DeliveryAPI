@@ -4,7 +4,6 @@ import com.rafaelandrade.backend.common.FoodRestriction;
 import com.rafaelandrade.backend.common.PortionSize;
 import com.rafaelandrade.backend.common.SaleStatus;
 import com.rafaelandrade.backend.entities.Additional;
-import com.rafaelandrade.backend.entities.DishCategory;
 import com.rafaelandrade.backend.entities.Dish;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

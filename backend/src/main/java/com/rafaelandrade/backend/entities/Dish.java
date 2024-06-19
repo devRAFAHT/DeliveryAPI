@@ -49,6 +49,10 @@ public class Dish implements Serializable {
     @JoinTable(name = "tb_dish_additional", joinColumns = @JoinColumn(name = "dish_id"), inverseJoinColumns = @JoinColumn(name = "additional_id"))
     private Set<Additional> additional = new HashSet<>();
 
+    @ManyToOne()
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
+
     public Dish() {
     }
 
@@ -171,6 +175,14 @@ public class Dish implements Serializable {
 
     public Set<Additional> getAdditional() {
         return additional;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     @Override

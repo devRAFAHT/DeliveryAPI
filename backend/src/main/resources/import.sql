@@ -101,3 +101,15 @@ insert into tb_address (country, postal_code, state, city, neighborhood, street,
 insert into tb_address (country, postal_code, state, city, neighborhood, street, residence_type, residence_number, floor, apartment_number, complement) values ('Brazil', '80000-000', 'Paraná', 'Curitiba', 'Batel', 'Avenida Batel', 1, 852, 15, 1503, 'Cobertura com vista panorâmica');
 insert into tb_address (country, postal_code, state, city, neighborhood, street, residence_type, residence_number, floor, apartment_number, complement) values ('Brazil', '90000-000', 'Rio Grande do Sul', 'Porto Alegre', 'Moinhos de Vento', 'Rua Padre Chagas', 0, 963, NULL, NULL, 'Casa de esquina');
 insert into tb_address (country, postal_code, state, city, neighborhood, street, residence_type, residence_number, floor, apartment_number, complement) values ('Brazil', '10000-000', 'Santa Catarina', 'Florianópolis', 'Lagoa da Conceição', 'Avenida das Rendeiras', 1, 258, 6, 604, 'Próximo à lagoa');
+
+-- MENUS
+INSERT INTO tb_menu (id, category, sale_status) VALUES (1, 'Almoço', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (2, 'Jantar', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (3, 'Sobremesas', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (4, 'Bebidas', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (5, 'Menu Executivo', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (6, 'Menu Vegetariano', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (7, 'Menu Infantil', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (8, 'Menu Fitness', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (9, 'Menu Degustação', 0);
+INSERT INTO tb_menu (id, category, sale_status) VALUES (10, 'Menu Vegan', 0);

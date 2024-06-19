@@ -5,6 +5,7 @@ import com.rafaelandrade.backend.dto.DishDTO;
 import com.rafaelandrade.backend.entities.Additional;
 import com.rafaelandrade.backend.entities.DishCategory;
 import com.rafaelandrade.backend.entities.Dish;
+import com.rafaelandrade.backend.entities.Menu;
 import com.rafaelandrade.backend.repositories.AdditionalRepository;
 import com.rafaelandrade.backend.repositories.DishCategoryRepository;
 import com.rafaelandrade.backend.repositories.DishRepository;
@@ -21,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DishService {
@@ -37,7 +40,6 @@ public class DishService {
     @Transactional(readOnly = true)
     public Page<DishDTO> findAll(Pageable pageable) {
         Page<Dish> dishes = dishRepository.findAll(pageable);
-
         return dishes.map(dish -> new DishDTO(dish, dish.getAdditional()));
     }
 

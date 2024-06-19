@@ -4,6 +4,7 @@ import com.rafaelandrade.backend.common.SaleStatus;
 import com.rafaelandrade.backend.common.UnitMeasurement;
 import com.rafaelandrade.backend.entities.Drink;
 import com.rafaelandrade.backend.entities.DrinkCategory;
+import com.rafaelandrade.backend.entities.Menu;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -29,6 +30,7 @@ public class DrinkDTO {
     private UnitMeasurement unitMeasurement;
     private SaleStatus saleStatus;
     private DrinkCategoryDTO category;
+    private Menu menu;
 
     public DrinkDTO(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, Integer size, UnitMeasurement unitMeasurement, SaleStatus saleStatus, DrinkCategoryDTO category) {
         this.id = id;
