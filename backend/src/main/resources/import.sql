@@ -40,6 +40,28 @@ INSERT INTO tb_additional_category (name) VALUES ('Cereais');
 INSERT INTO tb_additional_category (name) VALUES ('Iogurtes');
 INSERT INTO tb_additional_category (name) VALUES ('Mel');
 
+-- RESTAURANT CATEGORIES
+INSERT INTO tb_restaurant_category (name) VALUES ('Hamburgueria');
+INSERT INTO tb_restaurant_category (name) VALUES ('Pizzaria');
+INSERT INTO tb_restaurant_category (name) VALUES ('Churrascaria');
+INSERT INTO tb_restaurant_category (name) VALUES ('Japonês');
+INSERT INTO tb_restaurant_category (name) VALUES ('Italiana');
+INSERT INTO tb_restaurant_category (name) VALUES ('Mexicana');
+INSERT INTO tb_restaurant_category (name) VALUES ('Vegetariana');
+INSERT INTO tb_restaurant_category (name) VALUES ('Vegana');
+INSERT INTO tb_restaurant_category (name) VALUES ('Fast Food');
+INSERT INTO tb_restaurant_category (name) VALUES ('Frutos do Mar');
+INSERT INTO tb_restaurant_category (name) VALUES ('Árabe');
+INSERT INTO tb_restaurant_category (name) VALUES ('Brasileira');
+INSERT INTO tb_restaurant_category (name) VALUES ('Chinesa');
+INSERT INTO tb_restaurant_category (name) VALUES ('Indiana');
+INSERT INTO tb_restaurant_category (name) VALUES ('Francesa');
+INSERT INTO tb_restaurant_category (name) VALUES ('Coreana');
+INSERT INTO tb_restaurant_category (name) VALUES ('Espanhola');
+INSERT INTO tb_restaurant_category (name) VALUES ('Peruana');
+INSERT INTO tb_restaurant_category (name) VALUES ('Tailandesa');
+INSERT INTO tb_restaurant_category (name) VALUES ('Outros');
+
 -- DISHES
 INSERT INTO tb_dish (name, description, img_url, original_price, current_price, discount_in_percentage, portion_size, preparation_time, food_restriction, sale_status, dish_category_id) VALUES ('Macarrão Carbonara', 'Uma deliciosa massa carbonara com bacon e queijo parmesão.', 'https://example.com/macarrao_carbonara.jpg', 25.90, 25.90, 0.00, 1, 1800000000000, 0, 0, 1);
 INSERT INTO tb_dish (name, description, img_url, original_price, current_price, discount_in_percentage, portion_size, preparation_time, food_restriction, sale_status, dish_category_id) VALUES ('Frango Parmesão', 'Frango empanado com molho de tomate e queijo parmesão.', 'https://example.com/frango_parmesao.jpg', 29.90, 29.90, 0.00, 0, 1800000000000, 0, 0, 2);

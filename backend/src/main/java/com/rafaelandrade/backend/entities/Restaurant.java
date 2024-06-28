@@ -45,12 +45,6 @@ public class Restaurant implements Serializable {
     @JoinTable(name = "restaurant_category", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<RestaurantCategory> categories;
 
-    @ElementCollection
-    @CollectionTable(name = "restaurant_operating_hours", joinColumns = @JoinColumn(name = "restaurant_id"))
-    @MapKeyColumn(name = "day")
-    @Column(name = "hours")
-    private Map<String, String> operatingHours;
-
     /*private Set<Assessment> assessments;
     private Double averageRating;
     private Integer numberOfReviews;
@@ -167,10 +161,6 @@ public class Restaurant implements Serializable {
 
     public Set<RestaurantCategory> getCategories() {
         return categories;
-    }
-
-    public Map<String, String> getOperatingHours() {
-        return operatingHours;
     }
 
     @Override
