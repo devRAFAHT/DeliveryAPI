@@ -36,6 +36,9 @@ public class Address implements Serializable {
     private String apartmentNumber;
     private String complement;
 
+    @OneToOne(mappedBy = "address")
+    private Restaurant restaurant;
+
     public Address(){
     }
 
@@ -150,6 +153,14 @@ public class Address implements Serializable {
 
     public void setComplement(String complement) {
         this.complement = complement;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override

@@ -24,6 +24,10 @@ public class Menu {
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     private Set<Drink> drinks = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
     public Menu(){
     }
 
@@ -65,6 +69,14 @@ public class Menu {
 
     public Set<Drink> getDrinks() {
         return drinks;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override
