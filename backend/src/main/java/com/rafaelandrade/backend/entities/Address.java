@@ -1,6 +1,7 @@
 package com.rafaelandrade.backend.entities;
 
 import com.rafaelandrade.backend.common.ResidenceType;
+import com.rafaelandrade.backend.dto.AddressDTO;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -56,6 +57,21 @@ public class Address implements Serializable {
         this.apartmentNumber = apartmentNumber;
         this.complement = complement;
     }
+
+    public Address(AddressDTO address) {
+        this.country = address.getCountry();
+        this.postalCode = address.getPostalCode();
+        this.state = address.getState();
+        this.city = address.getCity();
+        this.neighborhood = address.getNeighborhood();
+        this.street = address.getStreet();
+        this.setResidenceType(address.getResidenceType());
+        this.residenceNumber = address.getResidenceNumber();
+        this.floor = address.getFloor();
+        this.apartmentNumber = address.getApartmentNumber();
+        this.complement = address.getComplement();
+    }
+
 
     public Long getId() {
         return id;

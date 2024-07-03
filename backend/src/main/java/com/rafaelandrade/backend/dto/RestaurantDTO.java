@@ -1,60 +1,37 @@
-package com.rafaelandrade.backend.entities;
+package com.rafaelandrade.backend.dto;
 
 import com.rafaelandrade.backend.common.OperatingHours;
-import jakarta.persistence.*;
+import com.rafaelandrade.backend.entities.Menu;
+import com.rafaelandrade.backend.entities.Restaurant;
+import com.rafaelandrade.backend.entities.RestaurantCategory;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
-@Entity
-@Table(name = "tb_restaurant")
-public class Restaurant implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class RestaurantDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false)
     private String name;
-    @Column(columnDefinition = "TEXT")
     private String description;
     private Instant createdAt;
-    @Column(nullable = false)
     private String phoneNumber;
     private String imgProfileUrl;
     private String imgBackgroundUrl;
-    @Column(precision = 5, scale = 2)
     private BigDecimal averagePrice;
     private Integer estimatedDeliveryTime;
     private Boolean isOpen;
+    private AddressDTO address;
+    private List<MenuDTO> menus = new ArrayList<>();
+    private List<RestaurantCategoryDTO> categories = new ArrayList<>();
+    private List<OperatingHours> operatingHours = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name="address_id")
-    private Address address;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Menu> menus = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "tb_association_restaurant_category", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<RestaurantCategory> categories = new HashSet<>();
-
-    @ElementCollection
-    List<OperatingHours> operatingHours = new ArrayList<>();
-
-    /*private Set<Assessment> assessments;
-    private Double averageRating;
-    private Integer numberOfReviews;
-     */
-
-    public Restaurant(){
+    public RestaurantDTO(){
     }
 
-    public Restaurant(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, Address address) {
+    public RestaurantDTO(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, AddressDTO address) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -66,6 +43,27 @@ public class Restaurant implements Serializable {
         this.estimatedDeliveryTime = estimatedDeliveryTime;
         this.isOpen = isOpen;
         this.address = address;
+    }
+
+    public RestaurantDTO(Restaurant restaurantEntity) {
+        this.id = restaurantEntity.getId();
+        this.name = restaurantEntity.getName();
+        this.description = restaurantEntity.getDescription();
+        this.createdAt = restaurantEntity.getCreatedAt();
+        this.phoneNumber = restaurantEntity.getPhoneNumber();
+        this.imgProfileUrl = restaurantEntity.getImgProfileUrl();
+        this.imgBackgroundUrl = restaurantEntity.getImgBackgroundUrl();
+        this.averagePrice = restaurantEntity.getAveragePrice();
+        this.estimatedDeliveryTime = restaurantEntity.getEstimatedDeliveryTime();
+        this.isOpen = restaurantEntity.getOpen();
+        this.address = new AddressDTO(restaurantEntity.getAddress());
+    }
+
+    public RestaurantDTO(Restaurant restaurantEntity, Set<Menu> menus, Set<RestaurantCategory> categories, List<OperatingHours> operatingHours) {
+        this(restaurantEntity);
+        menus.forEach(menu -> this.menus.add(new MenuDTO(menu)));
+        categories.forEach(category -> this.categories.add(new RestaurantCategoryDTO(category)));
+        this.operatingHours.addAll(operatingHours);
     }
 
     public Long getId() {
@@ -148,36 +146,23 @@ public class Restaurant implements Serializable {
         isOpen = open;
     }
 
-    public Address getAddress() {
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressDTO address) {
         this.address = address;
     }
 
-    public Set<Menu> getMenus() {
+    public List<MenuDTO> getMenus() {
         return menus;
     }
 
-    public Set<RestaurantCategory> getCategories() {
+    public List<RestaurantCategoryDTO> getCategories() {
         return categories;
     }
 
     public List<OperatingHours> getOperatingHours() {
         return operatingHours;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Restaurant that = (Restaurant) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }

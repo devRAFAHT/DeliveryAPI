@@ -49,7 +49,7 @@ public class Dish implements Serializable {
     @JoinTable(name = "tb_dish_additional", joinColumns = @JoinColumn(name = "dish_id"), inverseJoinColumns = @JoinColumn(name = "additional_id"))
     private Set<Additional> additional = new HashSet<>();
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;
 

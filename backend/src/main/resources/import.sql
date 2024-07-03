@@ -135,3 +135,38 @@ INSERT INTO tb_menu (id, category, sale_status) VALUES (7, 'Menu Infantil', 0);
 INSERT INTO tb_menu (id, category, sale_status) VALUES (8, 'Menu Fitness', 0);
 INSERT INTO tb_menu (id, category, sale_status) VALUES (9, 'Menu Degustação', 0);
 INSERT INTO tb_menu (id, category, sale_status) VALUES (10, 'Menu Vegan', 0);
+
+-- RESTAURANTS
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('McDonalds', 'Famosa cadeia de fast food', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 1);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('SushiMaki', 'Restaurante japonês especializado em sushi', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 2);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('Chin Bahia', 'Comida chinesa tradicional da Bahia', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 3);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('Outback Steakhouse', 'Restaurante especializado em carnes', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 4);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('Pizza Hut', 'Cadeia internacional de pizzarias', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 5);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('Burger King', 'Famosa rede de hambúrgueres', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 6);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('Starbucks', 'Cadeia de cafeterias', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 7);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('Subway', 'Rede de sanduíches submarinos', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 8);
+INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('KFC', 'Famosa rede de frango frito', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 9);
+
+-- OPERATING HOURS
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 1), (1, '08:00', '18:00', 1);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 1), (1, '08:00', '18:00', 1), (2, '08:00', '18:00', 1), (3, '08:00', '18:00', 1), (4, '08:00', '18:00', 1), (5, '08:00', '18:00', 1), (6, '08:00', '18:00', 1);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 2), (1, '08:00', '18:00', 2), (2, '08:00', '18:00', 2), (3, '08:00', '18:00', 2), (4, '08:00', '18:00', 2), (5, '08:00', '18:00', 2), (6, '08:00', '18:00', 2);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 3), (1, '08:00', '18:00', 3), (2, '08:00', '18:00', 3), (3, '08:00', '18:00', 3), (4, '08:00', '18:00', 3), (5, '08:00', '18:00', 3), (6, '08:00', '18:00', 3);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 4), (1, '08:00', '18:00', 4), (2, '08:00', '18:00', 4), (3, '08:00', '18:00', 4), (4, '08:00', '18:00', 4), (5, '08:00', '18:00', 4), (6, '08:00', '18:00', 4);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 5), (1, '08:00', '18:00', 5), (2, '08:00', '18:00', 5), (3, '08:00', '18:00', 5), (4, '08:00', '18:00', 5), (5, '08:00', '18:00', 5), (6, '08:00', '18:00', 5);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 6), (1, '08:00', '18:00', 6), (2, '08:00', '18:00', 6), (3, '08:00', '18:00', 6), (4, '08:00', '18:00', 6), (5, '08:00', '18:00', 6), (6, '08:00', '18:00', 6);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 7), (1, '08:00', '18:00', 7), (2, '08:00', '18:00', 7), (3, '08:00', '18:00', 7), (4, '08:00', '18:00', 7), (5, '08:00', '18:00', 7), (6, '08:00', '18:00', 7);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 8), (1, '08:00', '18:00', 8), (2, '08:00', '18:00', 8), (3, '08:00', '18:00', 8), (4, '08:00', '18:00', 8), (5, '08:00', '18:00', 8), (6, '08:00', '18:00', 8);
+INSERT INTO restaurant_operating_hours (day_of_week, opening_time, closing_time, restaurant_id) VALUES (0, '08:00', '18:00', 9), (1, '08:00', '18:00', 9), (2, '08:00', '18:00', 9), (3, '08:00', '18:00', 9), (4, '08:00', '18:00', 9), (5, '08:00', '18:00', 9), (6, '08:00', '18:00', 9);
+
+-- RESTAURANTS WITH RESTAURANT CATEGORIES
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (1, 9);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (2, 4);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (3, 12);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (4, 3);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (5, 2);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (6, 9);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (7, 17);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (8, 9);
+INSERT INTO tb_association_restaurant_category (restaurant_id, category_id) VALUES (9, 12);
+
