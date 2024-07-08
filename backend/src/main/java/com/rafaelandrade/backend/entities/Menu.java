@@ -1,6 +1,5 @@
 package com.rafaelandrade.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rafaelandrade.backend.common.SaleStatus;
 import jakarta.persistence.*;
 

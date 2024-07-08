@@ -22,11 +22,14 @@ import java.util.Optional;
 @Service
 public class AddressService {
 
-    @Autowired
-    private AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
 
-    @Autowired
-    private PostalCodeValidatorManager postalCodeValidatorManager;
+    private final PostalCodeValidatorManager postalCodeValidatorManager;
+
+    public AddressService(AddressRepository addressRepository, PostalCodeValidatorManager postalCodeValidatorManager) {
+        this.addressRepository = addressRepository;
+        this.postalCodeValidatorManager = postalCodeValidatorManager;
+    }
 
     @Transactional(readOnly = true)
     public Page<AddressDTO> findAll(Pageable pageable) {

@@ -18,8 +18,11 @@ import java.net.URI;
 @RequestMapping(value = "/additional")
 public class AdditionalResource {
 
-    @Autowired
-    private AdditionalService additionalService;
+    private final AdditionalService additionalService;
+
+    public AdditionalResource(AdditionalService additionalService) {
+        this.additionalService = additionalService;
+    }
 
     @GetMapping
     ResponseEntity<Page<AdditionalDTO>> findAll(Pageable pageable){

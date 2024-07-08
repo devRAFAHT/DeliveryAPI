@@ -18,8 +18,11 @@ import java.net.URI;
 @RequestMapping(value = "/dishes")
 public class DishResource {
 
-    @Autowired
-    private DishService dishService;
+    private final DishService dishService;
+
+    public DishResource(DishService dishService) {
+        this.dishService = dishService;
+    }
 
     @GetMapping
     ResponseEntity<Page<DishDTO>> findAll(Pageable pageable){

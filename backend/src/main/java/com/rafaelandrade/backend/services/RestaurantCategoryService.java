@@ -17,9 +17,12 @@ import java.util.Optional;
 
 @Service
 public class RestaurantCategoryService {
-    @Autowired
-    private RestaurantCategoryRepository restaurantCategoryRepository;
 
+    private final RestaurantCategoryRepository restaurantCategoryRepository;
+
+    public RestaurantCategoryService(RestaurantCategoryRepository restaurantCategoryRepository) {
+        this.restaurantCategoryRepository = restaurantCategoryRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<RestaurantCategoryDTO> findAll(Pageable pageable) {

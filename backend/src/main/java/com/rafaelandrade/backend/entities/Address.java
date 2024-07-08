@@ -72,6 +72,20 @@ public class Address implements Serializable {
         this.complement = address.getComplement();
     }
 
+    public Address(Address address) {
+        this.country = address.getCountry();
+        this.postalCode = address.getPostalCode();
+        this.state = address.getState();
+        this.city = address.getCity();
+        this.neighborhood = address.getNeighborhood();
+        this.street = address.getStreet();
+        this.setResidenceType(address.getResidenceType());
+        this.residenceNumber = address.getResidenceNumber();
+        this.floor = address.getFloor();
+        this.apartmentNumber = address.getApartmentNumber();
+        this.complement = address.getComplement();
+    }
+
 
     public Long getId() {
         return id;

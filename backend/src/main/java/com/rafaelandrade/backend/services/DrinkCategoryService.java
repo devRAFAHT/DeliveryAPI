@@ -17,9 +17,12 @@ import java.util.Optional;
 
 @Service
 public class DrinkCategoryService {
-    @Autowired
-    private DrinkCategoryRepository drinkCategoryRepository;
 
+    private final DrinkCategoryRepository drinkCategoryRepository;
+
+    public DrinkCategoryService(DrinkCategoryRepository drinkCategoryRepository) {
+        this.drinkCategoryRepository = drinkCategoryRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<DrinkCategoryDTO> findAll(Pageable pageable) {

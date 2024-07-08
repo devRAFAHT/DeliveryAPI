@@ -17,9 +17,12 @@ import java.util.Optional;
 
 @Service
 public class AdditionalCategoryService {
-    @Autowired
-    private AdditionalCategoryRepository additionalCategoryRepository;
 
+    private final AdditionalCategoryRepository additionalCategoryRepository;
+
+    public AdditionalCategoryService(AdditionalCategoryRepository additionalCategoryRepository) {
+        this.additionalCategoryRepository = additionalCategoryRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<AdditionalCategoryDTO> findAll(Pageable pageable) {

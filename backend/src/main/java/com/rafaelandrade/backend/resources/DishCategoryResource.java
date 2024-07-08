@@ -18,8 +18,11 @@ import java.net.URI;
 @RequestMapping(value = "/dish-categories")
 public class DishCategoryResource {
 
-    @Autowired
-    private DishCategoryService dishCategoryService;
+    private final DishCategoryService dishCategoryService;
+
+    public DishCategoryResource(DishCategoryService dishCategoryService) {
+        this.dishCategoryService = dishCategoryService;
+    }
 
     @GetMapping
     public ResponseEntity<Page<DishCategoryDTO>> findAll(Pageable pageable){

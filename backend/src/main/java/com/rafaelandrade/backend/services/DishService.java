@@ -25,13 +25,16 @@ import java.util.Optional;
 @Service
 public class DishService {
 
-    @Autowired
-    private DishRepository dishRepository;
+    private final DishRepository dishRepository;
 
-    @Autowired
-    private DishCategoryRepository dishCategoryRepository;
+    private final DishCategoryRepository dishCategoryRepository;
 
     @Autowired private AdditionalRepository additionalRepository;
+
+    public DishService(DishRepository dishRepository, DishCategoryRepository dishCategoryRepository) {
+        this.dishRepository = dishRepository;
+        this.dishCategoryRepository = dishCategoryRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<DishDTO> findAll(Pageable pageable) {
@@ -55,8 +58,6 @@ public class DishService {
 
     @Transactional
     public DishDTO insert(DishDTO dishDTO) throws ResourceNotFoundException {
-        Optional<DishCategory> categoryObj = dishCategoryRepository.findById(dishDTO.getDishCategory().getId());
-        DishCategory dishCategoryEntity = categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         Dish dishEntity = new Dish();
         copyDtoToEntity(dishDTO, dishEntity);
         calculateDiscount(dishEntity);
@@ -91,21 +92,27 @@ public class DishService {
         }
     }
 
-    private void copyDtoToEntity(DishDTO dishDTO, Dish dishEntity) {
+    private void copyDtoToEntity(DishDTO dishDTO, Dish dishEntity) throws ResourceNotFoundException {
         dishEntity.setName(dishDTO.getName());
         dishEntity.setDescription(dishDTO.getDescription());
         dishEntity.setImgUrl(dishDTO.getImgUrl());
         dishEntity.setPortionSize(dishDTO.getPortionSize());
         dishEntity.setPreparationTime(dishDTO.getPreparationTime());
-        dishEntity.setCategory(new DishCategory(dishDTO.getDishCategory()));
         dishEntity.setFoodRestriction(dishDTO.getFoodRestriction());
         dishEntity.setSaleStatus(dishDTO.getSaleStatus());
         dishEntity.setOriginalPrice(dishDTO.getOriginalPrice());
         dishEntity.setCurrentPrice(dishDTO.getCurrentPrice());
         dishEntity.setDiscountInPercentage(dishDTO.getDiscountInPercentage());
 
+        Optional<DishCategory> categoryObj = dishCategoryRepository.findById(dishDTO.getDishCategory().getId());
+        categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        dishEntity.setCategory(new DishCategory(dishDTO.getDishCategory()));
+
         dishEntity.getAdditional().clear();
         for(AdditionalDTO additionalDTO : dishDTO.getAdditional()){
+            Optional<Additional> additionalObj = additionalRepository.findById(additionalDTO.getId());
+            additionalObj.orElseThrow(() -> new ResourceNotFoundException("Additional with id " + additionalDTO.getId() + " not found."));
             Additional additional = additionalRepository.getOne(additionalDTO.getId());
             dishEntity.getAdditional().add(additional);
         }

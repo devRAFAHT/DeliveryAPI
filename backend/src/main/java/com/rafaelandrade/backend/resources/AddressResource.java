@@ -20,8 +20,11 @@ import java.net.URI;
 @RequestMapping(value = "/address")
 public class AddressResource {
 
-    @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
+
+    public AddressResource(AddressService addressService) {
+        this.addressService = addressService;
+    }
 
     @GetMapping
     ResponseEntity<Page<AddressDTO>> findAll(Pageable pageable){

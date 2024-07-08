@@ -22,11 +22,14 @@ import java.util.Optional;
 @Service
 public class DrinkService {
 
-    @Autowired
-    private DrinkRepository drinkRepository;
+    private final DrinkRepository drinkRepository;
 
-    @Autowired
-    private DrinkCategoryRepository drinkCategoryRepository;
+    private final DrinkCategoryRepository drinkCategoryRepository;
+
+    public DrinkService(DrinkRepository drinkRepository, DrinkCategoryRepository drinkCategoryRepository) {
+        this.drinkRepository = drinkRepository;
+        this.drinkCategoryRepository = drinkCategoryRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<DrinkDTO> findAll(Pageable pageable) {
@@ -50,8 +53,6 @@ public class DrinkService {
 
     @Transactional
     public DrinkDTO insert(DrinkDTO drinkDTO) throws ResourceNotFoundException {
-        Optional<DrinkCategory> categoryObj = drinkCategoryRepository.findById(drinkDTO.getCategory().getId());
-        DrinkCategory drinkCategoryEntity = categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         Drink drinkEntity = new Drink();
         copyDtoToEntity(drinkDTO, drinkEntity);
         calculateDiscount(drinkEntity);
@@ -85,7 +86,7 @@ public class DrinkService {
         }
     }
 
-    private void copyDtoToEntity(DrinkDTO drinkDTO, Drink drink) {
+    private void copyDtoToEntity(DrinkDTO drinkDTO, Drink drink) throws ResourceNotFoundException {
         drink.setName(drinkDTO.getName());
         drink.setDescription(drinkDTO.getDescription());
         drink.setImgUrl(drinkDTO.getImgUrl());
@@ -95,6 +96,10 @@ public class DrinkService {
         drink.setSize(drinkDTO.getSize());
         drink.setUnitMeasurement(drinkDTO.getUnitMeasurement());
         drink.setSaleStatus(drinkDTO.getSaleStatus());
+
+        Optional<DrinkCategory> categoryObj = drinkCategoryRepository.findById(drinkDTO.getCategory().getId());
+        categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
         drink.setCategory(new DrinkCategory(drinkDTO.getCategory()));
     }
 

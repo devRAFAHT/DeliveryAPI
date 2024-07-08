@@ -18,8 +18,11 @@ import java.net.URI;
 @RequestMapping(value = "/additional-categories")
 public class AdditionalCategoryResource {
 
-    @Autowired
-    private AdditionalCategoryService additionalCategoryService;
+    private final AdditionalCategoryService additionalCategoryService;
+
+    public AdditionalCategoryResource(AdditionalCategoryService additionalCategoryService) {
+        this.additionalCategoryService = additionalCategoryService;
+    }
 
     @GetMapping
     public ResponseEntity<Page<AdditionalCategoryDTO>> findAll(Pageable pageable){

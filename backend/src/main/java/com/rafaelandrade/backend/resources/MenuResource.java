@@ -18,8 +18,11 @@ import java.net.URI;
 @RequestMapping(value = "/menus")
 public class MenuResource {
 
-    @Autowired
-    private MenuService menuService;
+    private final MenuService menuService;
+
+    public MenuResource(MenuService menuService) {
+        this.menuService = menuService;
+    }
 
     @GetMapping
     ResponseEntity<Page<MenuDTO>> findAll(Pageable pageable){

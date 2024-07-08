@@ -17,6 +17,11 @@ public class DishCategory extends Category{
     public  DishCategory(){
     }
 
+    public DishCategory(DishCategory dishCategory) {
+        this.setId(dishCategory.getId());
+        this.setName(dishCategory.getName());
+    }
+
     public DishCategory(DishCategoryDTO dishCategoryDTO) {
         this.setId(dishCategoryDTO.getId());
     }

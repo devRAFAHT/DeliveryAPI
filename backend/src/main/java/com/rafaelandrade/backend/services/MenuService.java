@@ -24,14 +24,17 @@ import java.util.Optional;
 @Service
 public class MenuService {
 
-    @Autowired
-    private MenuRepository menuRepository;
+    private final MenuRepository menuRepository;
 
-    @Autowired
-    private DishRepository dishRepository;
+    private final DishRepository dishRepository;
 
-    @Autowired
-    private DrinkRepository drinkRepository;
+    private final DrinkRepository drinkRepository;
+
+    public MenuService(MenuRepository menuRepository, DishRepository dishRepository, DrinkRepository drinkRepository) {
+        this.menuRepository = menuRepository;
+        this.dishRepository = dishRepository;
+        this.drinkRepository = drinkRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<MenuDTO> findAll(Pageable pageable) {
@@ -87,12 +90,14 @@ public class MenuService {
         }
     }
 
-    private void copyDtoToEntity(MenuDTO menuDTO, Menu menuEntity) {
+    private void copyDtoToEntity(MenuDTO menuDTO, Menu menuEntity) throws ResourceNotFoundException {
         menuEntity.setCategory(menuDTO.getCategory());
         menuEntity.setSaleStatus(menuDTO.getSaleStatus());
 
         menuEntity.getDishes().clear();
         for(DishDTO dishDTO : menuDTO.getDishes()){
+            Optional<Dish> dishObj = dishRepository.findById(dishDTO.getId());
+            dishObj.orElseThrow(() -> new ResourceNotFoundException("Dish with id " + dishDTO.getId() + " not found."));
             Dish dish = dishRepository.getOne(dishDTO.getId());
             dish.setSaleStatus(menuDTO.getSaleStatus());
             menuEntity.getDishes().add(dish);
@@ -100,6 +105,8 @@ public class MenuService {
 
         menuEntity.getDrinks().clear();
         for(DrinkDTO drinkDTO : menuDTO.getDrinks()){
+            Optional<Drink> drinkObj = drinkRepository.findById(drinkDTO.getId());
+            drinkObj.orElseThrow(() -> new ResourceNotFoundException("Drink with id " + drinkDTO.getId() + " not found."));
             Drink drink = drinkRepository.getOne(drinkDTO.getId());
             menuEntity.getDrinks().add(drink);
         }

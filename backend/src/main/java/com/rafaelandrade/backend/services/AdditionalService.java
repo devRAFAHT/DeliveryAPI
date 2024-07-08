@@ -22,11 +22,14 @@ import java.util.Optional;
 @Service
 public class AdditionalService {
 
-    @Autowired
-    private AdditionalRepository additionalRepository;
+    private final AdditionalRepository additionalRepository;
 
-    @Autowired
-    private AdditionalCategoryRepository additionalCategoryRepository;
+    private final AdditionalCategoryRepository additionalCategoryRepository;
+
+    public AdditionalService(AdditionalRepository additionalRepository, AdditionalCategoryRepository additionalCategoryRepository) {
+        this.additionalRepository = additionalRepository;
+        this.additionalCategoryRepository = additionalCategoryRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<AdditionalDTO> findAll(Pageable pageable) {
@@ -50,8 +53,6 @@ public class AdditionalService {
 
     @Transactional
     public AdditionalDTO insert(AdditionalDTO additionalDTO) throws ResourceNotFoundException {
-        Optional<AdditionalCategory> categoryObj = additionalCategoryRepository.findById(additionalDTO.getCategory().getId());
-        AdditionalCategory additionalCategoryEntity = categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         Additional additionalEntity = new Additional();
         copyDtoToEntity(additionalDTO, additionalEntity);
         additionalEntity = additionalRepository.save(additionalEntity);
@@ -84,10 +85,14 @@ public class AdditionalService {
         }
     }
 
-    private void copyDtoToEntity(AdditionalDTO additionalDTO, Additional additionalEntity) {
+    private void copyDtoToEntity(AdditionalDTO additionalDTO, Additional additionalEntity) throws ResourceNotFoundException {
         additionalEntity.setName(additionalDTO.getName());
         additionalEntity.setDescription(additionalDTO.getDescription());
         additionalEntity.setImgUrl(additionalDTO.getImgUrl());
+
+        Optional<AdditionalCategory> categoryObj = additionalCategoryRepository.findById(additionalDTO.getCategory().getId());
+        categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
         additionalEntity.setCategory(new AdditionalCategory(additionalDTO.getCategory()));
         additionalEntity.setPrice(additionalDTO.getPrice());
         additionalEntity.setSaleStatus(additionalDTO.getSaleStatus());

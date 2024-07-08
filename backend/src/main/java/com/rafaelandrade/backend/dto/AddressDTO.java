@@ -4,8 +4,12 @@ import com.rafaelandrade.backend.common.ResidenceType;
 import com.rafaelandrade.backend.entities.Address;
 import jakarta.validation.constraints.Size;
 
-public class AddressDTO {
+import java.io.Serial;
+import java.io.Serializable;
 
+public class AddressDTO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String country;

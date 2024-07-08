@@ -16,9 +16,12 @@ import java.util.Optional;
 
 @Service
 public class DishCategoryService {
-    @Autowired
-    private DishCategoryRepository dishCategoryRepository;
 
+    private final DishCategoryRepository dishCategoryRepository;
+
+    public DishCategoryService(DishCategoryRepository dishCategoryRepository) {
+        this.dishCategoryRepository = dishCategoryRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<DishCategoryDTO> findAll(Pageable pageable) {
