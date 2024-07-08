@@ -61,6 +61,7 @@ public class RestaurantDTO implements Serializable {
         this.imgBackgroundUrl = restaurantEntity.getImgBackgroundUrl();
         this.averagePrice = restaurantEntity.getAveragePrice();
         this.estimatedDeliveryTime = restaurantEntity.getEstimatedDeliveryTime();
+        this.isOpen = restaurantEntity.getOpen();
         this.address = new AddressDTO(restaurantEntity.getAddress());
     }
 
