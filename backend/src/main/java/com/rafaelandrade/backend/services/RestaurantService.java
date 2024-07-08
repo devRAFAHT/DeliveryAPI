@@ -6,10 +6,7 @@ import com.rafaelandrade.backend.dto.MenuDTO;
 import com.rafaelandrade.backend.dto.RestaurantCategoryDTO;
 import com.rafaelandrade.backend.dto.RestaurantDTO;
 import com.rafaelandrade.backend.entities.*;
-import com.rafaelandrade.backend.repositories.AdditionalRepository;
-import com.rafaelandrade.backend.repositories.MenuRepository;
-import com.rafaelandrade.backend.repositories.RestaurantCategoryRepository;
-import com.rafaelandrade.backend.repositories.RestaurantRepository;
+import com.rafaelandrade.backend.repositories.*;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
 import com.rafaelandrade.backend.util.CalculateDiscount;
@@ -22,25 +19,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.rafaelandrade.backend.common.ResidenceType.HOUSE;
+
 @Service
 public class RestaurantService {
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    @Autowired
-    private RestaurantCategoryRepository restaurantCategoryRepository;
+    private final RestaurantCategoryRepository restaurantCategoryRepository;
 
-    @Autowired private MenuRepository menuRepository;
+    private final  MenuRepository menuRepository;
+
+    private final AddressRepository addressRepository;
+
+    public RestaurantService(RestaurantRepository restaurantRepository, RestaurantCategoryRepository restaurantCategoryRepository, MenuRepository menuRepository, AddressRepository addressRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.restaurantCategoryRepository = restaurantCategoryRepository;
+        this.menuRepository = menuRepository;
+        this.addressRepository = addressRepository;
+    }
 
     @Transactional(readOnly = true)
     public Page<RestaurantDTO> findAll(Pageable pageable) {
         Page<Restaurant> restaurants = restaurantRepository.findAll(pageable);
+
+        for(Restaurant restaurant : restaurants){
+            setIsOpen(restaurant);
+        }
+
         return restaurants.map(restaurant -> new RestaurantDTO(restaurant, restaurant.getMenus(), restaurant.getCategories(), restaurant.getOperatingHours()));
     }
 
@@ -48,6 +62,7 @@ public class RestaurantService {
     public RestaurantDTO findByName(String name) throws ResourceNotFoundException {
         Optional<Restaurant> restaurantObj = restaurantRepository.findByName(name);
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+        setIsOpen(restaurantEntity);
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
 
@@ -55,6 +70,7 @@ public class RestaurantService {
     public RestaurantDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Restaurant> restaurantObj = restaurantRepository.findById(id);
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+        setIsOpen(restaurantEntity);
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
 
@@ -62,6 +78,7 @@ public class RestaurantService {
     public RestaurantDTO insert(RestaurantDTO restaurantDTO) throws ResourceNotFoundException {
         Restaurant restaurantEntity = new Restaurant();
         copyDtoToEntity(restaurantDTO, restaurantEntity);
+        setIsOpen(restaurantEntity);
         restaurantEntity = restaurantRepository.save(restaurantEntity);
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
@@ -71,6 +88,7 @@ public class RestaurantService {
         try {
             Restaurant restaurantEntity = restaurantRepository.getReferenceById(id);
             copyDtoToEntity(restaurantDTO, restaurantEntity);
+            setIsOpen(restaurantEntity);
             restaurantEntity = restaurantRepository.save(restaurantEntity);
             return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
         }catch (EntityNotFoundException e){
@@ -92,7 +110,7 @@ public class RestaurantService {
         }
     }
 
-    private void copyDtoToEntity(RestaurantDTO restaurantDTO, Restaurant restaurantEntity) {
+    private void copyDtoToEntity(RestaurantDTO restaurantDTO, Restaurant restaurantEntity) throws ResourceNotFoundException {
         restaurantEntity.setName(restaurantDTO.getName());
         restaurantEntity.setDescription(restaurantDTO.getDescription());
         restaurantEntity.setPhoneNumber(restaurantDTO.getPhoneNumber());
@@ -100,17 +118,24 @@ public class RestaurantService {
         restaurantEntity.setImgBackgroundUrl(restaurantDTO.getImgBackgroundUrl());
         restaurantEntity.setAveragePrice(restaurantDTO.getAveragePrice());
         restaurantEntity.setEstimatedDeliveryTime(restaurantDTO.getEstimatedDeliveryTime());
-        restaurantEntity.setOpen(restaurantDTO.getOpen());
-        restaurantEntity.setAddress(new Address(restaurantDTO.getAddress()));
+
+        Optional<Address> addressObj = addressRepository.findById(restaurantDTO.getAddress().getId());
+        addressObj.orElseThrow(() -> new ResourceNotFoundException("Address with id " + restaurantDTO.getAddress().getId() + " not found."));
+
+        restaurantEntity.setAddress(new Address(addressObj.get()));
 
         restaurantEntity.getMenus().clear();
         for (MenuDTO menuDTO : restaurantDTO.getMenus()) {
+            Optional<Menu> menuObj = menuRepository.findById(menuDTO.getId());
+            menuObj.orElseThrow(() -> new ResourceNotFoundException("Menu with id " + menuDTO.getId() + " not found."));
             Menu menu = menuRepository.getOne(menuDTO.getId());
             restaurantEntity.getMenus().add(menu);
         }
 
         restaurantEntity.getCategories().clear();
         for (RestaurantCategoryDTO restaurantCategoryDTO : restaurantDTO.getCategories()) {
+            Optional<RestaurantCategory> categoryObj = restaurantCategoryRepository.findById(restaurantCategoryDTO.getId());
+            categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category with id " + restaurantCategoryDTO.getId() + " not found."));
             RestaurantCategory restaurantCategory = restaurantCategoryRepository.getOne(restaurantCategoryDTO.getId());
             restaurantEntity.getCategories().add(restaurantCategory);
         }
@@ -124,4 +149,25 @@ public class RestaurantService {
             restaurantEntity.getOperatingHours().add(newOperatingHours);
         }
     }
+
+    private void setIsOpen(Restaurant restaurant){
+        LocalDateTime now = LocalDateTime.now();
+        DayOfWeek currentDay = now.getDayOfWeek();
+        LocalTime currentTime = now.toLocalTime();
+
+        for (OperatingHours hours : restaurant.getOperatingHours()) {
+            if (hours.getDayOfWeek() == currentDay) {
+                LocalTime openingTime = hours.getOpeningTime();
+                LocalTime closingTime = hours.getClosingTime();
+
+                if ((currentTime.equals(openingTime) || currentTime.isAfter(openingTime)) &&
+                        (currentTime.equals(closingTime) || currentTime.isBefore(closingTime))) {
+                    restaurant.setOpen(true);
+                    return;
+                }
+            }
+        }
+        restaurant.setOpen(false);
+    }
+
 }

@@ -6,7 +6,10 @@ import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Entity
@@ -32,7 +35,7 @@ public class Restaurant implements Serializable {
     private Integer estimatedDeliveryTime;
     private Boolean isOpen;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address address;
 
@@ -54,7 +57,7 @@ public class Restaurant implements Serializable {
     public Restaurant(){
     }
 
-    public Restaurant(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, Address address) {
+    public Restaurant(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen ,Address address) {
         this.id = id;
         this.name = name;
         this.description = description;

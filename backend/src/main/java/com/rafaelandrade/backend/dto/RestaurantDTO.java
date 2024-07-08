@@ -5,13 +5,20 @@ import com.rafaelandrade.backend.entities.Menu;
 import com.rafaelandrade.backend.entities.Restaurant;
 import com.rafaelandrade.backend.entities.RestaurantCategory;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class RestaurantDTO {
+public class RestaurantDTO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String name;
@@ -31,7 +38,7 @@ public class RestaurantDTO {
     public RestaurantDTO(){
     }
 
-    public RestaurantDTO(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, AddressDTO address) {
+    public RestaurantDTO(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, AddressDTO address) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -41,7 +48,6 @@ public class RestaurantDTO {
         this.imgBackgroundUrl = imgBackgroundUrl;
         this.averagePrice = averagePrice;
         this.estimatedDeliveryTime = estimatedDeliveryTime;
-        this.isOpen = isOpen;
         this.address = address;
     }
 
@@ -55,7 +61,6 @@ public class RestaurantDTO {
         this.imgBackgroundUrl = restaurantEntity.getImgBackgroundUrl();
         this.averagePrice = restaurantEntity.getAveragePrice();
         this.estimatedDeliveryTime = restaurantEntity.getEstimatedDeliveryTime();
-        this.isOpen = restaurantEntity.getOpen();
         this.address = new AddressDTO(restaurantEntity.getAddress());
     }
 
@@ -140,10 +145,6 @@ public class RestaurantDTO {
 
     public Boolean getOpen() {
         return isOpen;
-    }
-
-    public void setOpen(Boolean open) {
-        isOpen = open;
     }
 
     public AddressDTO getAddress() {

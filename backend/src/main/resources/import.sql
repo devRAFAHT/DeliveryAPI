@@ -125,16 +125,16 @@ insert into tb_address (country, postal_code, state, city, neighborhood, street,
 insert into tb_address (country, postal_code, state, city, neighborhood, street, residence_type, residence_number, floor, apartment_number, complement) values ('Brazil', '10000-000', 'Santa Catarina', 'Florianópolis', 'Lagoa da Conceição', 'Avenida das Rendeiras', 1, 258, 6, 604, 'Próximo à lagoa');
 
 -- MENUS
-INSERT INTO tb_menu (id, category, sale_status) VALUES (1, 'Almoço', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (2, 'Jantar', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (3, 'Sobremesas', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (4, 'Bebidas', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (5, 'Menu Executivo', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (6, 'Menu Vegetariano', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (7, 'Menu Infantil', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (8, 'Menu Fitness', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (9, 'Menu Degustação', 0);
-INSERT INTO tb_menu (id, category, sale_status) VALUES (10, 'Menu Vegan', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Almoço', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Jantar', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Sobremesas', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Bebidas', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Menu Executivo', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Menu Vegetariano', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Menu Infantil', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Menu Fitness', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Menu Degustação', 0);
+INSERT INTO tb_menu (category, sale_status) VALUES ('Menu Vegan', 0);
 
 -- RESTAURANTS
 INSERT INTO tb_restaurant (name, description, created_at, phone_number, img_profile_url, img_background_url, average_price, estimated_delivery_time, is_open, address_id) VALUES ('McDonalds', 'Famosa cadeia de fast food', '2023-07-03 10:15:30', '+1234567890', 'https://example.com/profile.jpg', 'https://example.com/background.jpg', 50.0, 30, true, 1);
