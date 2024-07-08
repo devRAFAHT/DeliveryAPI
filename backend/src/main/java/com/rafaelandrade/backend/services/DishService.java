@@ -113,7 +113,7 @@ public class DishService {
         for(AdditionalDTO additionalDTO : dishDTO.getAdditional()){
             Optional<Additional> additionalObj = additionalRepository.findById(additionalDTO.getId());
             additionalObj.orElseThrow(() -> new ResourceNotFoundException("Additional with id " + additionalDTO.getId() + " not found."));
-            Additional additional = additionalRepository.getOne(additionalDTO.getId());
+            Additional additional = additionalObj.get();
             dishEntity.getAdditional().add(additional);
         }
     }

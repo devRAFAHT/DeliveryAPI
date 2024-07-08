@@ -134,15 +134,17 @@ public class RestaurantService {
         for (MenuDTO menuDTO : restaurantDTO.getMenus()) {
             Optional<Menu> menuObj = menuRepository.findById(menuDTO.getId());
             menuObj.orElseThrow(() -> new ResourceNotFoundException("Menu with id " + menuDTO.getId() + " not found."));
-            Menu menu = menuRepository.getOne(menuDTO.getId());
+            Menu menu = menuObj.get();
             restaurantEntity.getMenus().add(menu);
+
+            menu.setRestaurant(restaurantEntity);
         }
 
         restaurantEntity.getCategories().clear();
         for (RestaurantCategoryDTO restaurantCategoryDTO : restaurantDTO.getCategories()) {
             Optional<RestaurantCategory> categoryObj = restaurantCategoryRepository.findById(restaurantCategoryDTO.getId());
             categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category with id " + restaurantCategoryDTO.getId() + " not found."));
-            RestaurantCategory restaurantCategory = restaurantCategoryRepository.getOne(restaurantCategoryDTO.getId());
+            RestaurantCategory restaurantCategory = categoryObj.get();
             restaurantEntity.getCategories().add(restaurantCategory);
         }
 
@@ -200,8 +202,6 @@ public class RestaurantService {
                 quantityOfItems ++;
             }
         }
-
-        System.out.println(quantityOfItems);
 
         if(quantityOfItems > 0) {
             averagePrice = priceOfAll.divide(BigDecimal.valueOf(quantityOfItems), 2, RoundingMode.HALF_UP);

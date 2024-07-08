@@ -39,7 +39,7 @@ public class MenuService {
     @Transactional(readOnly = true)
     public Page<MenuDTO> findAll(Pageable pageable) {
         Page<Menu> menus = menuRepository.findAll(pageable);
-        return menus.map(menu -> new MenuDTO(menu));
+        return menus.map(menu -> new MenuDTO(menu, menu.getDishes(), menu.getDrinks()));
     }
 
     @Transactional(readOnly = true)
@@ -98,17 +98,21 @@ public class MenuService {
         for(DishDTO dishDTO : menuDTO.getDishes()){
             Optional<Dish> dishObj = dishRepository.findById(dishDTO.getId());
             dishObj.orElseThrow(() -> new ResourceNotFoundException("Dish with id " + dishDTO.getId() + " not found."));
-            Dish dish = dishRepository.getOne(dishDTO.getId());
+            Dish dish = dishObj.get();
             dish.setSaleStatus(menuDTO.getSaleStatus());
             menuEntity.getDishes().add(dish);
+
+            dish.setMenu(menuEntity);
         }
 
         menuEntity.getDrinks().clear();
         for(DrinkDTO drinkDTO : menuDTO.getDrinks()){
             Optional<Drink> drinkObj = drinkRepository.findById(drinkDTO.getId());
             drinkObj.orElseThrow(() -> new ResourceNotFoundException("Drink with id " + drinkDTO.getId() + " not found."));
-            Drink drink = drinkRepository.getOne(drinkDTO.getId());
+            Drink drink = drinkObj.get();
             menuEntity.getDrinks().add(drink);
+
+            drink.setMenu(menuEntity);
         }
 
     }
