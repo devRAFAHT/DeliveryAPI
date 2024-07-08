@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 public class CalculateDiscount {
 
     public static BigDecimal calculateDiscountInPercentage(BigDecimal originalPrice, BigDecimal currentPrice){
-        BigDecimal discount = originalPrice.subtract(currentPrice).divide(originalPrice, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100.00));
+        BigDecimal discount = originalPrice.subtract(currentPrice).divide(originalPrice, 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100.00));
         return discount;
     }
 

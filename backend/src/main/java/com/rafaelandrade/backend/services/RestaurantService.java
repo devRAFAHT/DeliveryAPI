@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -53,6 +54,7 @@ public class RestaurantService {
 
         for(Restaurant restaurant : restaurants){
             setIsOpen(restaurant);
+            SetsAveragePrice(restaurant);
         }
 
         return restaurants.map(restaurant -> new RestaurantDTO(restaurant, restaurant.getMenus(), restaurant.getCategories(), restaurant.getOperatingHours()));
@@ -63,6 +65,7 @@ public class RestaurantService {
         Optional<Restaurant> restaurantObj = restaurantRepository.findByName(name);
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         setIsOpen(restaurantEntity);
+        SetsAveragePrice(restaurantEntity);
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
 
@@ -71,6 +74,7 @@ public class RestaurantService {
         Optional<Restaurant> restaurantObj = restaurantRepository.findById(id);
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         setIsOpen(restaurantEntity);
+        SetsAveragePrice(restaurantEntity);
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
 
@@ -79,6 +83,7 @@ public class RestaurantService {
         Restaurant restaurantEntity = new Restaurant();
         copyDtoToEntity(restaurantDTO, restaurantEntity);
         setIsOpen(restaurantEntity);
+        SetsAveragePrice(restaurantEntity);
         restaurantEntity = restaurantRepository.save(restaurantEntity);
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
@@ -89,6 +94,7 @@ public class RestaurantService {
             Restaurant restaurantEntity = restaurantRepository.getReferenceById(id);
             copyDtoToEntity(restaurantDTO, restaurantEntity);
             setIsOpen(restaurantEntity);
+            SetsAveragePrice(restaurantEntity);
             restaurantEntity = restaurantRepository.save(restaurantEntity);
             return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
         }catch (EntityNotFoundException e){
@@ -168,6 +174,42 @@ public class RestaurantService {
             }
         }
         restaurant.setOpen(false);
+    }
+
+    private void SetsAveragePrice(Restaurant restaurant){
+
+        BigDecimal priceOfAll = BigDecimal.valueOf(0.0);
+        BigDecimal averagePrice = BigDecimal.valueOf(0.0);
+        int quantityOfItems = 0;
+
+        for(Menu menu : restaurant.getMenus()){
+
+            for(Dish dish : menu.getDishes()){
+                priceOfAll = priceOfAll.add(dish.getCurrentPrice());
+                quantityOfItems ++;
+
+                for(Additional additional: dish.getAdditional()){
+                    priceOfAll = priceOfAll.add(additional.getPrice());
+                    quantityOfItems ++;
+                }
+
+            }
+
+            for(Drink drink : menu.getDrinks()){
+                priceOfAll = priceOfAll.add(drink.getCurrentPrice());
+                quantityOfItems ++;
+            }
+        }
+
+        System.out.println(quantityOfItems);
+
+        if(quantityOfItems > 0) {
+            averagePrice = priceOfAll.divide(BigDecimal.valueOf(quantityOfItems), 2, RoundingMode.HALF_UP);
+            restaurant.setAveragePrice(averagePrice);
+        }else{
+            restaurant.setAveragePrice(BigDecimal.valueOf(0.00));
+        }
+
     }
 
 }
