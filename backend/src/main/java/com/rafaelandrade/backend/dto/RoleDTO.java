@@ -1,5 +1,7 @@
 package com.rafaelandrade.backend.dto;
 
+import com.rafaelandrade.backend.entities.Role;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -16,6 +18,11 @@ public class RoleDTO implements Serializable {
     public RoleDTO(Long id, String authority) {
         this.id = id;
         this.authority = authority;
+    }
+
+    public RoleDTO(Role roleEntity) {
+        this.id = roleEntity.getId();
+        this.authority = roleEntity.getAuthority();
     }
 
     public Long getId() {

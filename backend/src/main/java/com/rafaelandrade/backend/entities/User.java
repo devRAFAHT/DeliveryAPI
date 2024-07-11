@@ -38,7 +38,7 @@ public class User implements Serializable {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
-    private Set<Address> address = new HashSet<>();
+    private Set<Address> addresses = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "tb_user_favorite_restaurant", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "restaurant_id"))
@@ -202,8 +202,8 @@ public class User implements Serializable {
         return roles;
     }
 
-    public Set<Address> getAddress() {
-        return address;
+    public Set<Address> getAddresses() {
+        return addresses;
     }
 
     public Set<Restaurant> getFavoritesRestaurants() {

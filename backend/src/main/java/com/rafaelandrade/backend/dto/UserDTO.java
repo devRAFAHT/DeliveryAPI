@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.entities.User;
+import com.rafaelandrade.backend.entities.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -29,7 +29,7 @@ public class UserDTO implements Serializable {
     private Instant updatedAt;
     private Boolean active;
     private Set<RoleDTO> roles = new HashSet<>();
-    private List<AddressDTO> address = new ArrayList<>();
+    private List<AddressDTO> addresses = new ArrayList<>();
     private List<RestaurantDTO> favoritesRestaurants = new ArrayList<>();
     private List<DishDTO> favoritesDishes = new ArrayList<>();
     private List<DrinkDTO> favoritesDrinks = new ArrayList<>();
@@ -69,6 +69,15 @@ public class UserDTO implements Serializable {
         this.createdAt = userEntity.getCreatedAt();
         this.updatedAt = userEntity.getUpdatedAt();
         this.active = userEntity.getActive();
+        userEntity.getRoles().forEach(role -> this.getRoles().add(new RoleDTO(role)));
+    }
+
+    public UserDTO(User userEntity, Set<Address> addresses, Set<Restaurant> favoritesRestaurants, Set<Dish> favoritesDishes, Set<Drink> favoritesDrinks){
+        this(userEntity);
+        addresses.forEach(address -> this.getAddresses().add(new AddressDTO(address)));
+        favoritesDishes.forEach(dish -> this.getFavoritesDishes().add(new DishDTO(dish)));
+        favoritesRestaurants.forEach(restaurant -> this.getFavoritesRestaurants().add(new RestaurantDTO(restaurant)));
+        favoritesDrinks.forEach(drink -> this.getFavoritesDrinks().add(new DrinkDTO(drink)));
     }
 
     public Long getId() {
@@ -187,8 +196,8 @@ public class UserDTO implements Serializable {
         return roles;
     }
 
-    public List<AddressDTO> getAddress() {
-        return address;
+    public List<AddressDTO> getAddresses() {
+        return addresses;
     }
 
     public List<RestaurantDTO> getFavoritesRestaurants() {
