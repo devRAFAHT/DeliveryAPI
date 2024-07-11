@@ -47,7 +47,11 @@ public class Restaurant implements Serializable {
     private Set<RestaurantCategory> categories = new HashSet<>();
 
     @ElementCollection
-    List<OperatingHours> operatingHours = new ArrayList<>();
+    @CollectionTable(name = "tb_restaurant_operating_hours", joinColumns = @JoinColumn(name = "restaurant_id"))
+    private List<OperatingHours> operatingHours = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "favoritesRestaurants")
+    private Set<User> favoriteBy = new HashSet<>();
 
     /*private Set<Assessment> assessments;
     private Double averageRating;
@@ -169,6 +173,10 @@ public class Restaurant implements Serializable {
 
     public List<OperatingHours> getOperatingHours() {
         return operatingHours;
+    }
+
+    public Set<User> getFavoriteBy() {
+        return favoriteBy;
     }
 
     @Override

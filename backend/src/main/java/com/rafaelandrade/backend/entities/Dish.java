@@ -45,13 +45,16 @@ public class Dish implements Serializable {
     @JoinColumn(name = "dish_category_id")
     private DishCategory category;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(name = "tb_dish_additional", joinColumns = @JoinColumn(name = "dish_id"), inverseJoinColumns = @JoinColumn(name = "additional_id"))
     private Set<Additional> additional = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;
+
+    @ManyToMany(mappedBy = "favoritesDishes")
+    private Set<User> favoriteBy = new HashSet<>();
 
     public Dish() {
     }
@@ -183,6 +186,10 @@ public class Dish implements Serializable {
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public Set<User> getFavoriteBy() {
+        return favoriteBy;
     }
 
     @Override

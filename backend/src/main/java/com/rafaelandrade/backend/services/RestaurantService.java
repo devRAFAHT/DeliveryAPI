@@ -1,7 +1,6 @@
 package com.rafaelandrade.backend.services;
 
 import com.rafaelandrade.backend.common.OperatingHours;
-import com.rafaelandrade.backend.dto.AdditionalDTO;
 import com.rafaelandrade.backend.dto.MenuDTO;
 import com.rafaelandrade.backend.dto.RestaurantCategoryDTO;
 import com.rafaelandrade.backend.dto.RestaurantDTO;
@@ -9,9 +8,7 @@ import com.rafaelandrade.backend.entities.*;
 import com.rafaelandrade.backend.repositories.*;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
-import com.rafaelandrade.backend.util.CalculateDiscount;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,12 +20,7 @@ import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.rafaelandrade.backend.common.ResidenceType.HOUSE;
 
 @Service
 public class RestaurantService {
@@ -181,7 +173,7 @@ public class RestaurantService {
     private void SetsAveragePrice(Restaurant restaurant){
 
         BigDecimal priceOfAll = BigDecimal.valueOf(0.0);
-        BigDecimal averagePrice = BigDecimal.valueOf(0.0);
+        BigDecimal averagePrice;
         int quantityOfItems = 0;
 
         for(Menu menu : restaurant.getMenus()){

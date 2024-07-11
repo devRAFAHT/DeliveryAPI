@@ -46,6 +46,9 @@ public class Drink implements Serializable {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
+    @ManyToMany(mappedBy = "favoritesDrinks")
+    private Set<User> favoriteBy = new HashSet<>();
+
     public Drink(){
     }
 
@@ -169,6 +172,10 @@ public class Drink implements Serializable {
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public Set<User> getFavoriteBy() {
+        return favoriteBy;
     }
 
     @Override
