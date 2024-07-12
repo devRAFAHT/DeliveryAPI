@@ -21,6 +21,8 @@ public class UserResource {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable){
@@ -31,6 +33,12 @@ public class UserResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) throws ResourceNotFoundException {
         UserDTO userDTO = service.findById(id);
+        return ResponseEntity.ok().body(userDTO);
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<UserDTO> findByUserName(@RequestParam String userName) throws ResourceNotFoundException {
+        UserDTO userDTO = userService.findByUserName(userName);
         return ResponseEntity.ok().body(userDTO);
     }
 

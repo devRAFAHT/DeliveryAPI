@@ -7,7 +7,6 @@ import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -59,10 +58,18 @@ public class UserService {
         return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
     }
 
+    @Transactional(readOnly = true)
+    public UserDTO findByUserName(String username) throws ResourceNotFoundException {
+        Optional<User> userObj = repository.findByUserName(username);
+        User userEntity = userObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+        return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
+    }
+
     @Transactional
     public UserDTO insert(UserInsertDTO userInsertDTO) throws ResourceNotFoundException {
         User userEntity = new User();
         copyDtoToEntity(userInsertDTO, userEntity);
+        userEntity.setCreatedAt(Instant.now());
         userEntity.setPassword(passwordEncoder.encode(userInsertDTO.getPassword()));
         userEntity = repository.save(userEntity);
         return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
@@ -73,6 +80,7 @@ public class UserService {
         try {
             User userEntity = repository.getOne(id);
             copyDtoToEntity(userDTO, userEntity);
+            userEntity.setUpdatedAt(Instant.now());
             userEntity = repository.save(userEntity);
             return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
         }catch (EntityNotFoundException e){
@@ -104,8 +112,6 @@ public class UserService {
         userEntity.setPhoneNumber(userDTO.getPhoneNumber());
         userEntity.setProfilePictureUrl(userDTO.getProfilePictureUrl());
         userEntity.setBiography(userDTO.getBiography());
-        userEntity.setCreatedAt(Instant.now());
-        userEntity.setUpdatedAt(Instant.now());
         userEntity.setActive(userDTO.getActive());
 
         userEntity.getRoles().clear();
