@@ -56,6 +56,9 @@ public class Dish implements Serializable {
     @ManyToMany(mappedBy = "favoritesDishes")
     private Set<User> favoriteBy = new HashSet<>();
 
+    @ManyToMany(mappedBy = "dishes")
+    private Set<Bag> bags = new HashSet<>();
+
     public Dish() {
     }
 

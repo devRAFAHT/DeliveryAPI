@@ -49,6 +49,9 @@ public class Drink implements Serializable {
     @ManyToMany(mappedBy = "favoritesDrinks")
     private Set<User> favoriteBy = new HashSet<>();
 
+    @ManyToMany(mappedBy = "drinks")
+    private Set<Bag> bags = new HashSet<>();
+
     public Drink(){
     }
 

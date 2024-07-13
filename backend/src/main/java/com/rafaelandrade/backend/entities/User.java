@@ -33,6 +33,10 @@ public class User implements Serializable {
     private Instant updatedAt;
     private Boolean active;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="bag_id")
+    private Bag bag;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
