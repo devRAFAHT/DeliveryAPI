@@ -15,4 +15,9 @@ public class CalculateDiscount {
         BigDecimal currentPrice = originalPrice.subtract(discountInMoney);
         return currentPrice;
     }
+
+    public static BigDecimal calculateDiscountInMoneyWithOriginalPriceAndCurrentPrice(BigDecimal originalPrice, BigDecimal currentPrice){
+        BigDecimal discount = originalPrice.subtract(currentPrice);
+        return discount;
+    }
 }

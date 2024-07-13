@@ -32,8 +32,8 @@ public class DrinkService {
 
     @Transactional(readOnly = true)
     public Page<DrinkDTO> findAll(Pageable pageable) {
-        Page<Drink> drinks = drinkRepository.findAll(pageable); // Mudança aqui
-        return drinks.map(drink -> new DrinkDTO(drink)); // Mudança aqui
+        Page<Drink> drinks = drinkRepository.findAll(pageable);
+        return drinks.map(drink -> new DrinkDTO(drink));
     }
 
     @Transactional(readOnly = true)

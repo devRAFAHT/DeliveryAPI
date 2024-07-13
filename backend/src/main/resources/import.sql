@@ -179,3 +179,38 @@ INSERT INTO tb_user (id, user_name, first_name, last_name, email, personal_docum
 INSERT INTO tb_user (id, user_name, first_name, last_name, email, personal_document, date_of_birth, gender, phone_number, profile_picture_url, biography, created_at, updated_at, active) VALUES (9, 'jack_martin', 'Jack', 'Martin', 'jack.martin@example.com', '88990011200', '1989-09-09', 'male', '555-7890', 'http://example.com/profile9.jpg', 'Backend developer from Denver.', '2023-07-11T15:04:00Z', '2023-07-11T15:04:00Z', true);
 INSERT INTO tb_user (id, user_name, first_name, last_name, email, personal_document, date_of_birth, gender, phone_number, profile_picture_url, biography, created_at, updated_at, active) VALUES (10, 'olivia_walker', 'Olivia', 'Walker', 'olivia.walker@example.com', '55443322100', '1994-06-25', 'female', '555-8901', 'http://example.com/profile10.jpg', 'Frontend developer from Miami.', '2023-07-11T15:06:00Z', '2023-07-11T15:06:00Z', true);
 
+-- BAGS
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.10, 2, 20.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.15, 3, 35.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.20, 1, 15.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.05, 5, 50.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.10, 4, 40.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.25, 2, 30.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.30, 1, 10.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.05, 6, 60.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.15, 3, 45.00);
+INSERT INTO TB_BAG (DISCOUNT, QUANTITY_OF_ITEMS, TOTAL_PRICE) VALUES (0.10, 4, 55.00);
+
+-- -- ASSOCIATION BAGS DISHES
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (1, 1);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (1, 2);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (2, 3);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (2, 4);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (3, 5);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (3, 6);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (4, 7);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (4, 8);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (5, 9);
+INSERT INTO tb_bag_dish (bag_id, dish_id) VALUES (5, 10);
+
+-- -- ASSOCIATION BAGS DRINKS
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (6, 1);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (6, 2);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (7, 3);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (7, 4);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (8, 5);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (8, 6);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (9, 7);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (9, 8);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (10, 9);
+INSERT INTO tb_bag_drink (bag_id, drink_id) VALUES (10, 10);

@@ -18,6 +18,7 @@ public class Bag {
     private User user;
     private Integer quantityOfItems;
     private BigDecimal totalPrice;
+    @Column(precision = 5, scale = 2)
     private BigDecimal discount;
 
     @ManyToMany
