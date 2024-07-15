@@ -12,7 +12,6 @@ import java.util.Set;
 public class BagDTO {
 
     private Long id;
-    private UserDTO user;
     private Integer quantityOfItems;
     private BigDecimal totalPrice;
     private BigDecimal discount;
@@ -45,14 +44,6 @@ public class BagDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
     }
 
     public Integer getQuantityOfItems() {

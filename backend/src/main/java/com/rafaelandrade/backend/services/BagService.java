@@ -1,10 +1,8 @@
 package com.rafaelandrade.backend.services;
 
-import com.rafaelandrade.backend.dto.AdditionalDTO;
 import com.rafaelandrade.backend.dto.DishDTO;
 import com.rafaelandrade.backend.dto.DrinkDTO;
 import com.rafaelandrade.backend.dto.BagDTO;
-import com.rafaelandrade.backend.entities.Additional;
 import com.rafaelandrade.backend.entities.Dish;
 import com.rafaelandrade.backend.entities.Drink;
 import com.rafaelandrade.backend.entities.Bag;

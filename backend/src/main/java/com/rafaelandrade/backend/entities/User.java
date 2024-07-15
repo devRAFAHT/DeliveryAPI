@@ -1,5 +1,6 @@
 package com.rafaelandrade.backend.entities;
 
+import com.rafaelandrade.backend.dto.UserDTO;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -64,7 +65,7 @@ public class User implements Serializable {
     public User(){
     }
 
-    public User(Long id, String userName, String firstName, String lastName, String email, String password, String personalDocument, String dateOfBirth, String gender, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active) {
+    public User(Long id, String userName, String firstName, String lastName, String email, String password, String personalDocument, String dateOfBirth, String gender, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active, Bag bag) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -80,7 +81,9 @@ public class User implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
+        this.bag = bag;
     }
+
 
     public Long getId() {
         return id;
@@ -200,6 +203,14 @@ public class User implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Bag getBag() {
+        return bag;
+    }
+
+    public void setBag(Bag bag) {
+        this.bag = bag;
     }
 
     public Set<Role> getRoles() {

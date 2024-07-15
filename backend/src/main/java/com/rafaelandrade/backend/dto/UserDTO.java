@@ -28,6 +28,7 @@ public class UserDTO implements Serializable {
     private Instant createdAt;
     private Instant updatedAt;
     private Boolean active;
+    private BagDTO bag;
     private Set<RoleDTO> roles = new HashSet<>();
     private List<AddressDTO> addresses = new ArrayList<>();
     private List<RestaurantDTO> favoritesRestaurants = new ArrayList<>();
@@ -37,7 +38,7 @@ public class UserDTO implements Serializable {
     public UserDTO(){
     }
 
-    public UserDTO(Long id, String userName, String firstName, String lastName, String email, String personalDocument, String dateOfBirth, String gender, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active) {
+    public UserDTO(Long id, String userName, String firstName, String lastName, String email, String personalDocument, String dateOfBirth, String gender, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active, BagDTO bag) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -52,6 +53,7 @@ public class UserDTO implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.active = active;
+        this.bag = bag;
     }
 
     public UserDTO(User userEntity) {
@@ -69,6 +71,7 @@ public class UserDTO implements Serializable {
         this.createdAt = userEntity.getCreatedAt();
         this.updatedAt = userEntity.getUpdatedAt();
         this.active = userEntity.getActive();
+        this.bag = new BagDTO(userEntity.getBag());
         userEntity.getRoles().forEach(role -> this.getRoles().add(new RoleDTO(role)));
     }
 
@@ -190,6 +193,14 @@ public class UserDTO implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public BagDTO getBag() {
+        return bag;
+    }
+
+    public void setBag(BagDTO bag) {
+        this.bag = bag;
     }
 
     public Set<RoleDTO> getRoles() {

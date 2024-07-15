@@ -1,5 +1,6 @@
 package com.rafaelandrade.backend.entities;
 
+import com.rafaelandrade.backend.dto.BagDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -32,9 +33,14 @@ public class Bag {
     public Bag(){
     }
 
-    public Bag(Long id, User user, Integer quantityOfItems, BigDecimal totalPrice, BigDecimal discount) {
+    public Bag(Long id,Integer quantityOfItems, BigDecimal totalPrice, BigDecimal discount) {
         this.id = id;
-        this.user = user;
+        this.quantityOfItems = quantityOfItems;
+        this.totalPrice = totalPrice;
+        this.discount = discount;
+    }
+
+    public Bag(Integer quantityOfItems, BigDecimal totalPrice, BigDecimal discount) {
         this.quantityOfItems = quantityOfItems;
         this.totalPrice = totalPrice;
         this.discount = discount;

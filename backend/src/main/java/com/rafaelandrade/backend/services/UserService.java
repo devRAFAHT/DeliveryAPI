@@ -13,11 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 
 @Service
 public class UserService {
+
+    private final BagRepository bagRepository;
 
     private final UserRepository repository;
 
@@ -32,9 +35,11 @@ public class UserService {
     private final DrinkRepository drinkRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
+
     private final UserRepository userRepository;
 
-    public UserService(UserRepository repository, RoleRepository roleRepository, AddressRepository addressRepository, RestaurantRepository restaurantRepository, DishRepository dishRepository, DrinkRepository drinkRepository, BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserService(BagRepository bagRepository, UserRepository repository, RoleRepository roleRepository, AddressRepository addressRepository, RestaurantRepository restaurantRepository, DishRepository dishRepository, DrinkRepository drinkRepository, BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.bagRepository = bagRepository;
         this.repository = repository;
         this.roleRepository = roleRepository;
         this.addressRepository = addressRepository;
@@ -71,6 +76,13 @@ public class UserService {
         copyDtoToEntity(userInsertDTO, userEntity);
         userEntity.setCreatedAt(Instant.now());
         userEntity.setPassword(passwordEncoder.encode(userInsertDTO.getPassword()));
+
+        Bag bag = new Bag(0, BigDecimal.valueOf(0), BigDecimal.valueOf(0));
+        bag.getDishes().clear();
+        bag.getDrinks().clear();
+        bag = bagRepository.save(bag);
+        userEntity.setBag(bag);
+
         userEntity = repository.save(userEntity);
         return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
     }
