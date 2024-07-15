@@ -57,8 +57,10 @@ public class User implements Serializable {
     @JoinTable(name = "tb_user_favorite_drink", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "drink_id"))
     private Set<Drink> favoritesDrinks = new HashSet<>();
 
-    /* private Set<Order> orderHistory;
-    Assessments
+    @OneToMany(mappedBy = "client")
+    private Set<Order> orderHitory = new HashSet<>();
+
+    /* Assessments
     paymentMethods
      */
 
@@ -231,6 +233,10 @@ public class User implements Serializable {
 
     public Set<Drink> getFavoritesDrinks() {
         return favoritesDrinks;
+    }
+
+    public Set<Order> getOrderHitory() {
+        return orderHitory;
     }
 
     @Override

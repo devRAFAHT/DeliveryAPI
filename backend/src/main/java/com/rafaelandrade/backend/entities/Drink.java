@@ -52,6 +52,9 @@ public class Drink implements Serializable {
     @ManyToMany(mappedBy = "drinks")
     private Set<Bag> bags = new HashSet<>();
 
+    @ManyToMany(mappedBy = "drinks")
+    private Set<Order> orders = new HashSet<>();
+
     public Drink(){
     }
 
@@ -179,6 +182,14 @@ public class Drink implements Serializable {
 
     public Set<User> getFavoriteBy() {
         return favoriteBy;
+    }
+
+    public Set<Bag> getBags() {
+        return bags;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
     }
 
     @Override

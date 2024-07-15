@@ -53,6 +53,9 @@ public class Restaurant implements Serializable {
     @ManyToMany(mappedBy = "favoritesRestaurants")
     private Set<User> favoriteBy = new HashSet<>();
 
+    @OneToMany(mappedBy = "restaurant")
+    private Set<Order> orderHistory = new HashSet<>();
+
     /*private Set<Assessment> assessments;
     private Double averageRating;
     private Integer numberOfReviews;
@@ -177,6 +180,10 @@ public class Restaurant implements Serializable {
 
     public Set<User> getFavoriteBy() {
         return favoriteBy;
+    }
+
+    public Set<Order> getOrderHistory() {
+        return orderHistory;
     }
 
     @Override
