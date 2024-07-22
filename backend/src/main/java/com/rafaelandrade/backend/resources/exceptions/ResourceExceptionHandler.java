@@ -1,9 +1,6 @@
 package com.rafaelandrade.backend.resources.exceptions;
 
-import com.rafaelandrade.backend.services.exceptions.CountryNotSupportedException;
-import com.rafaelandrade.backend.services.exceptions.DatabaseException;
-import com.rafaelandrade.backend.services.exceptions.PostalCodeNotFoundException;
-import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
+import com.rafaelandrade.backend.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +76,18 @@ public class ResourceExceptionHandler {
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());
         error.setError("Country not supported");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(EntityUpdateNotAllowedException.class)
+    public ResponseEntity<StandardError> entityUpdateNotAllowed(EntityUpdateNotAllowedException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        StandardError error = new StandardError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Update not allowed");
         error.setMessage(e.getMessage());
         error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);

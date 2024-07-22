@@ -34,6 +34,8 @@ public class Restaurant implements Serializable {
     private BigDecimal averagePrice;
     private Integer estimatedDeliveryTime;
     private Boolean isOpen;
+    @Column(precision = 5, scale = 2)
+    private BigDecimal fixedDeliveryFee;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
@@ -64,7 +66,7 @@ public class Restaurant implements Serializable {
     public Restaurant(){
     }
 
-    public Restaurant(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen ,Address address) {
+    public Restaurant(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, BigDecimal fixedDeliveryFee, Address address) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -75,6 +77,7 @@ public class Restaurant implements Serializable {
         this.averagePrice = averagePrice;
         this.estimatedDeliveryTime = estimatedDeliveryTime;
         this.isOpen = isOpen;
+        this.fixedDeliveryFee = fixedDeliveryFee;
         this.address = address;
     }
 
@@ -156,6 +159,14 @@ public class Restaurant implements Serializable {
 
     public void setOpen(Boolean open) {
         isOpen = open;
+    }
+
+    public BigDecimal getFixedDeliveryFee() {
+        return fixedDeliveryFee;
+    }
+
+    public void setFixedDeliveryFee(BigDecimal fixedDeliveryFee) {
+        this.fixedDeliveryFee = fixedDeliveryFee;
     }
 
     public Address getAddress() {

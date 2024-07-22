@@ -30,6 +30,7 @@ public class RestaurantDTO implements Serializable {
     private BigDecimal averagePrice;
     private Integer estimatedDeliveryTime;
     private Boolean isOpen;
+    private BigDecimal fixedDeliveryFee;
     private AddressDTO address;
     private List<MenuDTO> menus = new ArrayList<>();
     private List<RestaurantCategoryDTO> categories = new ArrayList<>();
@@ -38,7 +39,7 @@ public class RestaurantDTO implements Serializable {
     public RestaurantDTO(){
     }
 
-    public RestaurantDTO(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, AddressDTO address) {
+    public RestaurantDTO(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, BigDecimal fixedDeliveryFee, AddressDTO address) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -48,6 +49,8 @@ public class RestaurantDTO implements Serializable {
         this.imgBackgroundUrl = imgBackgroundUrl;
         this.averagePrice = averagePrice;
         this.estimatedDeliveryTime = estimatedDeliveryTime;
+        this.isOpen = isOpen;
+        this.fixedDeliveryFee = fixedDeliveryFee;
         this.address = address;
     }
 
@@ -62,6 +65,7 @@ public class RestaurantDTO implements Serializable {
         this.averagePrice = restaurantEntity.getAveragePrice();
         this.estimatedDeliveryTime = restaurantEntity.getEstimatedDeliveryTime();
         this.isOpen = restaurantEntity.getOpen();
+        this.fixedDeliveryFee = restaurantEntity.getFixedDeliveryFee();
         this.address = new AddressDTO(restaurantEntity.getAddress());
     }
 
@@ -146,6 +150,14 @@ public class RestaurantDTO implements Serializable {
 
     public Boolean getOpen() {
         return isOpen;
+    }
+
+    public BigDecimal getFixedDeliveryFee() {
+        return fixedDeliveryFee;
+    }
+
+    public void setFixedDeliveryFee(BigDecimal fixedDeliveryFee) {
+        this.fixedDeliveryFee = fixedDeliveryFee;
     }
 
     public AddressDTO getAddress() {
