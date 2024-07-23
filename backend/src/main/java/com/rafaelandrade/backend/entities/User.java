@@ -60,8 +60,10 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "client")
     private Set<Order> orderHitory = new HashSet<>();
 
-    /* Assessments
-    paymentMethods
+    @OneToMany(mappedBy = "user")
+    private Set<Assessment> assessments = new HashSet<>();
+
+    /* paymentMethods
      */
 
     public User(){

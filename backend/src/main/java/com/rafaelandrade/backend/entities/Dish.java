@@ -62,6 +62,9 @@ public class Dish implements Serializable {
     @ManyToMany(mappedBy = "dishes")
     private Set<Order> orders = new HashSet<>();
 
+    @OneToMany(mappedBy = "dish")
+    private Set<Assessment> assessments = new HashSet<>();
+
     public Dish() {
     }
 

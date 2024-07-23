@@ -58,6 +58,9 @@ public class Restaurant implements Serializable {
     @OneToMany(mappedBy = "restaurant")
     private Set<Order> orderHistory = new HashSet<>();
 
+    @OneToMany(mappedBy = "restaurant")
+    private Set<Assessment> assessments = new HashSet<>();
+
     /*private Set<Assessment> assessments;
     private Double averageRating;
     private Integer numberOfReviews;

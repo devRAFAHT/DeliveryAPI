@@ -55,6 +55,9 @@ public class Drink implements Serializable {
     @ManyToMany(mappedBy = "drinks")
     private Set<Order> orders = new HashSet<>();
 
+    @OneToMany(mappedBy = "drink")
+    private Set<Assessment> assessments = new HashSet<>();
+
     public Drink(){
     }
 
