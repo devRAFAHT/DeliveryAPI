@@ -8,8 +8,6 @@ import java.io.Serializable;
 public class OrderUpdateDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
-    private Long id;
     private OrderStatus orderStatus;
 
     public OrderUpdateDTO(){
@@ -17,14 +15,6 @@ public class OrderUpdateDTO implements Serializable {
 
     public OrderUpdateDTO(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public OrderStatus getOrderStatus() {

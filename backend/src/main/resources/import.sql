@@ -216,7 +216,7 @@ INSERT INTO tb_user (user_name, first_name, last_name, email, personal_document,
 INSERT INTO tb_user (user_name, first_name, last_name, email, personal_document, date_of_birth, gender, phone_number, profile_picture_url, biography, created_at, updated_at, active, bag_id) VALUES ('olivia_walker', 'Olivia', 'Walker', 'olivia.walker@example.com', '55443322100', '1994-06-25', 'female', '555-8901', 'http://example.com/profile10.jpg', 'Frontend developer from Miami.', '2023-07-11T15:06:00Z', '2023-07-11T15:06:00Z', true, 10);
 
 -- ORDERS
-INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (5.00, 1800000000000, 50.00, 55.00, NULL, '2023-07-17T12:30:00', 0, 1, 1, 'Extra ketchup');
+INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (5.00, 1800000000000, 50.00, 55.00, NULL, '2023-07-17T12:30:00', 8, 1, 1, 'Extra ketchup');
 INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (3.00, 1800000000000, 30.00, 33.00, NULL, '2023-07-17T12:35:00', 0, 2, 2, 'No onions');
 INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (4.00, 1800000000000, 40.00, 44.00, NULL, '2023-07-17T12:40:00', 0, 3, 3, 'Spicy');
 INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (2.50, 1800000000000, 25.00, 27.50, NULL, '2023-07-17T12:45:00', 0, 4, 4, 'No cheese');
@@ -225,3 +225,48 @@ INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_pr
 INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (3.75, 1800000000000, 37.00, 40.75, NULL, '2023-07-17T13:00:00', 0, 7, 7, 'Gluten-free');
 INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (5.25, 1800000000000, 52.00, 57.25, NULL, '2023-07-17T13:05:00', 0, 8, 8, 'Extra napkins');
 INSERT INTO tb_order (delivery_fee, estimated_delivery_time, sub_total, total_price, canceled_at, created_at, order_status, restaurant_id, user_id, special_request) VALUES (4.00, 1800000000000, 40.00, 44.00, NULL, '2023-07-17T13:10:00', 0, 9, 9, 'Low salt');
+
+-- ASSOCIATION ORDER DISH
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (1, 1);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (2, 2);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (3, 3);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (4, 4);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (5, 5);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (6, 6);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (7, 7);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (8, 8);
+INSERT INTO TB_ORDER_DISH (DISH_ID, ORDER_ID) VALUES (9, 9);
+
+-- ASSOCIATION ORDER DRINK
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (1, 1);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (2, 2);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (3, 3);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (4, 4);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (5, 5);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (6, 6);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (7, 7);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (8, 8);
+INSERT INTO TB_ORDER_DRINK (DRINK_ID, ORDER_ID) VALUES (9, 9);
+
+-- ASSESSMENTS
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (5, '2024-08-01 10:00:00', 1, NULL, 1, '2024-08-01 10:00:00', 1, 'Ótimo prato, muito saboroso!');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (4, '2024-08-01 10:10:00', NULL, 2, 1, '2024-08-01 10:10:00', 2, 'Bebida excelente, mas poderia ser mais gelada.');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (3, '2024-08-01 10:20:00', 2, NULL, 2, '2024-08-01 10:20:00', 3, 'Prato estava bom, mas a porção era pequena.');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (5, '2024-08-01 10:30:00', 3, NULL, 2, '2024-08-01 10:30:00', 4, 'Excelente qualidade, recomendo!');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (2, '2024-08-01 10:40:00', NULL, 3, 3, '2024-08-01 10:40:00', 5, 'A bebida estava boa, mas o atendimento foi ruim.');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (4, '2024-08-01 10:50:00', 4, NULL, 3, '2024-08-01 10:50:00', 6, 'Prato estava muito saboroso, mas demorou para chegar.');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (5, '2024-08-01 11:00:00', 5, NULL, 4, '2024-08-01 11:00:00', 7, 'A comida estava maravilhosa, como sempre!');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (1, '2024-08-01 11:10:00', NULL, 4, 4, '2024-08-01 11:10:00', 8, 'O prato estava frio e sem sabor.');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (4, '2024-08-01 11:20:00', 6, NULL, 5, '2024-08-01 11:20:00', 9, 'Boa refeição, mas a apresentação poderia ser melhor.');
+INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (3, '2024-08-01 11:30:00', NULL, 5, 5, '2024-08-01 11:30:00', 10, 'A bebida estava boa, mas o prato não atendeu minhas expectativas.');
+
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (1, '2024-08-01 12:00:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (2, '2024-08-01 12:05:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (3, '2024-08-01 12:10:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (4, '2024-08-01 12:15:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (5, '2024-08-01 12:20:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (6, '2024-08-01 12:25:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (7, '2024-08-01 12:30:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (8, '2024-08-01 12:35:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (9, '2024-08-01 12:40:00', 'N/A');
+INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (10, '2024-08-01 12:45:00', 'N/A');

@@ -93,4 +93,15 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(error);
     }
 
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<StandardError> invalidInput(InvalidInputException e, HttpServletRequest request) {
+        HttpStatus status = BAD_REQUEST;
+        StandardError error = new StandardError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Invalid input");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
 }

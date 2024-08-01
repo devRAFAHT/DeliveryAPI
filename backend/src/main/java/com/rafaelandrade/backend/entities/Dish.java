@@ -209,6 +209,10 @@ public class Dish implements Serializable {
         return orders;
     }
 
+    public Set<Assessment> getAssessments() {
+        return assessments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

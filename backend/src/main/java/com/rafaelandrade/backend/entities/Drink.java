@@ -2,6 +2,7 @@ package com.rafaelandrade.backend.entities;
 
 import com.rafaelandrade.backend.common.SaleStatus;
 import com.rafaelandrade.backend.common.UnitMeasurement;
+import com.rafaelandrade.backend.dto.DrinkDTO;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -193,6 +194,10 @@ public class Drink implements Serializable {
 
     public Set<Order> getOrders() {
         return orders;
+    }
+
+    public Set<Assessment> getAssessments() {
+        return assessments;
     }
 
     @Override

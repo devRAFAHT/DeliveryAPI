@@ -237,8 +237,12 @@ public class User implements Serializable {
         return favoritesDrinks;
     }
 
-    public Set<Order> getOrderHitory() {
+    public Set<Order> getOrderHistory() {
         return orderHitory;
+    }
+
+    public Set<Assessment> getAssessments() {
+        return assessments;
     }
 
     @Override

@@ -200,6 +200,10 @@ public class Restaurant implements Serializable {
         return orderHistory;
     }
 
+    public Set<Assessment> getAssessments() {
+        return assessments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

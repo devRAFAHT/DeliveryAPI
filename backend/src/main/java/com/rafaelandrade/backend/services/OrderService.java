@@ -68,11 +68,11 @@ public class OrderService {
 
     @Transactional
     public List<OrderDTO> insertFromBag(Long bagId, Map<Long, String> specialRequests) throws ResourceNotFoundException {
-       Optional<Bag> bagObj = bagRepository.findById(bagId);
-       bagObj.orElseThrow(() -> new ResourceNotFoundException("Bag with id " + bagId + " not found"));
-       Bag bag = bagObj.get();
+        Optional<Bag> bagObj = bagRepository.findById(bagId);
+        bagObj.orElseThrow(() -> new ResourceNotFoundException("Bag with id " + bagId + " not found"));
+        Bag bag = bagObj.get();
 
-       List<Order> orders = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
 
         Map<Restaurant, List<Dish>> dishesByRestaurant = new HashMap<>();
         Map<Restaurant, List<Drink>> drinksByRestaurant = new HashMap<>();
@@ -91,7 +91,7 @@ public class OrderService {
             Order order = new Order();
             order.setRestaurant(restaurant);
             order.getDishes().addAll(dishesByRestaurant.get(restaurant));
-            order.getDrinks().addAll(drinksByRestaurant.getOrDefault(restaurant, new ArrayList<>())); 
+            order.getDrinks().addAll(drinksByRestaurant.getOrDefault(restaurant, new ArrayList<>()));
             order.setClient(bag.getUser());
             order.setCreatedAt(Instant.now());
             order.setSpecialRequest(specialRequests.getOrDefault(restaurant.getId(), ""));
@@ -208,5 +208,4 @@ public class OrderService {
         bag.setDiscount(BigDecimal.ZERO);
         bag.setQuantityOfItems(0);
     }
-
 }

@@ -25,17 +25,19 @@ public class Assessment {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @ManyToOne
-    @JoinColumn(name = "dish_id")
+    @ManyToOne()
+    @JoinColumn(name = "dish_id", nullable = true)
     private Dish dish;
 
-    @ManyToOne
-    @JoinColumn(name = "drink_id")
+    @ManyToOne()
+    @JoinColumn(name = "drink_id", nullable = true)
     private Drink drink;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "assessment_id")
-    private List<Assessment> updateHistory = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "assessment_update_history", joinColumns = @JoinColumn(name = "assessment_id"))
+    @MapKeyColumn(name = "update_date")
+    @Column(name = "comment")
+    private Map<Instant, String> updateHistory = new HashMap<>();
 
     public Assessment(){
     }
@@ -122,6 +124,14 @@ public class Assessment {
 
     public void setDrink(Drink drink) {
         this.drink = drink;
+    }
+
+    public Map<Instant, String> getUpdateHistory() {
+        return updateHistory;
+    }
+
+    public void setUpdateHistory(Map<Instant, String> updateHistory) {
+        this.updateHistory = updateHistory;
     }
 
     @Override
