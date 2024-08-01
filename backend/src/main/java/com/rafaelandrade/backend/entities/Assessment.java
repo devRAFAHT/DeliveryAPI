@@ -39,6 +39,9 @@ public class Assessment {
     @Column(name = "comment")
     private Map<Instant, String> updateHistory = new HashMap<>();
 
+    @OneToMany(mappedBy = "assessment")
+    private Set<AssessmentResponse> assessmentResponses = new HashSet<>();
+
     public Assessment(){
     }
 
@@ -132,6 +135,10 @@ public class Assessment {
 
     public void setUpdateHistory(Map<Instant, String> updateHistory) {
         this.updateHistory = updateHistory;
+    }
+
+    public Set<AssessmentResponse> getAssessmentResponses() {
+        return assessmentResponses;
     }
 
     @Override

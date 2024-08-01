@@ -61,6 +61,9 @@ public class Restaurant implements Serializable {
     @OneToMany(mappedBy = "restaurant")
     private Set<Assessment> assessments = new HashSet<>();
 
+    @OneToMany(mappedBy = "restaurant")
+    private Set<AssessmentResponse> assessmentResponses = new HashSet<>();
+
     /*private Set<Assessment> assessments;
     private Double averageRating;
     private Integer numberOfReviews;
@@ -202,6 +205,10 @@ public class Restaurant implements Serializable {
 
     public Set<Assessment> getAssessments() {
         return assessments;
+    }
+
+    public Set<AssessmentResponse> getAssessmentResponses() {
+        return assessmentResponses;
     }
 
     @Override
