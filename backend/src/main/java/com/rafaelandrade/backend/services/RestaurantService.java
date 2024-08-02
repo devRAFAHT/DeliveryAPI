@@ -54,7 +54,7 @@ public class RestaurantService {
 
     @Transactional(readOnly = true)
     public RestaurantDTO findByName(String name) throws ResourceNotFoundException {
-        Optional<Restaurant> restaurantObj = restaurantRepository.findByName(name);
+        Optional<Restaurant> restaurantObj = restaurantRepository.findByCompanyName(name);
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         setIsOpen(restaurantEntity);
         SetsAveragePrice(restaurantEntity);
@@ -109,10 +109,11 @@ public class RestaurantService {
     }
 
     private void copyDtoToEntity(RestaurantDTO restaurantDTO, Restaurant restaurantEntity) throws ResourceNotFoundException {
-        restaurantEntity.setName(restaurantDTO.getName());
-        restaurantEntity.setDescription(restaurantDTO.getDescription());
+        restaurantEntity.setTaxIdentificationNumber(restaurantDTO.getTaxIdentificationNumber());
+        restaurantEntity.setCompanyName(restaurantDTO.getCompanyName());
+        restaurantEntity.setBiography(restaurantEntity.getBiography());
         restaurantEntity.setPhoneNumber(restaurantDTO.getPhoneNumber());
-        restaurantEntity.setImgProfileUrl(restaurantDTO.getImgProfileUrl());
+        restaurantEntity.setProfilePictureUrl(restaurantEntity.getProfilePictureUrl());
         restaurantEntity.setImgBackgroundUrl(restaurantDTO.getImgBackgroundUrl());
         restaurantEntity.setAveragePrice(restaurantDTO.getAveragePrice());
         restaurantEntity.setEstimatedDeliveryTime(restaurantDTO.getEstimatedDeliveryTime());

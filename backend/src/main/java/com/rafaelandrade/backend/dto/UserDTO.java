@@ -15,7 +15,7 @@ public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String userName;
+    private String username;
     private String firstName;
     private String lastName;
     private String email;
@@ -38,9 +38,9 @@ public class UserDTO implements Serializable {
     public UserDTO(){
     }
 
-    public UserDTO(Long id, String userName, String firstName, String lastName, String email, String personalDocument, String dateOfBirth, String gender, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active, BagDTO bag) {
+    public UserDTO(Long id, String username, String firstName, String lastName, String email, String personalDocument, String dateOfBirth, String gender, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active, BagDTO bag) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -58,7 +58,7 @@ public class UserDTO implements Serializable {
 
     public UserDTO(User userEntity) {
         this.id = userEntity.getId();
-        this.userName = userEntity.getUserName();
+        this.username = userEntity.getUsername();
         this.firstName = userEntity.getFirstName();
         this.lastName = userEntity.getLastName();
         this.email = userEntity.getEmail();
@@ -91,12 +91,12 @@ public class UserDTO implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {

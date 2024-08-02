@@ -133,7 +133,7 @@ public class AssessmentService {
             assessmentEntity.setRestaurant(restaurant);
         }
 
-        for(Order order : user.getOrderHistory()){
+        for(Order order : user.getOrderHitory()){
             if(!order.getDrinks().contains(assessmentEntity.getDrink()) || !order.getDishes().contains(assessmentEntity.getDish())){
                 if(order.getOrderStatus() != OrderStatus.ORDER_DELIVERED){
                     throw new InvalidInputException("The item has not been consumed by the user and cannot be evaluated.");

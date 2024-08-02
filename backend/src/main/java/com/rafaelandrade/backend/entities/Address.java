@@ -40,10 +40,6 @@ public class Address implements Serializable {
     @OneToOne(mappedBy = "address")
     private Restaurant restaurant;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private User user;
-
     public Address(){
     }
 
@@ -195,14 +191,6 @@ public class Address implements Serializable {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override

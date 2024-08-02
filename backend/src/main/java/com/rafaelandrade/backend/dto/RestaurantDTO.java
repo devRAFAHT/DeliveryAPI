@@ -21,7 +21,8 @@ public class RestaurantDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String name;
+    private String taxIdentificationNumber;
+    private String companyName;
     private String description;
     private Instant createdAt;
     private String phoneNumber;
@@ -39,9 +40,10 @@ public class RestaurantDTO implements Serializable {
     public RestaurantDTO(){
     }
 
-    public RestaurantDTO(Long id, String name, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, BigDecimal fixedDeliveryFee, AddressDTO address) {
+    public RestaurantDTO(Long id, String taxIdentificationNumber,String companyName, String description, Instant createdAt, String phoneNumber, String imgProfileUrl, String imgBackgroundUrl, BigDecimal averagePrice, Integer estimatedDeliveryTime, Boolean isOpen, BigDecimal fixedDeliveryFee, AddressDTO address) {
         this.id = id;
-        this.name = name;
+        this.taxIdentificationNumber = taxIdentificationNumber;
+        this.companyName = companyName;
         this.description = description;
         this.createdAt = createdAt;
         this.phoneNumber = phoneNumber;
@@ -56,11 +58,12 @@ public class RestaurantDTO implements Serializable {
 
     public RestaurantDTO(Restaurant restaurantEntity) {
         this.id = restaurantEntity.getId();
-        this.name = restaurantEntity.getName();
-        this.description = restaurantEntity.getDescription();
+        this.taxIdentificationNumber = restaurantEntity.getTaxIdentificationNumber();
+        this.companyName = restaurantEntity.getCompanyName();
+        this.description = restaurantEntity.getBiography();
         this.createdAt = restaurantEntity.getCreatedAt();
         this.phoneNumber = restaurantEntity.getPhoneNumber();
-        this.imgProfileUrl = restaurantEntity.getImgProfileUrl();
+        this.imgProfileUrl = restaurantEntity.getProfilePictureUrl();
         this.imgBackgroundUrl = restaurantEntity.getImgBackgroundUrl();
         this.averagePrice = restaurantEntity.getAveragePrice();
         this.estimatedDeliveryTime = restaurantEntity.getEstimatedDeliveryTime();
@@ -84,12 +87,20 @@ public class RestaurantDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTaxIdentificationNumber() {
+        return taxIdentificationNumber;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getDescription() {

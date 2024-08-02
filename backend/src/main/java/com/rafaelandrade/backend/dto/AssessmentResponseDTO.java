@@ -1,6 +1,5 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.entities.Assessment;
 import com.rafaelandrade.backend.entities.AssessmentResponse;
 
 import java.time.Instant;

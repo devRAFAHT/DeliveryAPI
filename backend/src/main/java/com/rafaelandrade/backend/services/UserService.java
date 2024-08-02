@@ -65,7 +65,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDTO findByUserName(String username) throws ResourceNotFoundException {
-        Optional<User> userObj = repository.findByUserName(username);
+        Optional<User> userObj = repository.findByUsername(username);
         User userEntity = userObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
     }
@@ -114,7 +114,7 @@ public class UserService {
     }
 
     private void copyDtoToEntity(UserDTO userDTO, User userEntity) throws ResourceNotFoundException {
-        userEntity.setUserName(userDTO.getUserName());
+        userEntity.setUsername(userDTO.getUsername());
         userEntity.setFirstName(userDTO.getFirstName());
         userEntity.setLastName(userDTO.getLastName());
         userEntity.setEmail(userDTO.getEmail());
