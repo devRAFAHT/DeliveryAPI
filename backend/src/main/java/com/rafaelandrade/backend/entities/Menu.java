@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.entities;
 
-import com.rafaelandrade.backend.common.SaleStatus;
+import com.rafaelandrade.backend.entities.common.SaleStatus;
 import jakarta.persistence.*;
 
 import java.util.HashSet;

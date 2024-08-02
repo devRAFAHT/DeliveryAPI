@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.services;
 
-import com.rafaelandrade.backend.common.OperatingHours;
+import com.rafaelandrade.backend.entities.common.OperatingHours;
 import com.rafaelandrade.backend.dto.MenuDTO;
 import com.rafaelandrade.backend.dto.RestaurantCategoryDTO;
 import com.rafaelandrade.backend.dto.RestaurantDTO;

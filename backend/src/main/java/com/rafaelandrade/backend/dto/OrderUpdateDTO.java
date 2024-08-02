@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.common.OrderStatus;
+import com.rafaelandrade.backend.entities.common.OrderStatus;
 
 import java.io.Serial;
 import java.io.Serializable;

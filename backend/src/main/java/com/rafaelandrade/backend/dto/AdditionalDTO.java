@@ -1,8 +1,7 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.common.SaleStatus;
+import com.rafaelandrade.backend.entities.common.SaleStatus;
 import com.rafaelandrade.backend.entities.Additional;
-import com.rafaelandrade.backend.entities.AdditionalCategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;

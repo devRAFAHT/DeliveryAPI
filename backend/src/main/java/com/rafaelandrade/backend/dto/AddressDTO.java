@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.common.ResidenceType;
+import com.rafaelandrade.backend.entities.common.ResidenceType;
 import com.rafaelandrade.backend.entities.Address;
 import jakarta.validation.constraints.Size;
 

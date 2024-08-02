@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.services;
 
-import com.rafaelandrade.backend.common.OrderStatus;
+import com.rafaelandrade.backend.entities.common.OrderStatus;
 import com.rafaelandrade.backend.dto.AssessmentDTO;
 import com.rafaelandrade.backend.dto.AssessmentUpdateDTO;
 import com.rafaelandrade.backend.entities.*;

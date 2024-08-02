@@ -1,4 +1,4 @@
-package com.rafaelandrade.backend.common;
+package com.rafaelandrade.backend.entities.common;
 
 public enum OrderStatus {
 

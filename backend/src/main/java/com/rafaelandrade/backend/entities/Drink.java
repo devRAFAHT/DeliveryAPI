@@ -1,8 +1,7 @@
 package com.rafaelandrade.backend.entities;
 
-import com.rafaelandrade.backend.common.SaleStatus;
-import com.rafaelandrade.backend.common.UnitMeasurement;
-import com.rafaelandrade.backend.dto.DrinkDTO;
+import com.rafaelandrade.backend.entities.common.SaleStatus;
+import com.rafaelandrade.backend.entities.common.UnitMeasurement;
 import jakarta.persistence.*;
 
 import java.io.Serial;

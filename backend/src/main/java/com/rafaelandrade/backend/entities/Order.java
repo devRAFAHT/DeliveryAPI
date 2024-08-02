@@ -1,12 +1,11 @@
 package com.rafaelandrade.backend.entities;
 
-import com.rafaelandrade.backend.common.OrderStatus;
+import com.rafaelandrade.backend.entities.common.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

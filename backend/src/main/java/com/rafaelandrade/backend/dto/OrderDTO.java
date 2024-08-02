@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.common.OrderStatus;
+import com.rafaelandrade.backend.entities.common.OrderStatus;
 import com.rafaelandrade.backend.entities.Dish;
 import com.rafaelandrade.backend.entities.Drink;
 import com.rafaelandrade.backend.entities.Order;
@@ -8,7 +8,6 @@ import com.rafaelandrade.backend.entities.Order;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

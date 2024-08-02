@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.entities;
 
-import com.rafaelandrade.backend.common.ResidenceType;
+import com.rafaelandrade.backend.entities.common.ResidenceType;
 import com.rafaelandrade.backend.dto.AddressDTO;
 import jakarta.persistence.*;
 

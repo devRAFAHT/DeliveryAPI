@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.common.SaleStatus;
+import com.rafaelandrade.backend.entities.common.SaleStatus;
 import com.rafaelandrade.backend.entities.Dish;
 import com.rafaelandrade.backend.entities.Drink;
 import com.rafaelandrade.backend.entities.Menu;

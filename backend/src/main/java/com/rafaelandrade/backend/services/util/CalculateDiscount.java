@@ -1,4 +1,4 @@
-package com.rafaelandrade.backend.util;
+package com.rafaelandrade.backend.services.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

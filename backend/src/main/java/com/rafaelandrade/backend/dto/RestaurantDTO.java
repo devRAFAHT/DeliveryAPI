@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.common.OperatingHours;
+import com.rafaelandrade.backend.entities.common.OperatingHours;
 import com.rafaelandrade.backend.entities.Menu;
 import com.rafaelandrade.backend.entities.Restaurant;
 import com.rafaelandrade.backend.entities.RestaurantCategory;
@@ -8,10 +8,7 @@ import com.rafaelandrade.backend.entities.RestaurantCategory;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.DayOfWeek;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

@@ -1,8 +1,8 @@
 package com.rafaelandrade.backend.entities;
 
-import com.rafaelandrade.backend.common.FoodRestriction;
-import com.rafaelandrade.backend.common.PortionSize;
-import com.rafaelandrade.backend.common.SaleStatus;
+import com.rafaelandrade.backend.entities.common.FoodRestriction;
+import com.rafaelandrade.backend.entities.common.PortionSize;
+import com.rafaelandrade.backend.entities.common.SaleStatus;
 import jakarta.persistence.*;
 
 import java.io.Serial;

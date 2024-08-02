@@ -1,6 +1,6 @@
 package com.rafaelandrade.backend.services;
 
-import com.rafaelandrade.backend.common.ResidenceType;
+import com.rafaelandrade.backend.entities.common.ResidenceType;
 import com.rafaelandrade.backend.dto.AddressDTO;
 import com.rafaelandrade.backend.entities.Address;
 import com.rafaelandrade.backend.repositories.AddressRepository;

@@ -7,7 +7,7 @@ import com.rafaelandrade.backend.repositories.DrinkCategoryRepository;
 import com.rafaelandrade.backend.repositories.DrinkRepository;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
-import com.rafaelandrade.backend.util.CalculateDiscount;
+import com.rafaelandrade.backend.services.util.CalculateDiscount;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
