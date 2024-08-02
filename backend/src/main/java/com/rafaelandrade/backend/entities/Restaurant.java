@@ -1,6 +1,8 @@
 package com.rafaelandrade.backend.entities;
 
 import com.rafaelandrade.backend.common.OperatingHours;
+import com.rafaelandrade.backend.dto.AssessmentDTO;
+import com.rafaelandrade.backend.dto.RestaurantDTO;
 import jakarta.persistence.*;
 
 import java.io.Serial;

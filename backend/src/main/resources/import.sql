@@ -260,13 +260,25 @@ INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id,
 INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (4, '2024-08-01 11:20:00', 6, NULL, 5, '2024-08-01 11:20:00', 9, 'Boa refeição, mas a apresentação poderia ser melhor.');
 INSERT INTO tb_assessment (points, created_at, dish_id, drink_id, restaurant_id, updated_at, user_id, comment) VALUES (3, '2024-08-01 11:30:00', NULL, 5, 5, '2024-08-01 11:30:00', 10, 'A bebida estava boa, mas o prato não atendeu minhas expectativas.');
 
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (1, '2024-08-01 12:00:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (2, '2024-08-01 12:05:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (3, '2024-08-01 12:10:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (4, '2024-08-01 12:15:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (5, '2024-08-01 12:20:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (6, '2024-08-01 12:25:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (7, '2024-08-01 12:30:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (8, '2024-08-01 12:35:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (9, '2024-08-01 12:40:00', 'N/A');
-INSERT INTO ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (10, '2024-08-01 12:45:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (1, '2024-08-01 12:00:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (2, '2024-08-01 12:05:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (3, '2024-08-01 12:10:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (4, '2024-08-01 12:15:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (5, '2024-08-01 12:20:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (6, '2024-08-01 12:25:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (7, '2024-08-01 12:30:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (8, '2024-08-01 12:35:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (9, '2024-08-01 12:40:00', 'N/A');
+INSERT INTO TB_ASSESSMENT_UPDATE_HISTORY (ASSESSMENT_ID, UPDATE_DATE, COMMENT) VALUES (10, '2024-08-01 12:45:00', 'N/A');
+
+-- assessments responses
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (1, '2024-08-02 09:00:00', 1, 1, 'Agradecemos pelo feedback positivo! Ficamos felizes que você tenha gostado do prato. Esperamos vê-lo novamente em breve.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (2, '2024-08-02 09:05:00', 2, 1, 'Obrigado pela avaliação! Vamos trabalhar para que a próxima bebida esteja ainda mais gelada. Agradecemos sua compreensão.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (3, '2024-08-02 09:10:00', 3, 2, 'Lamentamos que a porção não tenha sido do seu agrado. Estamos revisando o tamanho das porções para melhorar a experiência.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (4, '2024-08-02 09:15:00', 4, 2, 'Muito obrigado pela avaliação! Fico feliz que tenha gostado da qualidade do prato. Sua recomendação é muito apreciada.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (5, '2024-08-02 09:20:00', 5, 3, 'Pedimos desculpas pelo atendimento ruim. Estamos trabalhando para melhorar o serviço e garantir uma melhor experiência.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (6, '2024-08-02 09:25:00', 6, 3, 'Obrigado pelo seu feedback! Vamos tentar melhorar o tempo de entrega para garantir que a próxima refeição chegue mais rápido.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (7, '2024-08-02 09:30:00', 7, 4, 'Agradecemos por sua avaliação positiva! É sempre um prazer saber que nossos clientes estão satisfeitos com a comida.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (8, '2024-08-02 09:35:00', 8, 4, 'Lamentamos que o prato não tenha atendido suas expectativas. Estamos avaliando o feedback para evitar que isso aconteça novamente.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (9, '2024-08-02 09:40:00', 9, 5, 'Obrigado pelo feedback! Vamos trabalhar na apresentação dos pratos para que fiquem ainda mais atraentes.');
+INSERT INTO tb_assessment_response (assessment_id, created_at, id, restaurant_id, comment) VALUES (10, '2024-08-02 09:45:00', 10, 5, 'Sentimos muito que o prato não tenha atendido suas expectativas. Seu feedback é valioso e será considerado para futuras melhorias.');

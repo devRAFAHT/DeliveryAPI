@@ -34,7 +34,7 @@ public class Assessment {
     private Drink drink;
 
     @ElementCollection
-    @CollectionTable(name = "assessment_update_history", joinColumns = @JoinColumn(name = "assessment_id"))
+    @CollectionTable(name = "tb_assessment_update_history", joinColumns = @JoinColumn(name = "assessment_id"))
     @MapKeyColumn(name = "update_date")
     @Column(name = "comment")
     private Map<Instant, String> updateHistory = new HashMap<>();
