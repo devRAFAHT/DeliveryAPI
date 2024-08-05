@@ -130,7 +130,7 @@ public class RestaurantService {
             Menu menu = menuObj.get();
             restaurantEntity.getMenus().add(menu);
 
-            menu.setRestaurant(restaurantEntity);
+            menu.setLegalEntity(restaurantEntity);
         }
 
         restaurantEntity.getCategories().clear();
@@ -171,38 +171,33 @@ public class RestaurantService {
         restaurant.setOpen(false);
     }
 
-    private void SetsAveragePrice(Restaurant restaurant){
-
+    private void SetsAveragePrice(Restaurant restaurant) {
         BigDecimal priceOfAll = BigDecimal.valueOf(0.0);
         BigDecimal averagePrice;
         int quantityOfItems = 0;
 
-        for(Menu menu : restaurant.getMenus()){
+        for (Menu menu : restaurant.getMenus()) {
+            for (Item item : menu.getItems()) {
+                // Adiciona o preço do item
+                priceOfAll = priceOfAll.add(item.getCurrentPrice());
+                quantityOfItems++;
 
-            for(Dish dish : menu.getDishes()){
-                priceOfAll = priceOfAll.add(dish.getCurrentPrice());
-                quantityOfItems ++;
-
-                for(Additional additional: dish.getAdditional()){
-                    priceOfAll = priceOfAll.add(additional.getPrice());
-                    quantityOfItems ++;
+                // Verifica se o item é um prato (Dish) e se possui adicionais
+                if (item instanceof Dish) {
+                    Dish dish = (Dish) item;
+                    for (Additional additional : dish.getAdditional()) {
+                        priceOfAll = priceOfAll.add(additional.getPrice());
+                        quantityOfItems++;
+                    }
                 }
-
-            }
-
-            for(Drink drink : menu.getDrinks()){
-                priceOfAll = priceOfAll.add(drink.getCurrentPrice());
-                quantityOfItems ++;
             }
         }
 
-        if(quantityOfItems > 0) {
+        if (quantityOfItems > 0) {
             averagePrice = priceOfAll.divide(BigDecimal.valueOf(quantityOfItems), 2, RoundingMode.HALF_UP);
             restaurant.setAveragePrice(averagePrice);
-        }else{
+        } else {
             restaurant.setAveragePrice(BigDecimal.valueOf(0.00));
         }
-
     }
-
 }

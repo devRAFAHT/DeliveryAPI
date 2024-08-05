@@ -15,16 +15,12 @@ public class User extends PhysicalPerson{
     private Bag bag;
 
     @ManyToMany
-    @JoinTable(name = "tb_user_favorite_restaurant", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "restaurant_id"))
-    private Set<Restaurant> favoritesRestaurants = new HashSet<>();
+    @JoinTable(name = "tb_user_favorite_legal_entity", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "legal_entity_id"))
+    private Set<LegalEntity> favoriteEstablishments = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "tb_user_favorite_dish", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dish_id"))
-    private Set<Dish> favoritesDishes = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "tb_user_favorite_drink", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "drink_id"))
-    private Set<Drink> favoritesDrinks = new HashSet<>();
+    @JoinTable(name = "tb_user_favorite_item", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
+    private Set<Item> favoritesItems = new HashSet<>();
 
     @OneToMany(mappedBy = "client")
     private Set<Order> orderHitory = new HashSet<>();
@@ -61,16 +57,12 @@ public class User extends PhysicalPerson{
         this.bag = bag;
     }
 
-    public Set<Restaurant> getFavoritesRestaurants() {
-        return favoritesRestaurants;
+    public Set<LegalEntity> getFavoriteEstablishments() {
+        return favoriteEstablishments;
     }
 
-    public Set<Dish> getFavoritesDishes() {
-        return favoritesDishes;
-    }
-
-    public Set<Drink> getFavoritesDrinks() {
-        return favoritesDrinks;
+    public Set<Item> getFavoritesItems() {
+        return favoritesItems;
     }
 
     public Set<Order> getOrderHitory() {

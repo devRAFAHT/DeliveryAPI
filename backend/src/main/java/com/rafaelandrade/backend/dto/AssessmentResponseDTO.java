@@ -9,16 +9,16 @@ public class AssessmentResponseDTO {
     private Long id;
     private String comment;
     private Instant createdAt;
-    private RestaurantDTO restaurant;
+    private LegalEntityDTO legalEntity;
     private AssessmentDTO assessment;
 
     public AssessmentResponseDTO(){
     }
 
-    public AssessmentResponseDTO(Long id, String comment, RestaurantDTO restaurant, AssessmentDTO assessment) {
+    public AssessmentResponseDTO(Long id, String comment, LegalEntityDTO legalEntity, AssessmentDTO assessment) {
         this.id = id;
         this.comment = comment;
-        this.restaurant = restaurant;
+        this.legalEntity = legalEntity;
         this.assessment = assessment;
     }
 
@@ -26,7 +26,7 @@ public class AssessmentResponseDTO {
         this.id = assessmentResponseEntity.getId();
         this.comment = assessmentResponseEntity.getComment();
         this.createdAt = assessmentResponseEntity.getCreatedAt();
-        this.restaurant = new RestaurantDTO(assessmentResponseEntity.getRestaurant());
+        this.legalEntity = new LegalEntityDTO(assessmentResponseEntity.getLegalEntity());
         this.assessment = new AssessmentDTO(assessmentResponseEntity.getAssessment());
     }
 
@@ -54,12 +54,12 @@ public class AssessmentResponseDTO {
         this.createdAt = createdAt;
     }
 
-    public RestaurantDTO getRestaurant() {
-        return restaurant;
+    public LegalEntityDTO getLegalEntity() {
+        return legalEntity;
     }
 
-    public void setRestaurant(RestaurantDTO restaurant) {
-        this.restaurant = restaurant;
+    public void setLegalEntity(LegalEntityDTO legalEntity) {
+        this.legalEntity = legalEntity;
     }
 
     public AssessmentDTO getAssessment() {

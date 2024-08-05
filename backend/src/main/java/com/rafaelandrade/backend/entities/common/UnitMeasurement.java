@@ -4,7 +4,9 @@ public enum UnitMeasurement {
     ML(0),
     L(1),
     G(2),
-    KG(3);
+    KG(3),
+    MG(4),
+    NA(5);
 
     private int code;
 

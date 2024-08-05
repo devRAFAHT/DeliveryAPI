@@ -3,6 +3,7 @@ package com.rafaelandrade.backend.dto;
 import com.rafaelandrade.backend.entities.Bag;
 import com.rafaelandrade.backend.entities.Dish;
 import com.rafaelandrade.backend.entities.Drink;
+import com.rafaelandrade.backend.entities.Item;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,8 +16,7 @@ public class BagDTO {
     private Integer quantityOfItems;
     private BigDecimal totalPrice;
     private BigDecimal discount;
-    private List<DishDTO> dishes = new ArrayList<>();
-    private List<DrinkDTO> drinks = new ArrayList<>();
+    private List<ItemDTO> items = new ArrayList<>();
 
     public BagDTO(){
     }
@@ -32,10 +32,9 @@ public class BagDTO {
         this.discount = bagEntity.getDiscount();
     }
 
-    public BagDTO (Bag bagEntity, Set<Dish> dishes, Set<Drink> drinks){
+    public BagDTO(Bag bagEntity, Set<Item> items) {
         this(bagEntity);
-        dishes.forEach(dish -> this.getDishes().add(new DishDTO(dish)));
-        drinks.forEach(drink -> this.getDrinks().add(new DrinkDTO(drink)));
+        items.forEach(item -> this.getItems().add(new ItemDTO(item)));
     }
 
     public Long getId() {
@@ -70,11 +69,7 @@ public class BagDTO {
         this.discount = discount;
     }
 
-    public List<DishDTO> getDishes() {
-        return dishes;
-    }
-
-    public List<DrinkDTO> getDrinks() {
-        return drinks;
+    public List<ItemDTO> getItems() {
+        return items;
     }
 }

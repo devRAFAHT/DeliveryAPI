@@ -1,8 +1,7 @@
 package com.rafaelandrade.backend.dto;
 
 import com.rafaelandrade.backend.entities.common.OrderStatus;
-import com.rafaelandrade.backend.entities.Dish;
-import com.rafaelandrade.backend.entities.Drink;
+import com.rafaelandrade.backend.entities.Item;
 import com.rafaelandrade.backend.entities.Order;
 
 import java.math.BigDecimal;
@@ -24,21 +23,21 @@ public class OrderDTO {
     private String specialRequest;
     private OrderStatus orderStatus;
     private UserDTO client;
-    private RestaurantDTO restaurant;
-    private List<DishDTO> dishes = new ArrayList<>();
-    private List<DrinkDTO> drinks = new ArrayList<>();
+    private LegalEntityDTO legalEntity;
+    private List<ItemDTO> items = new ArrayList<>();
 
-    public OrderDTO(){
+    public OrderDTO() {
     }
 
-    public OrderDTO(Long id, BigDecimal deliveryFee, String specialRequest, UserDTO client, RestaurantDTO restaurant) {
+    public OrderDTO(Long id, BigDecimal deliveryFee, String specialRequest, UserDTO client, LegalEntityDTO legalEntity) {
         this.id = id;
         this.deliveryFee = deliveryFee;
         this.specialRequest = specialRequest;
         this.client = client;
+        this.legalEntity = legalEntity;
     }
 
-    public OrderDTO(Order orderEntity){
+    public OrderDTO(Order orderEntity) {
         this.id = orderEntity.getId();
         this.createdAt = orderEntity.getCreatedAt();
         this.canceledAt = orderEntity.getCanceledAt();
@@ -49,13 +48,12 @@ public class OrderDTO {
         this.specialRequest = orderEntity.getSpecialRequest();
         this.orderStatus = orderEntity.getOrderStatus();
         this.client = new UserDTO(orderEntity.getClient());
-        this.restaurant = new RestaurantDTO(orderEntity.getRestaurant());
+        this.legalEntity = new LegalEntityDTO(orderEntity.getLegalEntity());
     }
 
-    public OrderDTO(Order orderEntity, Set<Dish> dishes, Set<Drink> drinks){
+    public OrderDTO(Order orderEntity, Set<Item> items) {
         this(orderEntity);
-        dishes.forEach(dish -> this.getDishes().add(new DishDTO(dish)));
-        drinks.forEach(drink -> this.getDrinks().add(new DrinkDTO(drink)));
+        items.forEach(item -> this.getItems().add(new ItemDTO(item)));
     }
 
     public Long getId() {
@@ -138,19 +136,15 @@ public class OrderDTO {
         this.client = client;
     }
 
-    public RestaurantDTO getRestaurant() {
-        return restaurant;
+    public LegalEntityDTO getLegalEntity() {
+        return legalEntity;
     }
 
-    public void setRestaurant(RestaurantDTO restaurant) {
-        this.restaurant = restaurant;
+    public void setLegalEntity(LegalEntityDTO legalEntity) {
+        this.legalEntity = legalEntity;
     }
 
-    public List<DishDTO> getDishes() {
-        return dishes;
-    }
-
-    public List<DrinkDTO> getDrinks() {
-        return drinks;
+    public List<ItemDTO> getItems() {
+        return items;
     }
 }

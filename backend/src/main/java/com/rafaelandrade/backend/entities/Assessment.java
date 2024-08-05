@@ -2,12 +2,16 @@ package com.rafaelandrade.backend.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
 
 @Entity
 @Table(name = "tb_assessment")
-public class Assessment {
+public class Assessment implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,16 +26,12 @@ public class Assessment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
+    @JoinColumn(name = "legal_entity_id")
+    private LegalEntity legalEntity;
 
     @ManyToOne()
-    @JoinColumn(name = "dish_id", nullable = true)
-    private Dish dish;
-
-    @ManyToOne()
-    @JoinColumn(name = "drink_id", nullable = true)
-    private Drink drink;
+    @JoinColumn(name = "item_id", nullable = true)
+    private Item item;
 
     @ElementCollection
     @CollectionTable(name = "tb_assessment_update_history", joinColumns = @JoinColumn(name = "assessment_id"))
@@ -45,16 +45,15 @@ public class Assessment {
     public Assessment(){
     }
 
-    public Assessment(Long id, String comment, Instant createdAt, Instant updatedAt, Integer points, User user, Restaurant restaurant, Dish dish, Drink drink) {
+    public Assessment(Long id, String comment, Instant createdAt, Instant updatedAt, Integer points, User user, LegalEntity legalEntity, Item item) {
         this.id = id;
         this.comment = comment;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.points = points;
         this.user = user;
-        this.restaurant = restaurant;
-        this.dish = dish;
-        this.drink = drink;
+        this.legalEntity = legalEntity;
+        this.item = item;
     }
 
     public Long getId() {
@@ -105,28 +104,24 @@ public class Assessment {
         this.user = user;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public LegalEntity getLegalEntity() {
+        return legalEntity;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setLegalEntity(LegalEntity legalEntity) {
+        this.legalEntity = legalEntity;
     }
 
-    public Dish getDish() {
-        return dish;
+    public Item getItem() {
+        return item;
     }
 
-    public void setDish(Dish dish) {
-        this.dish = dish;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
-    public Drink getDrink() {
-        return drink;
-    }
-
-    public void setDrink(Drink drink) {
-        this.drink = drink;
+    public void setAssessmentResponses(Set<AssessmentResponse> assessmentResponses) {
+        this.assessmentResponses = assessmentResponses;
     }
 
     public Map<Instant, String> getUpdateHistory() {

@@ -1,13 +1,12 @@
 package com.rafaelandrade.backend.services;
 
-import com.rafaelandrade.backend.dto.DishDTO;
-import com.rafaelandrade.backend.dto.DrinkDTO;
+import com.rafaelandrade.backend.dto.ItemDTO;
 import com.rafaelandrade.backend.dto.MenuDTO;
-import com.rafaelandrade.backend.entities.Dish;
-import com.rafaelandrade.backend.entities.Drink;
+import com.rafaelandrade.backend.entities.Item;
 import com.rafaelandrade.backend.entities.Menu;
 import com.rafaelandrade.backend.repositories.DishRepository;
 import com.rafaelandrade.backend.repositories.DrinkRepository;
+import com.rafaelandrade.backend.repositories.ItemRepository;
 import com.rafaelandrade.backend.repositories.MenuRepository;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
@@ -25,34 +24,31 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
 
-    private final DishRepository dishRepository;
+    private final ItemRepository itemRepository;
 
-    private final DrinkRepository drinkRepository;
-
-    public MenuService(MenuRepository menuRepository, DishRepository dishRepository, DrinkRepository drinkRepository) {
+    public MenuService(MenuRepository menuRepository, DishRepository dishRepository, DrinkRepository drinkRepository, ItemRepository itemRepository) {
         this.menuRepository = menuRepository;
-        this.dishRepository = dishRepository;
-        this.drinkRepository = drinkRepository;
+        this.itemRepository = itemRepository;
     }
 
     @Transactional(readOnly = true)
     public Page<MenuDTO> findAll(Pageable pageable) {
         Page<Menu> menus = menuRepository.findAll(pageable);
-        return menus.map(menu -> new MenuDTO(menu, menu.getDishes(), menu.getDrinks()));
+        return menus.map(menu -> new MenuDTO(menu, menu.getItems()));
     }
 
     @Transactional(readOnly = true)
     public MenuDTO findByCategory(String name) throws ResourceNotFoundException {
         Optional<Menu> menuObj = menuRepository.findByCategory(name);
         Menu menuEntity = menuObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new MenuDTO(menuEntity, menuEntity.getDishes(), menuEntity.getDrinks());
+        return new MenuDTO(menuEntity, menuEntity.getItems());
     }
 
     @Transactional(readOnly = true)
     public MenuDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Menu> menuObj = menuRepository.findById(id);
         Menu menuEntity = menuObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new MenuDTO(menuEntity, menuEntity.getDishes(), menuEntity.getDrinks());
+        return new MenuDTO(menuEntity, menuEntity.getItems());
     }
 
     @Transactional
@@ -60,7 +56,7 @@ public class MenuService {
         Menu menuEntity = new Menu();
         copyDtoToEntity(menuDTO, menuEntity);
         menuEntity = menuRepository.save(menuEntity);
-        return new MenuDTO(menuEntity, menuEntity.getDishes(), menuEntity.getDrinks());
+        return new MenuDTO(menuEntity, menuEntity.getItems());
     }
 
     @Transactional
@@ -69,7 +65,7 @@ public class MenuService {
             Menu menuEntity = menuRepository.getReferenceById(id);
             copyDtoToEntity(menuDTO, menuEntity);
             menuEntity = menuRepository.save(menuEntity);
-            return new MenuDTO(menuEntity, menuEntity.getDishes(), menuEntity.getDrinks());
+            return new MenuDTO(menuEntity, menuEntity.getItems());
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id not found: " + id);
         }
@@ -93,26 +89,14 @@ public class MenuService {
         menuEntity.setCategory(menuDTO.getCategory());
         menuEntity.setSaleStatus(menuDTO.getSaleStatus());
 
-        menuEntity.getDishes().clear();
-        for(DishDTO dishDTO : menuDTO.getDishes()){
-            Optional<Dish> dishObj = dishRepository.findById(dishDTO.getId());
-            dishObj.orElseThrow(() -> new ResourceNotFoundException("Dish with id " + dishDTO.getId() + " not found."));
-            Dish dish = dishObj.get();
-            dish.setSaleStatus(menuDTO.getSaleStatus());
-            menuEntity.getDishes().add(dish);
+        menuEntity.getItems().clear();
+        for (ItemDTO itemDTO : menuDTO.getItems()) {
+            Optional<Item> itemObj = itemRepository.findById(itemDTO.getId());
+            itemObj.orElseThrow(() -> new ResourceNotFoundException("Item with id " + itemDTO.getId() + " not found."));
+            Item item = itemObj.get();
+            menuEntity.getItems().add(item);
 
-            dish.setMenu(menuEntity);
+            item.setMenu(menuEntity);
         }
-
-        menuEntity.getDrinks().clear();
-        for(DrinkDTO drinkDTO : menuDTO.getDrinks()){
-            Optional<Drink> drinkObj = drinkRepository.findById(drinkDTO.getId());
-            drinkObj.orElseThrow(() -> new ResourceNotFoundException("Drink with id " + drinkDTO.getId() + " not found."));
-            Drink drink = drinkObj.get();
-            menuEntity.getDrinks().add(drink);
-
-            drink.setMenu(menuEntity);
-        }
-
     }
 }

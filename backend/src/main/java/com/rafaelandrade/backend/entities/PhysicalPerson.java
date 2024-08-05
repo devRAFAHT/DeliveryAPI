@@ -5,13 +5,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToMany;
 
+import java.io.Serial;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @MappedSuperclass
-public class PhysicalPerson extends Person{
+public abstract class PhysicalPerson extends Person{
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String firstName;
     private String lastName;

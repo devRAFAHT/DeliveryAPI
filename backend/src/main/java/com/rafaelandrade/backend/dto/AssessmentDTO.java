@@ -5,9 +5,7 @@ import com.rafaelandrade.backend.entities.Assessment;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AssessmentDTO implements Serializable {
@@ -20,21 +18,19 @@ public class AssessmentDTO implements Serializable {
     private Instant updatedAt;
     private Integer points;
     private UserDTO user;
-    private RestaurantDTO restaurant;
-    private DishDTO dish;
-    private DrinkDTO drink;
+    private LegalEntityDTO legalEntity;
+    private ItemDTO item;
     private Map<Instant, String> updateHistory = new HashMap<>();
 
-    public AssessmentDTO(){
+    public AssessmentDTO() {
     }
 
-    public AssessmentDTO(Long id, String comment, Integer points, UserDTO user, DishDTO dish, DrinkDTO drink) {
+    public AssessmentDTO(Long id, String comment, Integer points, UserDTO user, ItemDTO item) {
         this.id = id;
         this.comment = comment;
         this.points = points;
         this.user = user;
-        this.dish = dish;
-        this.drink = drink;
+        this.item = item;
     }
 
     public AssessmentDTO(Assessment assessmentEntity) {
@@ -44,10 +40,9 @@ public class AssessmentDTO implements Serializable {
         this.updatedAt = assessmentEntity.getUpdatedAt();
         this.points = assessmentEntity.getPoints();
         this.user = new UserDTO(assessmentEntity.getUser());
-        this.restaurant = new RestaurantDTO(assessmentEntity.getRestaurant());
+        this.legalEntity = new LegalEntityDTO(assessmentEntity.getLegalEntity()); // Alterado para LegalEntityDTO
         this.updateHistory = (assessmentEntity.getUpdateHistory() != null) ? new HashMap<>(assessmentEntity.getUpdateHistory()) : new HashMap<>();
-        this.dish = (assessmentEntity.getDish() != null) ? new DishDTO(assessmentEntity.getDish()) : null;
-        this.drink = (assessmentEntity.getDrink() != null) ? new DrinkDTO(assessmentEntity.getDrink()) : null;
+        this.item = (assessmentEntity.getItem() != null) ? new ItemDTO(assessmentEntity.getItem()) : null;  // Alterado para ItemDTO
     }
 
     public Long getId() {
@@ -98,31 +93,27 @@ public class AssessmentDTO implements Serializable {
         this.user = user;
     }
 
-    public RestaurantDTO getRestaurant() {
-        return restaurant;
+    public LegalEntityDTO getLegalEntity() {
+        return legalEntity;
     }
 
-    public void setRestaurant(RestaurantDTO restaurant) {
-        this.restaurant = restaurant;
+    public void setLegalEntity(LegalEntityDTO legalEntity) {
+        this.legalEntity = legalEntity;
     }
 
-    public DishDTO getDish() {
-        return dish;
+    public ItemDTO getItem() {
+        return item;
     }
 
-    public void setDish(DishDTO dish) {
-        this.dish = dish;
-    }
-
-    public DrinkDTO getDrink() {
-        return drink;
-    }
-
-    public void setDrink(DrinkDTO drink) {
-        this.drink = drink;
+    public void setItem(ItemDTO item) {
+        this.item = item;
     }
 
     public Map<Instant, String> getUpdateHistory() {
         return updateHistory;
+    }
+
+    public void setUpdateHistory(Map<Instant, String> updateHistory) {
+        this.updateHistory = updateHistory;
     }
 }

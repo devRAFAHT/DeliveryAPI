@@ -9,12 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @MappedSuperclass
-public class Person implements Serializable {
+public abstract class Person implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String email;
     private String password;

@@ -21,31 +21,21 @@ import java.util.Optional;
 public class UserService {
 
     private final BagRepository bagRepository;
-
     private final UserRepository repository;
-
     private final RoleRepository roleRepository;
-
     private final AddressRepository addressRepository;
-
-    private final RestaurantRepository restaurantRepository;
-
-    private final DishRepository dishRepository;
-
-    private final DrinkRepository drinkRepository;
-
+    private final LegalEntityRepository legalEntityRepository; // Changed from RestaurantRepository
+    private final ItemRepository itemRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
     private final UserRepository userRepository;
 
-    public UserService(BagRepository bagRepository, UserRepository repository, RoleRepository roleRepository, AddressRepository addressRepository, RestaurantRepository restaurantRepository, DishRepository dishRepository, DrinkRepository drinkRepository, BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserService(BagRepository bagRepository, UserRepository repository, RoleRepository roleRepository, AddressRepository addressRepository, LegalEntityRepository legalEntityRepository, ItemRepository itemRepository, BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.bagRepository = bagRepository;
         this.repository = repository;
         this.roleRepository = roleRepository;
         this.addressRepository = addressRepository;
-        this.restaurantRepository = restaurantRepository;
-        this.dishRepository = dishRepository;
-        this.drinkRepository = drinkRepository;
+        this.legalEntityRepository = legalEntityRepository; // Changed from restaurantRepository
+        this.itemRepository = itemRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
@@ -53,21 +43,21 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<UserDTO> findAllPaged(Pageable pageable){
         Page<User> list = repository.findAll(pageable);
-        return list.map(userEntity -> new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks()));
+        return list.map(userEntity -> new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoriteEstablishments(), userEntity.getFavoritesItems())); // Changed from getFavoritesRestaurants to getFavoriteEstablishments
     }
 
     @Transactional(readOnly = true)
     public UserDTO findById(Long id) throws ResourceNotFoundException {
         Optional<User> obj = repository.findById(id);
         User userEntity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
+        return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoriteEstablishments(), userEntity.getFavoritesItems()); // Changed from getFavoritesRestaurants to getFavoriteEstablishments
     }
 
     @Transactional(readOnly = true)
     public UserDTO findByUserName(String username) throws ResourceNotFoundException {
         Optional<User> userObj = repository.findByUsername(username);
         User userEntity = userObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
+        return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoriteEstablishments(), userEntity.getFavoritesItems()); // Changed from getFavoritesRestaurants to getFavoriteEstablishments
     }
 
     @Transactional
@@ -78,13 +68,12 @@ public class UserService {
         userEntity.setPassword(passwordEncoder.encode(userInsertDTO.getPassword()));
 
         Bag bag = new Bag(0, BigDecimal.valueOf(0), BigDecimal.valueOf(0));
-        bag.getDishes().clear();
-        bag.getDrinks().clear();
+        bag.getItems().clear();
         bag = bagRepository.save(bag);
         userEntity.setBag(bag);
 
         userEntity = repository.save(userEntity);
-        return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
+        return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoriteEstablishments(), userEntity.getFavoritesItems()); // Changed from getFavoritesRestaurants to getFavoriteEstablishments
     }
 
     @Transactional
@@ -94,21 +83,20 @@ public class UserService {
             copyDtoToEntity(userDTO, userEntity);
             userEntity.setUpdatedAt(Instant.now());
             userEntity = repository.save(userEntity);
-            return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoritesRestaurants(), userEntity.getFavoritesDishes(), userEntity.getFavoritesDrinks());
-        }catch (EntityNotFoundException e){
+            return new UserDTO(userEntity, userEntity.getAddresses(), userEntity.getFavoriteEstablishments(), userEntity.getFavoritesItems()); // Changed from getFavoritesRestaurants to getFavoriteEstablishments
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
         }
     }
 
     public void delete(Long id) throws DatabaseException, ResourceNotFoundException {
-        if(!userRepository.existsById(id)){
+        if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
 
         try {
             userRepository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
     }
@@ -133,33 +121,25 @@ public class UserService {
         }
 
         userEntity.getAddresses().clear();
-        for(AddressDTO addressDTO : userDTO.getAddresses()){
+        for (AddressDTO addressDTO : userDTO.getAddresses()) {
             Optional<Address> addressObj = addressRepository.findById(addressDTO.getId());
             addressObj.orElseThrow(() -> new ResourceNotFoundException("Address with id " + addressDTO.getId() + " not found."));
             Address address = addressObj.get();
             userEntity.getAddresses().add(address);
         }
 
-        userEntity.getFavoritesRestaurants().clear();
-        for (RestaurantDTO restaurantDTO : userDTO.getFavoritesRestaurants()) {
-            Optional<Restaurant> restaurantObj = restaurantRepository.findById(restaurantDTO.getId());
-            Restaurant restaurant = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Restaurant with id " + restaurantDTO.getId() + " not found."));
-            userEntity.getFavoritesRestaurants().add(restaurant);
+        userEntity.getFavoriteEstablishments().clear(); // Changed from getFavoritesRestaurants
+        for (LegalEntityDTO legalEntityDTO : userDTO.getFavoriteEstablishments()) { // Changed from RestaurantDTO to LegalEntityDTO
+            Optional<LegalEntity> legalEntityObj = legalEntityRepository.findById(legalEntityDTO.getId());
+            LegalEntity legalEntity = legalEntityObj.orElseThrow(() -> new ResourceNotFoundException("LegalEntity with id " + legalEntityDTO.getId() + " not found."));
+            userEntity.getFavoriteEstablishments().add(legalEntity); // Changed from addRestaurant to addLegalEntity
         }
 
-        userEntity.getFavoritesDishes().clear();
-        for (DishDTO dishDTO : userDTO.getFavoritesDishes()) {
-            Optional<Dish> dishObj = dishRepository.findById(dishDTO.getId());
-            Dish dish = dishObj.orElseThrow(() -> new ResourceNotFoundException("Dish with id " + dishDTO.getId() + " not found."));
-            userEntity.getFavoritesDishes().add(dish);
+        userEntity.getFavoritesItems().clear();
+        for (ItemDTO itemDTO : userDTO.getFavoritesItems()) {
+            Optional<Item> itemObj = itemRepository.findById(itemDTO.getId());
+            Item item = itemObj.orElseThrow(() -> new ResourceNotFoundException("Item with id " + itemDTO.getId() + " not found."));
+            userEntity.getFavoritesItems().add(item);
         }
-
-        userEntity.getFavoritesDrinks().clear();
-        for (DrinkDTO drinkDTO : userDTO.getFavoritesDrinks()) {
-            Optional<Drink> drinkObj = drinkRepository.findById(drinkDTO.getId());
-            Drink drink = drinkObj.orElseThrow(() -> new ResourceNotFoundException("Drink with id " + drinkDTO.getId() + " not found."));
-            userEntity.getFavoritesDrinks().add(drink);
-        }
-
     }
 }

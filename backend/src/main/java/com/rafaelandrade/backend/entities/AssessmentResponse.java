@@ -2,12 +2,16 @@ package com.rafaelandrade.backend.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_assessment_response")
-public class AssessmentResponse {
+public class AssessmentResponse implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +20,8 @@ public class AssessmentResponse {
     private Instant createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
+    @JoinColumn(name = "legal_entity_id")
+    private LegalEntity legalEntity;
 
     @ManyToOne
     @JoinColumn(name = "assessment_id")
@@ -26,12 +30,11 @@ public class AssessmentResponse {
     public AssessmentResponse(){
     }
 
-    public AssessmentResponse(Long id, String comment, Instant createdAt, Restaurant restaurant, Assessment assessment) {
+    public AssessmentResponse(Long id, String comment, Instant createdAt, LegalEntity legalEntity) {
         this.id = id;
         this.comment = comment;
         this.createdAt = createdAt;
-        this.restaurant = restaurant;
-        this.assessment = assessment;
+        this.legalEntity = legalEntity;
     }
 
     public Long getId() {
@@ -58,12 +61,12 @@ public class AssessmentResponse {
         this.createdAt = createdAt;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public LegalEntity getLegalEntity() {
+        return legalEntity;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setLegalEntity(LegalEntity legalEntity) {
+        this.legalEntity = legalEntity;
     }
 
     public Assessment getAssessment() {

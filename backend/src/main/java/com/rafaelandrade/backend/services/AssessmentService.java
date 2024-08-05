@@ -23,17 +23,15 @@ import java.util.Optional;
 public class AssessmentService {
 
     private final AssessmentRepository assessmentRepository;
-    private final DishRepository dishRepository;
-    private final DrinkRepository drinkRepository;
+    private final ItemRepository itemRepository;
     private final UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
+    private final LegalEntityRepository legalEntityRepository;
 
-    public AssessmentService(AssessmentRepository assessmentRepository, DishRepository dishRepository, DrinkRepository drinkRepository, UserRepository userRepository, RestaurantRepository restaurantRepository) {
+    public AssessmentService(AssessmentRepository assessmentRepository, ItemRepository itemRepository, UserRepository userRepository, LegalEntityRepository legalEntityRepository) {
         this.assessmentRepository = assessmentRepository;
-        this.dishRepository = dishRepository;
-        this.drinkRepository = drinkRepository;
+        this.itemRepository = itemRepository;
         this.userRepository = userRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.legalEntityRepository = legalEntityRepository;
     }
 
     @Transactional(readOnly = true)
@@ -78,21 +76,20 @@ public class AssessmentService {
             assessmentEntity.setComment(assessmentDTO.getComment());
             assessmentEntity = assessmentRepository.save(assessmentEntity);
             return new AssessmentDTO(assessmentEntity);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
     }
 
     @Transactional
     public void delete(Long id) throws ResourceNotFoundException, DatabaseException {
-        if(!assessmentRepository.existsById(id)){
+        if (!assessmentRepository.existsById(id)) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
 
         try {
             assessmentRepository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
     }
@@ -108,34 +105,21 @@ public class AssessmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + assessmentDTO.getUser().getId() + " not found."));
         assessmentEntity.setUser(user);
 
-        if(assessmentDTO.getDish() != null && assessmentDTO.getDrink() != null){
-            throw new InvalidInputException("Both dish and drink specified in DTO, but only one should be provided.");
-        }else if(assessmentDTO.getDish() == null && assessmentDTO.getDrink() == null) {
-            throw new InvalidInputException("Neither dish nor drink specified in DTO.");
+        if (assessmentDTO.getItem() == null) {
+            throw new InvalidInputException("Item not specified in DTO.");
         }
 
-        if (assessmentDTO.getDrink() != null) {
-            Drink drink = drinkRepository.findById(assessmentDTO.getDrink().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Drink with id " + assessmentDTO.getDrink().getId() + " not found."));
-            assessmentEntity.setDrink(drink);
+        Item item = itemRepository.findById(assessmentDTO.getItem().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Item with id " + assessmentDTO.getItem().getId() + " not found."));
+        assessmentEntity.setItem(item);
 
-            Restaurant restaurant = restaurantRepository.findById(drink.getMenu().getRestaurant().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Restaurant with id " + drink.getMenu().getRestaurant().getId() + " not found."));
-            assessmentEntity.setRestaurant(restaurant);
+        LegalEntity legalEntity = legalEntityRepository.findById(item.getMenu().getLegalEntity().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("LegalEntity with id " + item.getMenu().getLegalEntity().getId() + " not found."));
+        assessmentEntity.setLegalEntity(legalEntity);
 
-        } else if (assessmentDTO.getDish() != null) {
-            Dish dish = dishRepository.findById(assessmentDTO.getDish().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Dish with id " + assessmentDTO.getDish().getId() + " not found."));
-            assessmentEntity.setDish(dish);
-
-            Restaurant restaurant = restaurantRepository.findById(dish.getMenu().getRestaurant().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Restaurant with id " + dish.getMenu().getRestaurant().getId() + " not found."));
-            assessmentEntity.setRestaurant(restaurant);
-        }
-
-        for(Order order : user.getOrderHitory()){
-            if(!order.getDrinks().contains(assessmentEntity.getDrink()) || !order.getDishes().contains(assessmentEntity.getDish())){
-                if(order.getOrderStatus() != OrderStatus.ORDER_DELIVERED){
+        for (Order order : user.getOrderHitory()) {
+            if (!order.getItems().contains(assessmentEntity.getItem())) {
+                if (order.getOrderStatus() != OrderStatus.ORDER_DELIVERED) {
                     throw new InvalidInputException("The item has not been consumed by the user and cannot be evaluated.");
                 }
             }

@@ -1,5 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
+import com.rafaelandrade.backend.entities.Item;
 import com.rafaelandrade.backend.entities.common.SaleStatus;
 import com.rafaelandrade.backend.entities.Dish;
 import com.rafaelandrade.backend.entities.Drink;
@@ -19,8 +20,7 @@ public class MenuDTO implements Serializable {
     private String category;
     private SaleStatus saleStatus;
 
-    private List<DishDTO> dishes = new ArrayList<>();
-    private List<DrinkDTO> drinks = new ArrayList<>();
+    private List<ItemDTO> items = new ArrayList<>();
 
     public MenuDTO(){
     }
@@ -37,10 +37,9 @@ public class MenuDTO implements Serializable {
         this.saleStatus = menuEntity.getSaleStatus();
     }
 
-    public MenuDTO(Menu menuEntity, Set<Dish> dishes, Set<Drink> drinks){
+    public MenuDTO(Menu menuEntity, Set<Item> items){
         this(menuEntity);
-        dishes.forEach(dish -> this.dishes.add(new DishDTO(dish)));
-        drinks.forEach(drink -> this.drinks.add(new DrinkDTO(drink)));
+        items.forEach(item -> this.items.add(new ItemDTO(item)));
     }
 
     public Long getId() {
@@ -67,11 +66,7 @@ public class MenuDTO implements Serializable {
         this.saleStatus = saleStatus;
     }
 
-    public List<DishDTO> getDishes() {
-        return dishes;
-    }
-
-    public List<DrinkDTO> getDrinks() {
-        return drinks;
+    public List<ItemDTO> getItems() {
+        return items;
     }
 }

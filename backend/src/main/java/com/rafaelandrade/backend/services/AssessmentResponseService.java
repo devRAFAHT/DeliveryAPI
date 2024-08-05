@@ -1,6 +1,7 @@
 package com.rafaelandrade.backend.services;
 
 import com.rafaelandrade.backend.dto.AssessmentResponseDTO;
+import com.rafaelandrade.backend.dto.LegalEntityDTO;
 import com.rafaelandrade.backend.entities.*;
 import com.rafaelandrade.backend.repositories.*;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
@@ -20,17 +21,14 @@ import java.util.Optional;
 public class AssessmentResponseService {
 
     private final AssessmentResponseRepository assessmentResponseRepository;
-
-    private final RestaurantRepository restaurantRepository;
-
+    private final LegalEntityRepository legalEntityRepository;
     private final AssessmentRepository assessmentRepository;
 
-    public AssessmentResponseService(AssessmentResponseRepository assessmentResponseRepository, RestaurantRepository restaurantRepository, AssessmentRepository assessmentRepository) {
+    public AssessmentResponseService(AssessmentResponseRepository assessmentResponseRepository, LegalEntityRepository legalEntityRepository, AssessmentRepository assessmentRepository) {
         this.assessmentResponseRepository = assessmentResponseRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.legalEntityRepository = legalEntityRepository;
         this.assessmentRepository = assessmentRepository;
     }
-
 
     @Transactional(readOnly = true)
     public Page<AssessmentResponseDTO> findAll(Pageable pageable) {
@@ -61,21 +59,20 @@ public class AssessmentResponseService {
             copyDtoToEntity(assessmentResponseDTO, assessmentResponseEntity);
             assessmentResponseEntity = assessmentResponseRepository.save(assessmentResponseEntity);
             return new AssessmentResponseDTO(assessmentResponseEntity);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
     }
 
     @Transactional
     public void delete(Long id) throws ResourceNotFoundException, DatabaseException {
-        if(!assessmentResponseRepository.existsById(id)){
+        if (!assessmentResponseRepository.existsById(id)) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
 
         try {
             assessmentResponseRepository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
     }
@@ -83,18 +80,20 @@ public class AssessmentResponseService {
     private void copyDtoToEntity(AssessmentResponseDTO assessmentResponseDTO, AssessmentResponse assessmentResponseEntity) throws ResourceNotFoundException, InvalidInputException {
         assessmentResponseEntity.setComment(assessmentResponseDTO.getComment());
 
-        Assessment assessment = assessmentRepository.findById(assessmentResponseDTO.getAssessment().getId()).orElseThrow(() -> new ResourceNotFoundException("Assessment with id " + assessmentResponseDTO.getId() + " not found."));
+        Assessment assessment = assessmentRepository.findById(assessmentResponseDTO.getAssessment().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Assessment with id " + assessmentResponseDTO.getAssessment().getId() + " not found."));
         assessmentResponseEntity.setAssessment(assessment);
 
-        Restaurant restaurant = restaurantRepository.findById(assessmentResponseDTO.getRestaurant().getId()).orElseThrow(() -> new ResourceNotFoundException("Restaurant with id " + assessmentResponseDTO.getRestaurant().getId() + " not found."));
+        LegalEntity legalEntity = legalEntityRepository.findById(assessmentResponseDTO.getLegalEntity().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Legal entity with id " + assessmentResponseDTO.getLegalEntity().getId() + " not found."));
 
-        for(Menu menu : restaurant.getMenus()){
-            if(menu.getDrinks().contains(assessment.getDrink()) || menu.getDishes().contains(assessment.getDish())){
-                assessmentResponseEntity.setRestaurant(restaurant);
-                break;
-            }else{
-                throw new InvalidInputException("A restaurant cannot respond to an evaluation of another restaurant.");
+        for (Menu menu : legalEntity.getMenus()) {
+            if (menu.getItems().contains(assessment.getItem())) {
+                assessmentResponseEntity.setLegalEntity(legalEntity);
+                return;
             }
         }
+
+        throw new InvalidInputException("A legal entity cannot respond to an evaluation of another legal entity.");
     }
 }

@@ -1,14 +1,11 @@
 package com.rafaelandrade.backend.services;
 
-import com.rafaelandrade.backend.dto.DishDTO;
-import com.rafaelandrade.backend.dto.DrinkDTO;
 import com.rafaelandrade.backend.dto.BagDTO;
-import com.rafaelandrade.backend.entities.Dish;
-import com.rafaelandrade.backend.entities.Drink;
+import com.rafaelandrade.backend.dto.ItemDTO;
 import com.rafaelandrade.backend.entities.Bag;
+import com.rafaelandrade.backend.entities.Item;
 import com.rafaelandrade.backend.repositories.BagRepository;
-import com.rafaelandrade.backend.repositories.DishRepository;
-import com.rafaelandrade.backend.repositories.DrinkRepository;
+import com.rafaelandrade.backend.repositories.ItemRepository;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
 import com.rafaelandrade.backend.services.util.CalculateDiscount;
@@ -27,27 +24,24 @@ public class BagService {
 
     private final BagRepository bagRepository;
 
-    private final DishRepository dishRepository;
+    private final ItemRepository itemRepository;
 
-    private final DrinkRepository drinkRepository;
-
-    public BagService(BagRepository bagRepository, DishRepository dishRepository, DrinkRepository drinkRepository) {
+    public BagService(BagRepository bagRepository, ItemRepository itemRepository) {
         this.bagRepository = bagRepository;
-        this.dishRepository = dishRepository;
-        this.drinkRepository = drinkRepository;
+        this.itemRepository = itemRepository;
     }
 
     @Transactional(readOnly = true)
     public Page<BagDTO> findAll(Pageable pageable) {
         Page<Bag> bags = bagRepository.findAll(pageable);
-        return bags.map(bag -> new BagDTO(bag, bag.getDishes(), bag.getDrinks()));
+        return bags.map(bag -> new BagDTO(bag, bag.getItems()));
     }
 
     @Transactional(readOnly = true)
     public BagDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Bag> bagObj = bagRepository.findById(id);
         Bag bagEntity = bagObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new BagDTO(bagEntity, bagEntity.getDishes(), bagEntity.getDrinks());
+        return new BagDTO(bagEntity, bagEntity.getItems());
     }
 
     @Transactional
@@ -55,7 +49,7 @@ public class BagService {
         Bag bagEntity = new Bag();
         copyDtoToEntity(bagDTO, bagEntity);
         bagEntity = bagRepository.save(bagEntity);
-        return new BagDTO(bagEntity, bagEntity.getDishes(), bagEntity.getDrinks());
+        return new BagDTO(bagEntity, bagEntity.getItems());
     }
 
     @Transactional
@@ -64,22 +58,21 @@ public class BagService {
             Bag bagEntity = bagRepository.getReferenceById(id);
             copyDtoToEntity(bagDTO, bagEntity);
             bagEntity = bagRepository.save(bagEntity);
-            return new BagDTO(bagEntity, bagEntity.getDishes(), bagEntity.getDrinks());
-        }catch (EntityNotFoundException e){
+            return new BagDTO(bagEntity, bagEntity.getItems());
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
     }
 
     @Transactional
     public void delete(Long id) throws ResourceNotFoundException, DatabaseException {
-        if(!bagRepository.existsById(id)){
+        if (!bagRepository.existsById(id)) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
 
         try {
             bagRepository.deleteById(id);
-        }
-        catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
     }
@@ -92,26 +85,14 @@ public class BagService {
         BigDecimal discount = BigDecimal.valueOf(0.00);
         BigDecimal totalPrice = BigDecimal.valueOf(0.00);
 
-        bagEntity.getDishes().clear();
-        for(DishDTO dishDTO : bagDTO.getDishes()){
-            Optional<Dish> dishObj = dishRepository.findById(dishDTO.getId());
-            dishObj.orElseThrow(() -> new ResourceNotFoundException("Dish with id " + dishDTO.getId() + " not found."));
-            Dish dish = dishObj.get();
-            bagEntity.getDishes().add(dish);
+        bagEntity.getItems().clear();
+        for (ItemDTO itemDTO : bagDTO.getItems()) {
+            Optional<Item> itemObj = itemRepository.findById(itemDTO.getId());
+            Item item = itemObj.orElseThrow(() -> new ResourceNotFoundException("Item with id " + itemDTO.getId() + " not found."));
+            bagEntity.getItems().add(item);
             quantity++;
-            discount = discount.add(CalculateDiscount.calculateDiscountInMoneyWithOriginalPriceAndCurrentPrice(dish.getOriginalPrice(), dish.getCurrentPrice()));
-            totalPrice = totalPrice.add(dish.getCurrentPrice());
-        }
-
-        bagEntity.getDrinks().clear();
-        for(DrinkDTO drinkDTO : bagDTO.getDrinks()){
-            Optional<Drink> drinkObj = drinkRepository.findById(drinkDTO.getId());
-            drinkObj.orElseThrow(() -> new ResourceNotFoundException("Drink with id " + drinkDTO.getId() + " not found."));
-            Drink drink = drinkObj.get();
-            bagEntity.getDrinks().add(drink);
-            quantity++;
-            discount = discount.add(CalculateDiscount.calculateDiscountInMoneyWithOriginalPriceAndCurrentPrice(drink.getOriginalPrice(), drink.getCurrentPrice()));
-            totalPrice = totalPrice.add(drink.getCurrentPrice());
+            discount = discount.add(CalculateDiscount.calculateDiscountInMoneyWithOriginalPriceAndCurrentPrice(item.getOriginalPrice(), item.getCurrentPrice()));
+            totalPrice = totalPrice.add(item.getCurrentPrice());
         }
 
         bagEntity.setQuantityOfItems(quantity);

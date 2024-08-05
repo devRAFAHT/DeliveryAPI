@@ -31,9 +31,8 @@ public class UserDTO implements Serializable {
     private BagDTO bag;
     private Set<RoleDTO> roles = new HashSet<>();
     private List<AddressDTO> addresses = new ArrayList<>();
-    private List<RestaurantDTO> favoritesRestaurants = new ArrayList<>();
-    private List<DishDTO> favoritesDishes = new ArrayList<>();
-    private List<DrinkDTO> favoritesDrinks = new ArrayList<>();
+    private List<LegalEntityDTO> favoriteEstablishments = new ArrayList<>();
+    private List<ItemDTO> favoritesItems = new ArrayList<>();
 
     public UserDTO(){
     }
@@ -75,12 +74,11 @@ public class UserDTO implements Serializable {
         userEntity.getRoles().forEach(role -> this.getRoles().add(new RoleDTO(role)));
     }
 
-    public UserDTO(User userEntity, Set<Address> addresses, Set<Restaurant> favoritesRestaurants, Set<Dish> favoritesDishes, Set<Drink> favoritesDrinks){
+    public UserDTO(User userEntity, Set<Address> addresses, Set<LegalEntity> favoriteEstablishments, Set<Item> favoritesItems) {
         this(userEntity);
         addresses.forEach(address -> this.getAddresses().add(new AddressDTO(address)));
-        favoritesDishes.forEach(dish -> this.getFavoritesDishes().add(new DishDTO(dish)));
-        favoritesRestaurants.forEach(restaurant -> this.getFavoritesRestaurants().add(new RestaurantDTO(restaurant)));
-        favoritesDrinks.forEach(drink -> this.getFavoritesDrinks().add(new DrinkDTO(drink)));
+        favoritesItems.forEach(item -> this.getFavoritesItems().add(new ItemDTO(item)));
+        favoriteEstablishments.forEach(legalEntity -> this.getFavoriteEstablishments().add(new LegalEntityDTO(legalEntity)));
     }
 
     public Long getId() {
@@ -211,15 +209,11 @@ public class UserDTO implements Serializable {
         return addresses;
     }
 
-    public List<RestaurantDTO> getFavoritesRestaurants() {
-        return favoritesRestaurants;
+    public List<LegalEntityDTO> getFavoriteEstablishments() {
+        return favoriteEstablishments;
     }
 
-    public List<DishDTO> getFavoritesDishes() {
-        return favoritesDishes;
-    }
-
-    public List<DrinkDTO> getFavoritesDrinks() {
-        return favoritesDrinks;
+    public List<ItemDTO> getFavoritesItems() {
+        return favoritesItems;
     }
 }

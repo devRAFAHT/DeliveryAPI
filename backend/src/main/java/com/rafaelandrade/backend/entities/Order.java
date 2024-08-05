@@ -3,6 +3,8 @@ package com.rafaelandrade.backend.entities;
 import com.rafaelandrade.backend.entities.common.OrderStatus;
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
@@ -12,7 +14,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
-public class Order {
+public class Order implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,28 +28,24 @@ public class Order {
     private BigDecimal totalPrice;
     private Duration estimatedDeliveryTime;
     private String specialRequest;
-    private OrderStatus orderStatus;
+    private Integer orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User client;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
+    @JoinColumn(name = "legal_entity_id")
+    private LegalEntity legalEntity;
 
     @ManyToMany
-    @JoinTable(name = "tb_order_dish", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "dish_id"))
-    private Set<Dish> dishes = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "tb_order_drink", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "drink_id"))
-    private Set<Drink> drinks = new HashSet<>();
+    @JoinTable(name = "tb_order_item", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
+    private Set<Item> items = new HashSet<>();
 
     public Order(){
     }
 
-    public Order(Long id, Instant createdAt, Instant canceledAt, BigDecimal subTotal, BigDecimal deliveryFee, BigDecimal totalPrice, Duration estimatedDeliveryTime, String specialRequest, OrderStatus orderStatus, User client, Restaurant restaurant) {
+    public Order(Long id, Instant createdAt, Instant canceledAt, BigDecimal subTotal, BigDecimal deliveryFee, BigDecimal totalPrice, Duration estimatedDeliveryTime, String specialRequest, OrderStatus orderStatus, User client, LegalEntity legalEntity) {
         this.id = id;
         this.createdAt = createdAt;
         this.canceledAt = canceledAt;
@@ -54,9 +54,9 @@ public class Order {
         this.totalPrice = totalPrice;
         this.estimatedDeliveryTime = estimatedDeliveryTime;
         this.specialRequest = specialRequest;
-        this.orderStatus = orderStatus;
+        setOrderStatus(orderStatus);
         this.client = client;
-        this.restaurant = restaurant;
+        this.legalEntity = legalEntity;
     }
 
     public Long getId() {
@@ -124,11 +124,13 @@ public class Order {
     }
 
     public OrderStatus getOrderStatus() {
-        return orderStatus;
+        return OrderStatus.valueOf(orderStatus);
     }
 
     public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
+        if (orderStatus != null) {
+            this.orderStatus = orderStatus.getCode();
+        }
     }
 
     public User getClient() {
@@ -139,20 +141,16 @@ public class Order {
         this.client = client;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public LegalEntity getLegalEntity() {
+        return legalEntity;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setLegalEntity(LegalEntity legalEntity) {
+        this.legalEntity = legalEntity;
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
-    }
-
-    public Set<Drink> getDrinks() {
-        return drinks;
+    public Set<Item> getItems() {
+        return items;
     }
 
     @Override

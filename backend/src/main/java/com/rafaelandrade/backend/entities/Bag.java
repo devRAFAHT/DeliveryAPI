@@ -3,6 +3,8 @@ package com.rafaelandrade.backend.entities;
 import com.rafaelandrade.backend.dto.BagDTO;
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,7 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_bag")
-public class Bag {
+public class Bag implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +27,8 @@ public class Bag {
     private BigDecimal discount;
 
     @ManyToMany
-    @JoinTable(name = "tb_bag_dish", joinColumns = @JoinColumn(name = "bag_id"), inverseJoinColumns = @JoinColumn(name = "dish_id"))
-    private Set<Dish> dishes = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "tb_bag_drink", joinColumns = @JoinColumn(name = "bag_id"), inverseJoinColumns = @JoinColumn(name = "drink_id"))
-    private Set<Drink> drinks = new HashSet<>();
+    @JoinTable(name = "tb_bag_item", joinColumns = @JoinColumn(name = "bag_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
+    private Set<Item> items = new HashSet<>();
 
     public Bag(){
     }
@@ -86,12 +86,8 @@ public class Bag {
         this.discount = discount;
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
-    }
-
-    public Set<Drink> getDrinks() {
-        return drinks;
+    public Set<Item> getItems() {
+        return items;
     }
 
     @Override

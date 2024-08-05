@@ -3,13 +3,17 @@ package com.rafaelandrade.backend.entities;
 import com.rafaelandrade.backend.entities.common.SaleStatus;
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "tb_menu")
-public class Menu {
+public class Menu implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,14 +22,11 @@ public class Menu {
     private Integer saleStatus;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
-    private Set<Dish> dishes = new HashSet<>();
-
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
-    private Set<Drink> drinks = new HashSet<>();
+    private Set<Item> items = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
+    @JoinColumn(name = "legal_entity_id")
+    private LegalEntity legalEntity;
 
     public Menu(){
     }
@@ -62,20 +63,16 @@ public class Menu {
         }
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
+    public Set<Item> getItems() {
+        return items;
     }
 
-    public Set<Drink> getDrinks() {
-        return drinks;
+    public LegalEntity getLegalEntity() {
+        return legalEntity;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setLegalEntity(LegalEntity legalEntity) {
+        this.legalEntity = legalEntity;
     }
 
     @Override

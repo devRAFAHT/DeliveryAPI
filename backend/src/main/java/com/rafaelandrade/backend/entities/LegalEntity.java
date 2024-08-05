@@ -3,14 +3,16 @@ package com.rafaelandrade.backend.entities;
 import com.rafaelandrade.backend.entities.common.OperatingHours;
 import jakarta.persistence.*;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-@MappedSuperclass
-public class LegalEntity extends Person{
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class LegalEntity extends Person{
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String taxIdentificationNumber;
     private String companyName;
@@ -26,9 +28,29 @@ public class LegalEntity extends Person{
     @JoinColumn(name="address_id")
     private Address address;
 
+    @OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Menu> menus = new HashSet<>();
+
+    @ManyToMany(mappedBy = "favoriteEstablishments")
+    private Set<User> favoriteBy = new HashSet<>();
+
+    @OneToMany(mappedBy = "legalEntity")
+    private Set<Order> orderHistory = new HashSet<>();
+
+    @OneToMany(mappedBy = "legalEntity")
+    private Set<Assessment> assessments = new HashSet<>();
+
+    @OneToMany(mappedBy = "legalEntity")
+    private Set<AssessmentResponse> assessmentResponses = new HashSet<>();
+
     @ElementCollection
     @CollectionTable(name = "tb_legal_entity_operating_hours", joinColumns = @JoinColumn(name = "legal_entity_id"))
     private List<OperatingHours> operatingHours = new ArrayList<>();
+
+    /*
+    private Double averageRating;
+    private Integer numberOfReviews;
+     */
 
     public LegalEntity(){
     }
@@ -122,6 +144,26 @@ public class LegalEntity extends Person{
 
     public List<OperatingHours> getOperatingHours() {
         return operatingHours;
+    }
+
+    public Set<Menu> getMenus() {
+        return menus;
+    }
+
+    public Set<User> getFavoriteBy() {
+        return favoriteBy;
+    }
+
+    public Set<Order> getOrderHistory() {
+        return orderHistory;
+    }
+
+    public Set<Assessment> getAssessments() {
+        return assessments;
+    }
+
+    public Set<AssessmentResponse> getAssessmentResponses() {
+        return assessmentResponses;
     }
 
     @Override
