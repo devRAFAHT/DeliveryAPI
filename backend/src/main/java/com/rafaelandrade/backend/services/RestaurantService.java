@@ -47,6 +47,8 @@ public class RestaurantService {
         for(Restaurant restaurant : restaurants){
             setIsOpen(restaurant);
             SetsAveragePrice(restaurant);
+            setsAverageRating(restaurant);
+            restaurant.setNumberOfReviews();
         }
 
         return restaurants.map(restaurant -> new RestaurantDTO(restaurant, restaurant.getMenus(), restaurant.getCategories(), restaurant.getOperatingHours()));
@@ -58,6 +60,8 @@ public class RestaurantService {
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         setIsOpen(restaurantEntity);
         SetsAveragePrice(restaurantEntity);
+        setsAverageRating(restaurantEntity);
+        restaurantEntity.setNumberOfReviews();
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
 
@@ -67,6 +71,8 @@ public class RestaurantService {
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         setIsOpen(restaurantEntity);
         SetsAveragePrice(restaurantEntity);
+        setsAverageRating(restaurantEntity);
+        restaurantEntity.setNumberOfReviews();
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
 
@@ -76,6 +82,8 @@ public class RestaurantService {
         copyDtoToEntity(restaurantDTO, restaurantEntity);
         setIsOpen(restaurantEntity);
         SetsAveragePrice(restaurantEntity);
+        setsAverageRating(restaurantEntity);
+        restaurantEntity.setNumberOfReviews();
         restaurantEntity = restaurantRepository.save(restaurantEntity);
         return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
     }
@@ -87,6 +95,8 @@ public class RestaurantService {
             copyDtoToEntity(restaurantDTO, restaurantEntity);
             setIsOpen(restaurantEntity);
             SetsAveragePrice(restaurantEntity);
+            setsAverageRating(restaurantEntity);
+            restaurantEntity.setNumberOfReviews();
             restaurantEntity = restaurantRepository.save(restaurantEntity);
             return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
         }catch (EntityNotFoundException e){
@@ -178,11 +188,9 @@ public class RestaurantService {
 
         for (Menu menu : restaurant.getMenus()) {
             for (Item item : menu.getItems()) {
-                // Adiciona o preço do item
                 priceOfAll = priceOfAll.add(item.getCurrentPrice());
                 quantityOfItems++;
 
-                // Verifica se o item é um prato (Dish) e se possui adicionais
                 if (item instanceof Dish) {
                     Dish dish = (Dish) item;
                     for (Additional additional : dish.getAdditional()) {
@@ -200,4 +208,22 @@ public class RestaurantService {
             restaurant.setAveragePrice(BigDecimal.valueOf(0.00));
         }
     }
+
+    private void setsAverageRating(Restaurant restaurant){
+        if (restaurant.getAssessments().isEmpty()) {
+            restaurant.setAverageRating(BigDecimal.ZERO);
+            return;
+        }
+
+        int totalValue = 0;
+
+        for (Assessment assessment : restaurant.getAssessments()) {
+            totalValue += assessment.getPoints();
+        }
+
+        BigDecimal averageRating = BigDecimal.valueOf(totalValue).divide(BigDecimal.valueOf(restaurant.getAssessments().size()), RoundingMode.HALF_UP);
+
+        restaurant.setAverageRating(averageRating);
+    }
+
 }

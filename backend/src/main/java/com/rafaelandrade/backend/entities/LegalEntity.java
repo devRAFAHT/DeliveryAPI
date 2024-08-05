@@ -23,6 +23,8 @@ public abstract class LegalEntity extends Person{
     private Integer estimatedDeliveryTime;
     @Column(precision = 5, scale = 2)
     private BigDecimal fixedDeliveryFee;
+    private Integer numberOfReviews;
+    private BigDecimal averageRating;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
@@ -47,15 +49,10 @@ public abstract class LegalEntity extends Person{
     @CollectionTable(name = "tb_legal_entity_operating_hours", joinColumns = @JoinColumn(name = "legal_entity_id"))
     private List<OperatingHours> operatingHours = new ArrayList<>();
 
-    /*
-    private Double averageRating;
-    private Integer numberOfReviews;
-     */
-
     public LegalEntity(){
     }
 
-    public LegalEntity(String taxIdentificationNumber, String companyName, String imgBackgroundUrl, BigDecimal averagePrice, Boolean isOpen, Integer estimatedDeliveryTime, BigDecimal fixedDeliveryFee, Address address) {
+    public LegalEntity(String taxIdentificationNumber, String companyName, String imgBackgroundUrl, BigDecimal averagePrice, Boolean isOpen, Integer estimatedDeliveryTime, BigDecimal fixedDeliveryFee, BigDecimal averageRating, Address address) {
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.companyName = companyName;
         this.imgBackgroundUrl = imgBackgroundUrl;
@@ -63,10 +60,12 @@ public abstract class LegalEntity extends Person{
         this.isOpen = isOpen;
         this.estimatedDeliveryTime = estimatedDeliveryTime;
         this.fixedDeliveryFee = fixedDeliveryFee;
+        setNumberOfReviews();
+        this.averageRating = averageRating;
         this.address = address;
     }
 
-    public LegalEntity(Long id, String email, String password, String dateOfBirth, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active, String taxIdentificationNumber, String companyName, String imgBackgroundUrl, BigDecimal averagePrice, Boolean isOpen, Integer estimatedDeliveryTime, BigDecimal fixedDeliveryFee, Address address) {
+    public LegalEntity(Long id, String email, String password, String dateOfBirth, String phoneNumber, String profilePictureUrl, String biography, Instant createdAt, Instant updatedAt, Boolean active, String taxIdentificationNumber, String companyName, String imgBackgroundUrl, BigDecimal averagePrice, Boolean isOpen, Integer estimatedDeliveryTime, BigDecimal fixedDeliveryFee, Integer numberOfReviews, BigDecimal averageRating, Address address) {
         super(id, email, password, dateOfBirth, phoneNumber, profilePictureUrl, biography, createdAt, updatedAt, active);
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.companyName = companyName;
@@ -75,6 +74,8 @@ public abstract class LegalEntity extends Person{
         this.isOpen = isOpen;
         this.estimatedDeliveryTime = estimatedDeliveryTime;
         this.fixedDeliveryFee = fixedDeliveryFee;
+        setNumberOfReviews();
+        this.averageRating = averageRating;
         this.address = address;
     }
 
@@ -140,6 +141,22 @@ public abstract class LegalEntity extends Person{
 
     public void setOpen(Boolean open) {
         isOpen = open;
+    }
+
+    public Integer getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public void setNumberOfReviews() {
+        this.numberOfReviews = getAssessments().size();
+    }
+
+    public BigDecimal getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(BigDecimal averageRating) {
+        this.averageRating = averageRating;
     }
 
     public List<OperatingHours> getOperatingHours() {

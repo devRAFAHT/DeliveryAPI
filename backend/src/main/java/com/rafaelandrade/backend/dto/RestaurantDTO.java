@@ -30,6 +30,8 @@ public class RestaurantDTO implements Serializable {
     private Boolean isOpen;
     private BigDecimal fixedDeliveryFee;
     private AddressDTO address;
+    private Integer numberOfReviews;
+    private BigDecimal averageRating;
     private List<MenuDTO> menus = new ArrayList<>();
     private List<RestaurantCategoryDTO> categories = new ArrayList<>();
     private List<OperatingHours> operatingHours = new ArrayList<>();
@@ -67,6 +69,8 @@ public class RestaurantDTO implements Serializable {
         this.isOpen = restaurantEntity.getOpen();
         this.fixedDeliveryFee = restaurantEntity.getFixedDeliveryFee();
         this.address = new AddressDTO(restaurantEntity.getAddress());
+        this.numberOfReviews = restaurantEntity.getNumberOfReviews();
+        this.averageRating = restaurantEntity.getAverageRating();
     }
 
     public RestaurantDTO(Restaurant restaurantEntity, Set<Menu> menus, Set<RestaurantCategory> categories, List<OperatingHours> operatingHours) {
@@ -174,6 +178,22 @@ public class RestaurantDTO implements Serializable {
 
     public void setAddress(AddressDTO address) {
         this.address = address;
+    }
+
+    public Integer getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public void setNumberOfReviews(Integer numberOfReviews) {
+        this.numberOfReviews = numberOfReviews;
+    }
+
+    public BigDecimal getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(BigDecimal averageRating) {
+        this.averageRating = averageRating;
     }
 
     public List<MenuDTO> getMenus() {

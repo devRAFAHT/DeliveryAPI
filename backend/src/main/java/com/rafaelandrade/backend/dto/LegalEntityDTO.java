@@ -19,6 +19,8 @@ public class LegalEntityDTO {
     private Integer estimatedDeliveryTime;
     private BigDecimal fixedDeliveryFee;
     private AddressDTO addressDTO;
+    private Integer numberOfReviews;
+    private BigDecimal averageRating;
     private List<MenuDTO> menus = new ArrayList<>();
     private List<OrderDTO> orderHistory = new ArrayList<>();
     private List<AssessmentDTO> assessments = new ArrayList<>();
@@ -49,6 +51,8 @@ public class LegalEntityDTO {
         this.estimatedDeliveryTime = legalEntity.getEstimatedDeliveryTime();
         this.fixedDeliveryFee = legalEntity.getFixedDeliveryFee();
         this.addressDTO = new AddressDTO(legalEntity.getAddress());
+        this.numberOfReviews = legalEntity.getNumberOfReviews();
+        this.averagePrice = legalEntity.getAveragePrice();
     }
 
     public LegalEntityDTO(LegalEntity legalEntity, Set<Menu> menus, Set<Order> orders, Set<Assessment> assessments, Set<AssessmentResponse> assessmentResponses, List<OperatingHours> operatingHours) {
@@ -130,6 +134,22 @@ public class LegalEntityDTO {
 
     public void setAddressDTO(AddressDTO addressDTO) {
         this.addressDTO = addressDTO;
+    }
+
+    public Integer getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public void setNumberOfReviews(Integer numberOfReviews) {
+        this.numberOfReviews = numberOfReviews;
+    }
+
+    public BigDecimal getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(BigDecimal averageRating) {
+        this.averageRating = averageRating;
     }
 
     public List<MenuDTO> getMenus() {
