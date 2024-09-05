@@ -1,7 +1,7 @@
 package com.rafaelandrade.backend.dto;
 
+import com.rafaelandrade.backend.entities.DishVariation;
 import com.rafaelandrade.backend.entities.common.FoodRestriction;
-import com.rafaelandrade.backend.entities.common.PortionSize;
 import com.rafaelandrade.backend.entities.common.SaleStatus;
 import com.rafaelandrade.backend.entities.Additional;
 import com.rafaelandrade.backend.entities.Dish;
@@ -35,7 +35,6 @@ public class DishDTO implements Serializable {
     private BigDecimal currentPrice;
     @PositiveOrZero(message = "O desconto em porcentagem deve ser positivo")
     private BigDecimal discountInPercentage;
-    private PortionSize portionSize;
     private Duration preparationTime;
     private FoodRestriction foodRestriction;
     private SaleStatus saleStatus;
@@ -43,10 +42,12 @@ public class DishDTO implements Serializable {
 
     List<AdditionalDTO> additional = new ArrayList<AdditionalDTO>();
 
+    List<DishVariationDTO> variations =  new ArrayList<>();
+
     public DishDTO() {
     }
 
-    public DishDTO(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, PortionSize portionSize, Duration preparationTime, FoodRestriction foodRestriction, SaleStatus saleStatus, DishCategoryDTO dishCategory) {
+    public DishDTO(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, Duration preparationTime, FoodRestriction foodRestriction, SaleStatus saleStatus, DishCategoryDTO dishCategory) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -54,7 +55,6 @@ public class DishDTO implements Serializable {
         this.originalPrice = originalPrice;
         this.currentPrice = currentPrice;
         this.discountInPercentage = discountInPercentage;
-        this.portionSize = portionSize;
         this.preparationTime = preparationTime;
         this.foodRestriction = foodRestriction;
         this.saleStatus = saleStatus;
@@ -69,16 +69,16 @@ public class DishDTO implements Serializable {
         this.originalPrice = dishEntity.getOriginalPrice();
         this.currentPrice = dishEntity.getCurrentPrice();
         this.discountInPercentage = dishEntity.getDiscountInPercentage();
-        this.portionSize = dishEntity.getPortionSize();
         this.preparationTime = dishEntity.getPreparationTime();
         this.foodRestriction = dishEntity.getFoodRestriction();
         this.saleStatus = dishEntity.getSaleStatus();
         this.dishCategory = new DishCategoryDTO(dishEntity.getCategory());
     }
 
-    public DishDTO(Dish entity, Set<Additional> additional){
+    public DishDTO(Dish entity, Set<Additional> additional, Set<DishVariation> variations){
         this(entity);
         additional.forEach(adt -> this.additional.add(new AdditionalDTO(adt)));
+        variations.forEach(variation -> this.variations.add(new DishVariationDTO(variation)));
     }
 
     public Long getId() {
@@ -137,14 +137,6 @@ public class DishDTO implements Serializable {
         this.discountInPercentage = discountInPercentage;
     }
 
-    public PortionSize getPortionSize() {
-        return portionSize;
-    }
-
-    public void setPortionSize(PortionSize portionSize) {
-        this.portionSize = portionSize;
-    }
-
     public Duration getPreparationTime() {
         return preparationTime;
     }
@@ -179,5 +171,9 @@ public class DishDTO implements Serializable {
 
     public List<AdditionalDTO> getAdditional() {
         return additional;
+    }
+
+    public List<DishVariationDTO> getVariations() {
+        return variations;
     }
 }

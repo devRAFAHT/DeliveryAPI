@@ -16,7 +16,8 @@ public class Dish extends Food{
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Integer portionSize;
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<DishVariation> variations = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "dish_category_id")
@@ -29,31 +30,22 @@ public class Dish extends Food{
     public Dish(){
     }
 
-    public Dish(PortionSize portionSize, DishCategory category) {
-        setPortionSize(portionSize);
+    public Dish(DishCategory category) {
         this.category = category;
     }
 
-    public Dish(Integer foodRestriction, Integer portionSize, DishCategory category) {
+    public Dish(Integer foodRestriction, DishCategory category) {
         super(foodRestriction);
-        this.portionSize = portionSize;
         this.category = category;
     }
 
-    public Dish(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, Integer size, UnitMeasurement unitMeasurement, SaleStatus saleStatus, Menu menu, Integer foodRestriction, Integer portionSize, DishCategory category) {
+    public Dish(Long id, String name, String description, String imgUrl, BigDecimal originalPrice, BigDecimal currentPrice, BigDecimal discountInPercentage, Integer size, UnitMeasurement unitMeasurement, SaleStatus saleStatus, Menu menu, Integer foodRestriction, DishCategory category) {
         super(id, name, description, imgUrl, originalPrice, currentPrice, discountInPercentage, size, unitMeasurement, saleStatus, menu, foodRestriction);
-        this.portionSize = portionSize;
         this.category = category;
     }
 
-    public PortionSize getPortionSize() {
-        return PortionSize.valueOf(portionSize);
-    }
-
-    public void setPortionSize(PortionSize portionSize) {
-        if (portionSize != null) {
-            this.portionSize = portionSize.getCode();
-        }
+    public Set<DishVariation> getVariations() {
+        return variations;
     }
 
     public DishCategory getCategory() {
