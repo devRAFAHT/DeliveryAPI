@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AssessmentDTO implements Serializable {
+public class AssessmentCreateDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -18,14 +18,14 @@ public class AssessmentDTO implements Serializable {
     private Instant updatedAt;
     private Integer points;
     private UserDTO user;
-    private LegalEntityDTO legalEntity;
+    private LegalEntityCreateDTO legalEntity;
     private ItemDTO item;
     private Map<Instant, String> updateHistory = new HashMap<>();
 
-    public AssessmentDTO() {
+    public AssessmentCreateDTO() {
     }
 
-    public AssessmentDTO(Long id, String comment, Integer points, UserDTO user, ItemDTO item) {
+    public AssessmentCreateDTO(Long id, String comment, Integer points, UserDTO user, ItemDTO item) {
         this.id = id;
         this.comment = comment;
         this.points = points;
@@ -33,14 +33,14 @@ public class AssessmentDTO implements Serializable {
         this.item = item;
     }
 
-    public AssessmentDTO(Assessment assessmentEntity) {
+    public AssessmentCreateDTO(Assessment assessmentEntity) {
         this.id = assessmentEntity.getId();
         this.comment = assessmentEntity.getComment();
         this.createdAt = assessmentEntity.getCreatedAt();
         this.updatedAt = assessmentEntity.getUpdatedAt();
         this.points = assessmentEntity.getPoints();
         this.user = new UserDTO(assessmentEntity.getUser());
-        this.legalEntity = new LegalEntityDTO(assessmentEntity.getLegalEntity()); // Alterado para LegalEntityDTO
+        this.legalEntity = new LegalEntityCreateDTO(assessmentEntity.getLegalEntity()); // Alterado para LegalEntityDTO
         this.updateHistory = (assessmentEntity.getUpdateHistory() != null) ? new HashMap<>(assessmentEntity.getUpdateHistory()) : new HashMap<>();
         this.item = (assessmentEntity.getItem() != null) ? new ItemDTO(assessmentEntity.getItem()) : null;  // Alterado para ItemDTO
     }
@@ -93,11 +93,11 @@ public class AssessmentDTO implements Serializable {
         this.user = user;
     }
 
-    public LegalEntityDTO getLegalEntity() {
+    public LegalEntityCreateDTO getLegalEntity() {
         return legalEntity;
     }
 
-    public void setLegalEntity(LegalEntityDTO legalEntity) {
+    public void setLegalEntity(LegalEntityCreateDTO legalEntity) {
         this.legalEntity = legalEntity;
     }
 

@@ -9,15 +9,16 @@ public class AssessmentResponseDTO {
     private Long id;
     private String comment;
     private Instant createdAt;
-    private LegalEntityDTO legalEntity;
-    private AssessmentDTO assessment;
+    private LegalEntityDetailsResponseDTO legalEntity;
+    private AssessmentCreateDTO assessment;
 
     public AssessmentResponseDTO(){
     }
 
-    public AssessmentResponseDTO(Long id, String comment, LegalEntityDTO legalEntity, AssessmentDTO assessment) {
+    public AssessmentResponseDTO(Long id, String comment, Instant createdAt, LegalEntityDetailsResponseDTO legalEntity, AssessmentCreateDTO assessment) {
         this.id = id;
         this.comment = comment;
+        this.createdAt = createdAt;
         this.legalEntity = legalEntity;
         this.assessment = assessment;
     }
@@ -26,8 +27,8 @@ public class AssessmentResponseDTO {
         this.id = assessmentResponseEntity.getId();
         this.comment = assessmentResponseEntity.getComment();
         this.createdAt = assessmentResponseEntity.getCreatedAt();
-        this.legalEntity = new LegalEntityDTO(assessmentResponseEntity.getLegalEntity());
-        this.assessment = new AssessmentDTO(assessmentResponseEntity.getAssessment());
+        this.legalEntity = new LegalEntityDetailsResponseDTO(assessmentResponseEntity.getLegalEntity());
+        this.assessment = new AssessmentCreateDTO(assessmentResponseEntity.getAssessment());
     }
 
     public Long getId() {
@@ -54,19 +55,19 @@ public class AssessmentResponseDTO {
         this.createdAt = createdAt;
     }
 
-    public LegalEntityDTO getLegalEntity() {
+    public LegalEntityDetailsResponseDTO getLegalEntity() {
         return legalEntity;
     }
 
-    public void setLegalEntity(LegalEntityDTO legalEntity) {
+    public void setLegalEntity(LegalEntityDetailsResponseDTO legalEntity) {
         this.legalEntity = legalEntity;
     }
 
-    public AssessmentDTO getAssessment() {
+    public AssessmentCreateDTO getAssessment() {
         return assessment;
     }
 
-    public void setAssessment(AssessmentDTO assessment) {
+    public void setAssessment(AssessmentCreateDTO assessment) {
         this.assessment = assessment;
     }
 }

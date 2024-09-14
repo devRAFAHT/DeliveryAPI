@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class LegalEntityDTO {
+public class LegalEntityCreateDTO {
 
     private Long id;
     private String taxIdentificationNumber;
@@ -23,14 +23,14 @@ public class LegalEntityDTO {
     private BigDecimal averageRating;
     private List<MenuDTO> menus = new ArrayList<>();
     private List<OrderDTO> orderHistory = new ArrayList<>();
-    private List<AssessmentDTO> assessments = new ArrayList<>();
+    private List<AssessmentCreateDTO> assessments = new ArrayList<>();
     private List<AssessmentResponseDTO> assessmentResponses = new ArrayList<>();
     private List<OperatingHours> operatingHours = new ArrayList<>();
 
-    public LegalEntityDTO(){
+    public LegalEntityCreateDTO(){
     }
 
-    public LegalEntityDTO(String taxIdentificationNumber, String companyName, String imgBackgroundUrl, BigDecimal averagePrice, Boolean isOpen, Integer estimatedDeliveryTime, BigDecimal fixedDeliveryFee, AddressDTO addressDTO) {
+    public LegalEntityCreateDTO(String taxIdentificationNumber, String companyName, String imgBackgroundUrl, BigDecimal averagePrice, Boolean isOpen, Integer estimatedDeliveryTime, BigDecimal fixedDeliveryFee, AddressDTO addressDTO) {
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.companyName = companyName;
         this.imgBackgroundUrl = imgBackgroundUrl;
@@ -41,7 +41,7 @@ public class LegalEntityDTO {
         this.addressDTO = addressDTO;
     }
 
-    public LegalEntityDTO(LegalEntity legalEntity) {
+    public LegalEntityCreateDTO(LegalEntity legalEntity) {
         this.id = legalEntity.getId();
         this.taxIdentificationNumber = legalEntity.getTaxIdentificationNumber();
         this.companyName = legalEntity.getCompanyName();
@@ -55,11 +55,11 @@ public class LegalEntityDTO {
         this.averagePrice = legalEntity.getAveragePrice();
     }
 
-    public LegalEntityDTO(LegalEntity legalEntity, Set<Menu> menus, Set<Order> orders, Set<Assessment> assessments, Set<AssessmentResponse> assessmentResponses, List<OperatingHours> operatingHours) {
+    public LegalEntityCreateDTO(LegalEntity legalEntity, Set<Menu> menus, Set<Order> orders, Set<Assessment> assessments, Set<AssessmentResponse> assessmentResponses, List<OperatingHours> operatingHours) {
         this(legalEntity);
         menus.forEach(menu -> this.getMenus().add(new MenuDTO(menu)));
         orders.forEach(order -> this.getOrderHistory().add(new OrderDTO(order)));
-        assessments.forEach(assessment -> this.getAssessments().add(new AssessmentDTO(assessment)));
+        assessments.forEach(assessment -> this.getAssessments().add(new AssessmentCreateDTO(assessment)));
         assessmentResponses.forEach(response -> this.getAssessmentResponses().add(new AssessmentResponseDTO(response)));
         this.getOperatingHours().addAll(operatingHours);
     }
@@ -160,7 +160,7 @@ public class LegalEntityDTO {
         return orderHistory;
     }
 
-    public List<AssessmentDTO> getAssessments() {
+    public List<AssessmentCreateDTO> getAssessments() {
         return assessments;
     }
 

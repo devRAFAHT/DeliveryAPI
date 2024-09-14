@@ -36,37 +36,33 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Page<OrderDTO> findAll(Pageable pageable) {
+    public Page<OrderDetailsResponseDTO> findAll(Pageable pageable) {
         Page<Order> orders = orderRepository.findAll(pageable);
-        return orders.map(order -> {
-            Set<Item> items = new HashSet<>();
-            items.addAll(order.getItems());
-            return new OrderDTO(order, items);
-        });
+        return orders.map(order -> new OrderDetailsResponseDTO(order, order.getItems()));
     }
 
     @Transactional(readOnly = true)
-    public OrderDTO findById(Long id) throws ResourceNotFoundException {
+    public OrderDetailsResponseDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Order> orderObj = orderRepository.findById(id);
         Order orderEntity = orderObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         Set<Item> items = new HashSet<>();
         items.addAll(orderEntity.getItems());
-        return new OrderDTO(orderEntity, items);
+        return new OrderDetailsResponseDTO(orderEntity, items);
     }
 
     @Transactional
-    public OrderDTO insert(OrderDTO orderDTO) throws ResourceNotFoundException {
+    public OrderDetailsResponseDTO insert(OrderDTO orderDTO) throws ResourceNotFoundException {
         Order orderEntity = new Order();
         copyDtoToEntity(orderDTO, orderEntity);
         orderEntity.setCreatedAt(Instant.now());
         orderEntity = orderRepository.save(orderEntity);
         Set<Item> items = new HashSet<>();
         items.addAll(orderEntity.getItems());
-        return new OrderDTO(orderEntity, items);
+        return new OrderDetailsResponseDTO(orderEntity, items);
     }
 
     @Transactional
-    public List<OrderDTO> insertFromBag(Long bagId, Map<Long, String> specialRequests) throws ResourceNotFoundException {
+    public List<OrderDetailsResponseDTO> insertFromBag(Long bagId, Map<Long, String> specialRequests) throws ResourceNotFoundException {
         Optional<Bag> bagObj = bagRepository.findById(bagId);
         bagObj.orElseThrow(() -> new ResourceNotFoundException("Bag with id " + bagId + " not found"));
         Bag bag = bagObj.get();
@@ -89,6 +85,7 @@ public class OrderService {
             order.setClient(bag.getUser());
             order.setCreatedAt(Instant.now());
             order.setSpecialRequest(specialRequests.getOrDefault(legalEntity.getId(), ""));
+            order.setOrderStatus(OrderStatus.WAITING_PAYMENT);
 
             OrderDTO orderDTO = new OrderDTO(order, items);
             copyDtoToEntity(orderDTO, order);
@@ -102,12 +99,12 @@ public class OrderService {
         return orders.stream().map(order -> {
             Set<Item> items = new HashSet<>();
             items.addAll(order.getItems());
-            return new OrderDTO(order, items);
+            return new OrderDetailsResponseDTO(order, items);
         }).collect(Collectors.toList());
     }
 
     @Transactional
-    public OrderDTO update(Long id, OrderUpdateDTO orderDTO) throws ResourceNotFoundException, EntityUpdateNotAllowedException {
+    public OrderDetailsResponseDTO update(Long id, OrderUpdateDTO orderDTO) throws ResourceNotFoundException, EntityUpdateNotAllowedException {
         try {
             Order orderEntity = orderRepository.getReferenceById(id);
 
@@ -121,7 +118,7 @@ public class OrderService {
                 orderEntity = orderRepository.save(orderEntity);
                 Set<Item> items = new HashSet<>();
                 items.addAll(orderEntity.getItems());
-                return new OrderDTO(orderEntity, items);
+                return new OrderDetailsResponseDTO(orderEntity, items);
             }
 
             throw new EntityUpdateNotAllowedException("");
@@ -162,6 +159,13 @@ public class OrderService {
             itemObj.orElseThrow(() -> new ResourceNotFoundException("Item with id " + itemDTO.getId() + " not found."));
             Item item = itemObj.get();
             orderEntity.getItems().add(item);
+
+            if(item instanceof Dish){
+                for(Additional additional : ((Dish) item).getAdditional()){
+                    subTotal = subTotal.add(additional.getPrice());
+                }
+            }
+
             subTotal = subTotal.add(item.getCurrentPrice());
             estimatedDeliveryTime = estimatedDeliveryTime.plus(item.getPreparationTime());
 

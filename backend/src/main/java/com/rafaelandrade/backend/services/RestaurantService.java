@@ -1,9 +1,10 @@
 package com.rafaelandrade.backend.services;
 
+import com.rafaelandrade.backend.dto.RestaurantDetailsResponseDTO;
 import com.rafaelandrade.backend.entities.common.OperatingHours;
 import com.rafaelandrade.backend.dto.MenuDTO;
 import com.rafaelandrade.backend.dto.RestaurantCategoryDTO;
-import com.rafaelandrade.backend.dto.RestaurantDTO;
+import com.rafaelandrade.backend.dto.RestaurantCreateDTO;
 import com.rafaelandrade.backend.entities.*;
 import com.rafaelandrade.backend.repositories.*;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
@@ -41,7 +42,7 @@ public class RestaurantService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RestaurantDTO> findAll(Pageable pageable) {
+    public Page<RestaurantDetailsResponseDTO> findAll(Pageable pageable) {
         Page<Restaurant> restaurants = restaurantRepository.findAll(pageable);
 
         for(Restaurant restaurant : restaurants){
@@ -51,54 +52,54 @@ public class RestaurantService {
             restaurant.setNumberOfReviews();
         }
 
-        return restaurants.map(restaurant -> new RestaurantDTO(restaurant, restaurant.getMenus(), restaurant.getCategories(), restaurant.getOperatingHours()));
+        return restaurants.map(restaurant -> new RestaurantDetailsResponseDTO(restaurant, restaurant.getCategories()));
     }
 
     @Transactional(readOnly = true)
-    public RestaurantDTO findByName(String name) throws ResourceNotFoundException {
+    public RestaurantDetailsResponseDTO findByName(String name) throws ResourceNotFoundException {
         Optional<Restaurant> restaurantObj = restaurantRepository.findByCompanyName(name);
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         setIsOpen(restaurantEntity);
         SetsAveragePrice(restaurantEntity);
         setsAverageRating(restaurantEntity);
         restaurantEntity.setNumberOfReviews();
-        return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
+        return new RestaurantDetailsResponseDTO(restaurantEntity, restaurantEntity.getCategories());
     }
 
     @Transactional(readOnly = true)
-    public RestaurantDTO findById(Long id) throws ResourceNotFoundException {
+    public RestaurantDetailsResponseDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Restaurant> restaurantObj = restaurantRepository.findById(id);
         Restaurant restaurantEntity = restaurantObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         setIsOpen(restaurantEntity);
         SetsAveragePrice(restaurantEntity);
         setsAverageRating(restaurantEntity);
         restaurantEntity.setNumberOfReviews();
-        return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
+        return new RestaurantDetailsResponseDTO(restaurantEntity, restaurantEntity.getCategories());
     }
 
     @Transactional
-    public RestaurantDTO insert(RestaurantDTO restaurantDTO) throws ResourceNotFoundException {
+    public RestaurantDetailsResponseDTO insert(RestaurantCreateDTO restaurantCreateDTO) throws ResourceNotFoundException {
         Restaurant restaurantEntity = new Restaurant();
-        copyDtoToEntity(restaurantDTO, restaurantEntity);
+        copyDtoToEntity(restaurantCreateDTO, restaurantEntity);
         setIsOpen(restaurantEntity);
         SetsAveragePrice(restaurantEntity);
         setsAverageRating(restaurantEntity);
         restaurantEntity.setNumberOfReviews();
         restaurantEntity = restaurantRepository.save(restaurantEntity);
-        return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
+        return new RestaurantDetailsResponseDTO(restaurantEntity, restaurantEntity.getCategories());
     }
 
     @Transactional
-    public RestaurantDTO update(Long id, RestaurantDTO restaurantDTO) throws ResourceNotFoundException {
+    public RestaurantDetailsResponseDTO update(Long id, RestaurantCreateDTO restaurantCreateDTO) throws ResourceNotFoundException {
         try {
             Restaurant restaurantEntity = restaurantRepository.getReferenceById(id);
-            copyDtoToEntity(restaurantDTO, restaurantEntity);
+            copyDtoToEntity(restaurantCreateDTO, restaurantEntity);
             setIsOpen(restaurantEntity);
             SetsAveragePrice(restaurantEntity);
             setsAverageRating(restaurantEntity);
             restaurantEntity.setNumberOfReviews();
             restaurantEntity = restaurantRepository.save(restaurantEntity);
-            return new RestaurantDTO(restaurantEntity, restaurantEntity.getMenus(), restaurantEntity.getCategories(), restaurantEntity.getOperatingHours());
+            return new RestaurantDetailsResponseDTO(restaurantEntity, restaurantEntity.getCategories());
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id not found: " + id);
         }
@@ -118,23 +119,23 @@ public class RestaurantService {
         }
     }
 
-    private void copyDtoToEntity(RestaurantDTO restaurantDTO, Restaurant restaurantEntity) throws ResourceNotFoundException {
-        restaurantEntity.setTaxIdentificationNumber(restaurantDTO.getTaxIdentificationNumber());
-        restaurantEntity.setCompanyName(restaurantDTO.getCompanyName());
+    private void copyDtoToEntity(RestaurantCreateDTO restaurantCreateDTO, Restaurant restaurantEntity) throws ResourceNotFoundException {
+        restaurantEntity.setTaxIdentificationNumber(restaurantCreateDTO.getTaxIdentificationNumber());
+        restaurantEntity.setCompanyName(restaurantCreateDTO.getCompanyName());
         restaurantEntity.setBiography(restaurantEntity.getBiography());
-        restaurantEntity.setPhoneNumber(restaurantDTO.getPhoneNumber());
+        restaurantEntity.setPhoneNumber(restaurantCreateDTO.getPhoneNumber());
         restaurantEntity.setProfilePictureUrl(restaurantEntity.getProfilePictureUrl());
-        restaurantEntity.setImgBackgroundUrl(restaurantDTO.getImgBackgroundUrl());
-        restaurantEntity.setAveragePrice(restaurantDTO.getAveragePrice());
-        restaurantEntity.setEstimatedDeliveryTime(restaurantDTO.getEstimatedDeliveryTime());
+        restaurantEntity.setImgBackgroundUrl(restaurantCreateDTO.getImgBackgroundUrl());
+        restaurantEntity.setAveragePrice(restaurantCreateDTO.getAveragePrice());
+        restaurantEntity.setEstimatedDeliveryTime(restaurantCreateDTO.getEstimatedDeliveryTime());
 
-        Optional<Address> addressObj = addressRepository.findById(restaurantDTO.getAddress().getId());
-        addressObj.orElseThrow(() -> new ResourceNotFoundException("Address with id " + restaurantDTO.getAddress().getId() + " not found."));
+        Optional<Address> addressObj = addressRepository.findById(restaurantCreateDTO.getAddress().getId());
+        addressObj.orElseThrow(() -> new ResourceNotFoundException("Address with id " + restaurantCreateDTO.getAddress().getId() + " not found."));
 
         restaurantEntity.setAddress(new Address(addressObj.get()));
 
         restaurantEntity.getMenus().clear();
-        for (MenuDTO menuDTO : restaurantDTO.getMenus()) {
+        for (MenuDTO menuDTO : restaurantCreateDTO.getMenus()) {
             Optional<Menu> menuObj = menuRepository.findById(menuDTO.getId());
             menuObj.orElseThrow(() -> new ResourceNotFoundException("Menu with id " + menuDTO.getId() + " not found."));
             Menu menu = menuObj.get();
@@ -144,7 +145,7 @@ public class RestaurantService {
         }
 
         restaurantEntity.getCategories().clear();
-        for (RestaurantCategoryDTO restaurantCategoryDTO : restaurantDTO.getCategories()) {
+        for (RestaurantCategoryDTO restaurantCategoryDTO : restaurantCreateDTO.getCategories()) {
             Optional<RestaurantCategory> categoryObj = restaurantCategoryRepository.findById(restaurantCategoryDTO.getId());
             categoryObj.orElseThrow(() -> new ResourceNotFoundException("Category with id " + restaurantCategoryDTO.getId() + " not found."));
             RestaurantCategory restaurantCategory = categoryObj.get();
@@ -152,7 +153,7 @@ public class RestaurantService {
         }
 
         restaurantEntity.getOperatingHours().clear();
-        for (OperatingHours operatingHours : restaurantDTO.getOperatingHours()) {
+        for (OperatingHours operatingHours : restaurantCreateDTO.getOperatingHours()) {
             OperatingHours newOperatingHours = new OperatingHours();
             newOperatingHours.setDayOfWeek(operatingHours.getDayOfWeek());
             newOperatingHours.setOpeningTime(operatingHours.getOpeningTime());
@@ -225,5 +226,4 @@ public class RestaurantService {
 
         restaurant.setAverageRating(averageRating);
     }
-
 }

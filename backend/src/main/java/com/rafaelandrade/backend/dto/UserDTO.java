@@ -31,7 +31,7 @@ public class UserDTO implements Serializable {
     private BagDTO bag;
     private Set<RoleDTO> roles = new HashSet<>();
     private List<AddressDTO> addresses = new ArrayList<>();
-    private List<LegalEntityDTO> favoriteEstablishments = new ArrayList<>();
+    private List<LegalEntityCreateDTO> favoriteEstablishments = new ArrayList<>();
     private List<ItemDTO> favoritesItems = new ArrayList<>();
 
     public UserDTO(){
@@ -78,7 +78,7 @@ public class UserDTO implements Serializable {
         this(userEntity);
         addresses.forEach(address -> this.getAddresses().add(new AddressDTO(address)));
         favoritesItems.forEach(item -> this.getFavoritesItems().add(new ItemDTO(item)));
-        favoriteEstablishments.forEach(legalEntity -> this.getFavoriteEstablishments().add(new LegalEntityDTO(legalEntity)));
+        favoriteEstablishments.forEach(legalEntity -> this.getFavoriteEstablishments().add(new LegalEntityCreateDTO(legalEntity)));
     }
 
     public Long getId() {
@@ -209,7 +209,7 @@ public class UserDTO implements Serializable {
         return addresses;
     }
 
-    public List<LegalEntityDTO> getFavoriteEstablishments() {
+    public List<LegalEntityCreateDTO> getFavoriteEstablishments() {
         return favoriteEstablishments;
     }
 

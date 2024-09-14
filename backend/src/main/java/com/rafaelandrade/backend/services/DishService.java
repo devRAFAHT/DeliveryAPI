@@ -2,12 +2,15 @@ package com.rafaelandrade.backend.services;
 
 import com.rafaelandrade.backend.dto.AdditionalDTO;
 import com.rafaelandrade.backend.dto.DishDTO;
+import com.rafaelandrade.backend.dto.DishVariationDTO;
 import com.rafaelandrade.backend.entities.Additional;
 import com.rafaelandrade.backend.entities.DishCategory;
 import com.rafaelandrade.backend.entities.Dish;
+import com.rafaelandrade.backend.entities.DishVariation;
 import com.rafaelandrade.backend.repositories.AdditionalRepository;
 import com.rafaelandrade.backend.repositories.DishCategoryRepository;
 import com.rafaelandrade.backend.repositories.DishRepository;
+import com.rafaelandrade.backend.repositories.DishVariationRepository;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
 import com.rafaelandrade.backend.services.util.CalculateDiscount;
@@ -29,31 +32,34 @@ public class DishService {
 
     private final DishCategoryRepository dishCategoryRepository;
 
+    private final DishVariationRepository dishVariationRepository;
+
     @Autowired private AdditionalRepository additionalRepository;
 
-    public DishService(DishRepository dishRepository, DishCategoryRepository dishCategoryRepository) {
+    public DishService(DishRepository dishRepository, DishCategoryRepository dishCategoryRepository, DishVariationRepository dishVariationRepository) {
         this.dishRepository = dishRepository;
         this.dishCategoryRepository = dishCategoryRepository;
+        this.dishVariationRepository = dishVariationRepository;
     }
 
     @Transactional(readOnly = true)
     public Page<DishDTO> findAll(Pageable pageable) {
         Page<Dish> dishes = dishRepository.findAll(pageable);
-        return dishes.map(dish -> new DishDTO(dish, dish.getAdditional()));
+        return dishes.map(dish -> new DishDTO(dish, dish.getAdditional(), dish.getVariations()));
     }
 
     @Transactional(readOnly = true)
     public DishDTO findByName(String name) throws ResourceNotFoundException {
         Optional<Dish> dishObj = dishRepository.findByName(name);
         Dish dishEntity = dishObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new DishDTO(dishEntity, dishEntity.getAdditional());
+        return new DishDTO(dishEntity, dishEntity.getAdditional(), dishEntity.getVariations());
     }
 
     @Transactional(readOnly = true)
     public DishDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Dish> dishObj = dishRepository.findById(id);
         Dish dishEntity = dishObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new DishDTO(dishEntity, dishEntity.getAdditional());
+        return new DishDTO(dishEntity, dishEntity.getAdditional(), dishEntity.getVariations());
     }
 
     @Transactional
@@ -62,7 +68,7 @@ public class DishService {
         copyDtoToEntity(dishDTO, dishEntity);
         calculateDiscount(dishEntity);
         dishEntity = dishRepository.save(dishEntity);
-        return new DishDTO(dishEntity, dishEntity.getAdditional());
+        return new DishDTO(dishEntity, dishEntity.getAdditional(), dishEntity.getVariations());
     }
 
     @Transactional
@@ -72,7 +78,7 @@ public class DishService {
             copyDtoToEntity(dishDTO, dishEntity);
             calculateDiscount(dishEntity);
             dishEntity = dishRepository.save(dishEntity);
-            return new DishDTO(dishEntity, dishEntity.getAdditional());
+            return new DishDTO(dishEntity, dishEntity.getAdditional(), dishEntity.getVariations());
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id not found: " + id);
         }
@@ -96,7 +102,6 @@ public class DishService {
         dishEntity.setName(dishDTO.getName());
         dishEntity.setDescription(dishDTO.getDescription());
         dishEntity.setImgUrl(dishDTO.getImgUrl());
-        dishEntity.setPortionSize(dishDTO.getPortionSize());
         dishEntity.setPreparationTime(dishDTO.getPreparationTime());
         dishEntity.setFoodRestriction(dishDTO.getFoodRestriction());
         dishEntity.setSaleStatus(dishDTO.getSaleStatus());
@@ -116,6 +121,14 @@ public class DishService {
             Additional additional = additionalObj.get();
             dishEntity.getAdditional().add(additional);
         }
+
+        dishEntity.getVariations().clear();
+        for(DishVariationDTO dishVariationDTO : dishDTO.getVariations()){
+            DishVariation dishVariation = new DishVariation(dishVariationDTO);
+            dishVariation.setDish(dishEntity);
+            dishVariationRepository.save(dishVariation);
+        }
+
     }
 
     private void calculateDiscount(Dish dish) {

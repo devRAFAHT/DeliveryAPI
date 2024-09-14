@@ -1,8 +1,8 @@
 package com.rafaelandrade.backend.dto;
 
-import com.rafaelandrade.backend.entities.common.OrderStatus;
 import com.rafaelandrade.backend.entities.Item;
 import com.rafaelandrade.backend.entities.Order;
+import com.rafaelandrade.backend.entities.common.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class OrderDTO {
+public class OrderDetailsResponseDTO {
 
     private Long id;
     private Instant createdAt;
@@ -22,22 +22,28 @@ public class OrderDTO {
     private Duration estimatedDeliveryTime;
     private String specialRequest;
     private OrderStatus orderStatus;
-    private UserDTO client;
-    private LegalEntityCreateDTO legalEntity;
+    private UserDetailsResponseDTO client;
+    private LegalEntityDetailsResponseDTO legalEntity;
     private List<ItemDTO> items = new ArrayList<>();
 
-    public OrderDTO() {
+    public OrderDetailsResponseDTO(){
     }
 
-    public OrderDTO(Long id, BigDecimal deliveryFee, String specialRequest, UserDTO client, LegalEntityCreateDTO legalEntity) {
+    public OrderDetailsResponseDTO(Long id, Instant createdAt, Instant canceledAt, BigDecimal subTotal, BigDecimal deliveryFee, BigDecimal totalPrice, Duration estimatedDeliveryTime, String specialRequest, OrderStatus orderStatus, UserDetailsResponseDTO client, LegalEntityDetailsResponseDTO legalEntity) {
         this.id = id;
+        this.createdAt = createdAt;
+        this.canceledAt = canceledAt;
+        this.subTotal = subTotal;
         this.deliveryFee = deliveryFee;
+        this.totalPrice = totalPrice;
+        this.estimatedDeliveryTime = estimatedDeliveryTime;
         this.specialRequest = specialRequest;
+        this.orderStatus = orderStatus;
         this.client = client;
         this.legalEntity = legalEntity;
     }
 
-    public OrderDTO(Order orderEntity) {
+    public OrderDetailsResponseDTO(Order orderEntity) {
         this.id = orderEntity.getId();
         this.createdAt = orderEntity.getCreatedAt();
         this.canceledAt = orderEntity.getCanceledAt();
@@ -47,11 +53,11 @@ public class OrderDTO {
         this.estimatedDeliveryTime = orderEntity.getEstimatedDeliveryTime();
         this.specialRequest = orderEntity.getSpecialRequest();
         this.orderStatus = orderEntity.getOrderStatus();
-        this.client = new UserDTO(orderEntity.getClient());
-        this.legalEntity = new LegalEntityCreateDTO(orderEntity.getLegalEntity());
+        this.client = new UserDetailsResponseDTO(orderEntity.getClient());
+        this.legalEntity = new LegalEntityDetailsResponseDTO(orderEntity.getLegalEntity());
     }
 
-    public OrderDTO(Order orderEntity, Set<Item> items) {
+    public OrderDetailsResponseDTO(Order orderEntity, Set<Item> items) {
         this(orderEntity);
         items.forEach(item -> this.getItems().add(new ItemDTO(item)));
     }
@@ -128,19 +134,19 @@ public class OrderDTO {
         this.orderStatus = orderStatus;
     }
 
-    public UserDTO getClient() {
+    public UserDetailsResponseDTO getClient() {
         return client;
     }
 
-    public void setClient(UserDTO client) {
+    public void setClient(UserDetailsResponseDTO client) {
         this.client = client;
     }
 
-    public LegalEntityCreateDTO getLegalEntity() {
+    public LegalEntityDetailsResponseDTO getLegalEntity() {
         return legalEntity;
     }
 
-    public void setLegalEntity(LegalEntityCreateDTO legalEntity) {
+    public void setLegalEntity(LegalEntityDetailsResponseDTO legalEntity) {
         this.legalEntity = legalEntity;
     }
 

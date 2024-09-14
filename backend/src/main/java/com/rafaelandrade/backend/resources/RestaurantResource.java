@@ -1,6 +1,7 @@
 package com.rafaelandrade.backend.resources;
 
-import com.rafaelandrade.backend.dto.RestaurantDTO;
+import com.rafaelandrade.backend.dto.RestaurantCreateDTO;
+import com.rafaelandrade.backend.dto.RestaurantDetailsResponseDTO;
 import com.rafaelandrade.backend.services.RestaurantService;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.ResourceNotFoundException;
@@ -31,61 +32,61 @@ public class RestaurantResource {
 
     @Operation(summary = "List all restaurants", description = "Retrieve a paginated list of all restaurants.", responses = {
             @ApiResponse(responseCode = "200", description = "List of restaurants returned successfully.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDTO.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDetailsResponseDTO.class)))
     })
     @GetMapping
-    public ResponseEntity<Page<RestaurantDTO>> findAll(Pageable pageable) {
-        Page<RestaurantDTO> restaurants = restaurantService.findAll(pageable);
+    public ResponseEntity<Page<RestaurantDetailsResponseDTO>> findAll(Pageable pageable) {
+        Page<RestaurantDetailsResponseDTO> restaurants = restaurantService.findAll(pageable);
         return ResponseEntity.ok().body(restaurants);
     }
 
     @Operation(summary = "Find a restaurant by ID", description = "Retrieve a restaurant by its ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Restaurant found.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDTO.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDetailsResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Restaurant not found.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<RestaurantDTO> findById(@PathVariable Long id) throws ResourceNotFoundException {
-        RestaurantDTO restaurantDTO = restaurantService.findById(id);
-        return ResponseEntity.ok().body(restaurantDTO);
+    public ResponseEntity<RestaurantDetailsResponseDTO> findById(@PathVariable Long id) throws ResourceNotFoundException {
+        RestaurantDetailsResponseDTO restaurantDetailsDTO = restaurantService.findById(id);
+        return ResponseEntity.ok().body(restaurantDetailsDTO);
     }
 
     @Operation(summary = "Find a restaurant by name", description = "Retrieve a restaurant by its name.", responses = {
             @ApiResponse(responseCode = "200", description = "Restaurant found.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDTO.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDetailsResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Restaurant not found.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
     })
     @GetMapping(value = "/search")
-    public ResponseEntity<RestaurantDTO> findByName(@RequestParam String name) throws ResourceNotFoundException {
-        RestaurantDTO restaurantDTO = restaurantService.findByName(name);
-        return ResponseEntity.ok().body(restaurantDTO);
+    public ResponseEntity<RestaurantDetailsResponseDTO> findByName(@RequestParam String name) throws ResourceNotFoundException {
+        RestaurantDetailsResponseDTO restaurantDetailsDTO = restaurantService.findByName(name);
+        return ResponseEntity.ok().body(restaurantDetailsDTO);
     }
 
     @Operation(summary = "Create a new restaurant", description = "Add a new restaurant to the system.", responses = {
             @ApiResponse(responseCode = "201", description = "Restaurant created successfully.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDTO.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDetailsResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Resource not found.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
     })
     @PostMapping
-    public ResponseEntity<RestaurantDTO> insert(@Valid @RequestBody RestaurantDTO restaurantDTO) throws ResourceNotFoundException {
-        restaurantDTO = restaurantService.insert(restaurantDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(restaurantDTO.getId()).toUri();
-        return ResponseEntity.created(uri).body(restaurantDTO);
+    public ResponseEntity<RestaurantDetailsResponseDTO> insert(@Valid @RequestBody RestaurantCreateDTO restaurantCreateDTO) throws ResourceNotFoundException {
+        RestaurantDetailsResponseDTO restaurantDetailsDTO = restaurantService.insert(restaurantCreateDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(restaurantDetailsDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(restaurantDetailsDTO);
     }
 
     @Operation(summary = "Update an existing restaurant", description = "Modify an existing restaurant using its ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Restaurant updated successfully.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDTO.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDetailsResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Restaurant not found.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<RestaurantDTO> update(@Valid @PathVariable Long id, @RequestBody RestaurantDTO restaurantDTO) throws ResourceNotFoundException {
-        restaurantDTO = restaurantService.update(id, restaurantDTO);
-        return ResponseEntity.ok().body(restaurantDTO);
+    public ResponseEntity<RestaurantDetailsResponseDTO> update(@Valid @PathVariable Long id, @RequestBody RestaurantCreateDTO restaurantCreateDTO) throws ResourceNotFoundException {
+        RestaurantDetailsResponseDTO restaurantDetailsDTO = restaurantService.update(id, restaurantCreateDTO);
+        return ResponseEntity.ok().body(restaurantDetailsDTO);
     }
 
     @Operation(summary = "Delete a restaurant", description = "Remove a restaurant from the system using its ID.", responses = {

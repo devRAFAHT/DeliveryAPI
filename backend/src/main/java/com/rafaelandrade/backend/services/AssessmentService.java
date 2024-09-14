@@ -1,7 +1,8 @@
 package com.rafaelandrade.backend.services;
 
+import com.rafaelandrade.backend.dto.AssessmentDetailsResponseDTO;
 import com.rafaelandrade.backend.entities.common.OrderStatus;
-import com.rafaelandrade.backend.dto.AssessmentDTO;
+import com.rafaelandrade.backend.dto.AssessmentCreateDTO;
 import com.rafaelandrade.backend.dto.AssessmentUpdateDTO;
 import com.rafaelandrade.backend.entities.*;
 import com.rafaelandrade.backend.repositories.*;
@@ -35,30 +36,30 @@ public class AssessmentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AssessmentDTO> findAll(Pageable pageable) {
+    public Page<AssessmentDetailsResponseDTO> findAll(Pageable pageable) {
         Page<Assessment> assessments = assessmentRepository.findAll(pageable);
-        return assessments.map(assessment -> new AssessmentDTO(assessment));
+        return assessments.map(assessment -> new AssessmentDetailsResponseDTO(assessment));
     }
 
     @Transactional(readOnly = true)
-    public AssessmentDTO findById(Long id) throws ResourceNotFoundException {
+    public AssessmentDetailsResponseDTO findById(Long id) throws ResourceNotFoundException {
         Optional<Assessment> assessmentObj = assessmentRepository.findById(id);
         Assessment assessmentEntity = assessmentObj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new AssessmentDTO(assessmentEntity);
+        return new AssessmentDetailsResponseDTO(assessmentEntity);
     }
 
     @Transactional
-    public AssessmentDTO insert(AssessmentDTO assessmentDTO) throws ResourceNotFoundException, DatabaseException, InvalidInputException {
+    public AssessmentDetailsResponseDTO insert(AssessmentCreateDTO assessmentCreateDTO) throws ResourceNotFoundException, DatabaseException, InvalidInputException {
         Assessment assessmentEntity = new Assessment();
-        copyDtoToEntity(assessmentDTO, assessmentEntity);
+        copyDtoToEntity(assessmentCreateDTO, assessmentEntity);
         assessmentEntity.setCreatedAt(Instant.now());
         assessmentEntity.getUpdateHistory().put(Instant.now(), "N/A");
         assessmentEntity = assessmentRepository.save(assessmentEntity);
-        return new AssessmentDTO(assessmentEntity);
+        return new AssessmentDetailsResponseDTO(assessmentEntity);
     }
 
     @Transactional
-    public AssessmentDTO update(Long id, AssessmentUpdateDTO assessmentDTO) throws ResourceNotFoundException {
+    public AssessmentDetailsResponseDTO update(Long id, AssessmentUpdateDTO assessmentDTO) throws ResourceNotFoundException {
         try {
             Assessment assessmentEntity = assessmentRepository.getReferenceById(id);
             assessmentEntity.setUpdatedAt(Instant.now());
@@ -75,7 +76,7 @@ public class AssessmentService {
             assessmentEntity.getUpdateHistory().put(Instant.now(), "N/A");
             assessmentEntity.setComment(assessmentDTO.getComment());
             assessmentEntity = assessmentRepository.save(assessmentEntity);
-            return new AssessmentDTO(assessmentEntity);
+            return new AssessmentDetailsResponseDTO(assessmentEntity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
@@ -94,23 +95,23 @@ public class AssessmentService {
         }
     }
 
-    private void copyDtoToEntity(AssessmentDTO assessmentDTO, Assessment assessmentEntity) throws ResourceNotFoundException, DatabaseException, InvalidInputException {
-        assessmentEntity.setId(assessmentDTO.getId());
-        assessmentEntity.setComment(assessmentDTO.getComment());
-        assessmentEntity.setCreatedAt(assessmentDTO.getCreatedAt());
-        assessmentEntity.setUpdatedAt(assessmentDTO.getUpdatedAt());
-        assessmentEntity.setPoints(assessmentDTO.getPoints());
+    private void copyDtoToEntity(AssessmentCreateDTO assessmentCreateDTO, Assessment assessmentEntity) throws ResourceNotFoundException, DatabaseException, InvalidInputException {
+        assessmentEntity.setId(assessmentCreateDTO.getId());
+        assessmentEntity.setComment(assessmentCreateDTO.getComment());
+        assessmentEntity.setCreatedAt(assessmentCreateDTO.getCreatedAt());
+        assessmentEntity.setUpdatedAt(assessmentCreateDTO.getUpdatedAt());
+        assessmentEntity.setPoints(assessmentCreateDTO.getPoints());
 
-        User user = userRepository.findById(assessmentDTO.getUser().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User with id " + assessmentDTO.getUser().getId() + " not found."));
+        User user = userRepository.findById(assessmentCreateDTO.getUser().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + assessmentCreateDTO.getUser().getId() + " not found."));
         assessmentEntity.setUser(user);
 
-        if (assessmentDTO.getItem() == null) {
+        if (assessmentCreateDTO.getItem() == null) {
             throw new InvalidInputException("Item not specified in DTO.");
         }
 
-        Item item = itemRepository.findById(assessmentDTO.getItem().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Item with id " + assessmentDTO.getItem().getId() + " not found."));
+        Item item = itemRepository.findById(assessmentCreateDTO.getItem().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Item with id " + assessmentCreateDTO.getItem().getId() + " not found."));
         assessmentEntity.setItem(item);
 
         LegalEntity legalEntity = legalEntityRepository.findById(item.getMenu().getLegalEntity().getId())

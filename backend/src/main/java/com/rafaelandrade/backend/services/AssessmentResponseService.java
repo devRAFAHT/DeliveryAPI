@@ -1,7 +1,6 @@
 package com.rafaelandrade.backend.services;
 
 import com.rafaelandrade.backend.dto.AssessmentResponseDTO;
-import com.rafaelandrade.backend.dto.LegalEntityDTO;
 import com.rafaelandrade.backend.entities.*;
 import com.rafaelandrade.backend.repositories.*;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
