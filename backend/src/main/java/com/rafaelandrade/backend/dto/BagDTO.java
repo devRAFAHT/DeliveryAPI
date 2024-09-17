@@ -1,8 +1,6 @@
 package com.rafaelandrade.backend.dto;
 
 import com.rafaelandrade.backend.entities.Bag;
-import com.rafaelandrade.backend.entities.Dish;
-import com.rafaelandrade.backend.entities.Drink;
 import com.rafaelandrade.backend.entities.Item;
 
 import java.math.BigDecimal;
