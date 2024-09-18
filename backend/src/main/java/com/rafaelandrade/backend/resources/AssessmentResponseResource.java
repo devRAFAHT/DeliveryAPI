@@ -1,6 +1,7 @@
 package com.rafaelandrade.backend.resources;
 
 import com.rafaelandrade.backend.dto.AssessmentResponseDTO;
+import com.rafaelandrade.backend.dto.AssessmentResponseUpdateDTO;
 import com.rafaelandrade.backend.services.AssessmentResponseService;
 import com.rafaelandrade.backend.services.exceptions.DatabaseException;
 import com.rafaelandrade.backend.services.exceptions.InvalidInputException;
@@ -70,7 +71,7 @@ public class AssessmentResponseResource {
         return ResponseEntity.created(uri).body(assessmentResponseDTO);
     }
 
-    @Operation(summary = "Update an assessment response", description = "Resource to update an existing assessment response.", responses = {
+    @Operation(summary = "Update the comment of an assessment response", description = "Resource to update the comment of an existing Assessment Response.", responses = {
             @ApiResponse(responseCode = "200", description = "Assessment response updated successfully.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = AssessmentResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Assessment response not found.",
@@ -79,9 +80,9 @@ public class AssessmentResponseResource {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvalidInputException.class)))
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AssessmentResponseDTO> update(@PathVariable Long id, @Valid @RequestBody AssessmentResponseDTO assessmentResponseDTO)
+    public ResponseEntity<AssessmentResponseDTO> update(@PathVariable Long id, @Valid @RequestBody AssessmentResponseUpdateDTO assessmentResponseUpdateDTO)
             throws ResourceNotFoundException, InvalidInputException {
-        assessmentResponseDTO = assessmentResponseService.update(id, assessmentResponseDTO);
+        AssessmentResponseDTO assessmentResponseDTO = assessmentResponseService.update(id, assessmentResponseUpdateDTO);
         return ResponseEntity.ok().body(assessmentResponseDTO);
     }
 

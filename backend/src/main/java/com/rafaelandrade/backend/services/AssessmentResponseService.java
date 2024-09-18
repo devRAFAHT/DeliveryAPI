@@ -1,6 +1,7 @@
 package com.rafaelandrade.backend.services;
 
 import com.rafaelandrade.backend.dto.AssessmentResponseDTO;
+import com.rafaelandrade.backend.dto.AssessmentResponseUpdateDTO;
 import com.rafaelandrade.backend.entities.Assessment;
 import com.rafaelandrade.backend.entities.AssessmentResponse;
 import com.rafaelandrade.backend.entities.LegalEntity;
@@ -72,13 +73,11 @@ public class AssessmentResponseService {
     }
 
     @Transactional
-    public AssessmentResponseDTO update(Long id, AssessmentResponseDTO assessmentResponseDTO) throws ResourceNotFoundException, InvalidInputException {
+    public AssessmentResponseDTO update(Long id, AssessmentResponseUpdateDTO assessmentResponseDTO) throws ResourceNotFoundException, InvalidInputException {
         logger.info("Updating assessment response with id: {}", id);
         try {
             AssessmentResponse assessmentResponseEntity = assessmentResponseRepository.getReferenceById(id);
-            checksIfAssociatedEntitiesExist(assessmentResponseDTO);
-            validateItemBelongsToLegalEntity(assessmentResponseDTO);
-            copyDtoToEntity(assessmentResponseDTO, assessmentResponseEntity);
+            assessmentResponseEntity.setComment(assessmentResponseDTO.getComment());
             assessmentResponseEntity = assessmentResponseRepository.save(assessmentResponseEntity);
             logger.info("Updated assessment response: {}", assessmentResponseEntity);
             return new AssessmentResponseDTO(assessmentResponseEntity);
